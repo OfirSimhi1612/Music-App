@@ -37,22 +37,6 @@ mysqlCon.connect(err => {
 
 // a GET request to /top_playlist/ returns a list of top 20 playlist
 
-// a GET request to /song/123 returns the details of song 123
-
-// a GET request to /artist/123 returns the artist 123
-
-// a GET request to /album/123 returns the album 123
-
-// a GET request to /playlist/123 returns the playlist 123
-
-// a POST request to /song add to songs
-
-// a POST request to /album add to album
-
-// a POST request to /playlist add to playlist
-
-// a POST request to /artist add to artist
-
 // a PUT request to /song/123 update the details of song 123
 
 // a PUT request to /artist/123 update the artist 123
@@ -73,6 +57,49 @@ mysqlCon.connect(err => {
 function newDateToSQL(){
     return new Date().toISOString().slice(0, -5).replace('T', ' ')
 }
+
+app.get('/top_playlists', (req, res) => {
+    mysqlCon.query(`SELECT * FROM playlists ORDER BY -likes LIMIT 20;`, (error, results) => {
+        if(error){
+            res.status(400).send(error.message);
+        } else {
+            res.json(results);
+        }
+    })
+});
+
+
+app.get('/top_artists', (req, res) => {
+    mysqlCon.query(`SELECT * FROM artists ORDER BY -likes LIMIT 20;`, (error, results) => {
+        if(error){
+            res.status(400).send(error.message);
+        } else {
+            res.json(results);
+        }
+    })
+});
+
+
+app.get('/top_albums', (req, res) => {
+    mysqlCon.query(`SELECT * FROM albums ORDER BY -likes LIMIT 20;`, (error, results) => {
+        if(error){
+            res.status(400).send(error.message);
+        } else {
+            res.json(results);
+        }
+    })
+});
+
+
+app.get('/top_songs', (req, res) => {
+    mysqlCon.query(`SELECT * FROM songs ORDER BY -likes LIMIT 20;`, (error, results) => {
+        if(error){
+            res.status(400).send(error.message);
+        } else {
+            res.json(results);
+        }
+    })
+});
 
 app.get('/playlists', (req, res) => { //working
     mysqlCon.query('SELECT * FROM playlists', (error, results) => {
