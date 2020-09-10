@@ -74,9 +74,107 @@ function newDateToSQL(){
     return new Date().toISOString().slice(0, -5).replace('T', ' ')
 }
 
+app.get('/playlists', (req, res) => { //working
+    mysqlCon.query('SELECT * FROM playlists', (error, results) => {
+        if (error) {
+            res.status(400).send(err.message);
+        } else if(results.length === 0){
+            res.status(404).send('no playlists')
+        } else {
+            res.json(results);
+        }
+      });
+});
 
+app.get('/artists', (req, res) => { //working
+    mysqlCon.query('SELECT * FROM artists', (error, results) => {
+        if (error) {
+            res.status(400).send(err.message);
+        } else if(results.length === 0){
+            res.status(404).send('no artists')
+        } else {
+            res.json(results);
+        }
+      });
+});
 
-app.post('/playlists', (req, res) => { 
+app.get('/albums', (req, res) => { //working
+    mysqlCon.query('SELECT * FROM albums', (error, results) => {
+        if (error) {
+            res.status(400).send(err.message);
+        } else if(results.length === 0){
+            res.status(404).send('no albums')
+        } else {
+            res.json(results);
+        }
+      });
+});
+
+app.get('/songs', (req, res) => { //working
+    mysqlCon.query('SELECT * FROM songs', (error, results) => {
+        if (error) {
+            res.status(400).send(err.message);
+        } else if(results.length === 0){
+            res.status(404).send('no songs')
+        } else {
+            res.json(results);
+        }
+      });
+});
+
+app.get('/playlists/:id', async (req, res) =>{ //working
+    mysqlCon.query(`SELECT * FROM playlists WHERE playlist_id = ${req.params.id}` ,(error, results, fields) => {
+        if (error) {
+            res.status(400).send(err.message);
+            throw error;
+        } else if(results.length === 0){
+            res.status(404).send('invalid playlist id : no playlist with such id found')
+        } else {
+            res.send(results);
+        }
+      });
+});
+
+app.get('/artists/:id', async (req, res) =>{ //working
+    mysqlCon.query(`SELECT * FROM artists WHERE artist_id = ${req.params.id}` ,(error, results, fields) => {
+        if (error) {
+            res.status(400).send(err.message);
+            throw error;
+        } else if(results.length === 0){
+            res.status(404).send('invalid artist id : no artist with such id found')
+        } else {
+            res.send(results);
+        }
+      });
+});
+
+app.get('/albums/:id', async (req, res) =>{ //working
+    mysqlCon.query(`SELECT * FROM albums WHERE album_id = ${req.params.id}` ,(error, results, fields) => {
+        if (error) {
+            res.status(400).send(err.message);
+            throw error;
+        } else if(results.length === 0){
+            res.status(404).send('invalid album id : no album with such id found')
+        } else {
+            res.send(results);
+        }
+      });
+});
+
+app.get('/songs/:id', async (req, res) =>{ //working
+    mysqlCon.query(`SELECT * FROM songs WHERE song_id = ${req.params.id}` ,(error, results, fields) => {
+        if (error) {
+            res.status(400).send(err.message);
+            throw error;
+        } else if(results.length === 0){
+            res.status(404).send('invalid song id : no song with such id found')
+        } else {
+            res.send(results);
+        }
+      });
+});
+
+app.post('/playlists', (req, res) => { // working
     const data = req.body;
 
     mysqlCon.query(`INSERT INTO playlists (name, cover_img, created_at, uploaded_at, genre)
@@ -86,11 +184,10 @@ app.post('/playlists', (req, res) => {
                         res.status(400).send(error.message);
                         console.log(error)
                     } else {
-                        res.json(data)
+                        res.status(201).json(data)
                     }
                 })
-})
-
+});
 
 app.post('/artists', (req, res) => { //working
     const data = req.body;
@@ -101,11 +198,10 @@ app.post('/artists', (req, res) => { //working
                     if(error){
                        res.status(400).send(error.message);
                     } else {
-                        res.json(data)
+                        res.status(201).json(data)
                     }
                 })
-})
-
+});
 
 app.post('/albums', (req, res) => { // working
     const data = req.body;
@@ -125,11 +221,10 @@ app.post('/albums', (req, res) => { // working
                     if(error){
                        res.status(400).send(error.message);
                     } else {
-                        res.json(data)
+                        res.status(201).json(data)
                     }
                 })
-})
-
+});
 
 app.post('/songs', (req, res) => { // working
     const data = req.body;
@@ -160,32 +255,11 @@ app.post('/songs', (req, res) => { // working
                         res.status(400).send(error.message);
                         console.log(error)
                     } else {
-                        res.json(data)
+                        res.status(201).json(data)
                     }
                 })
-})
-
-
-app.get('/songs', (req, res) => { //working
-    mysqlCon.query('SELECT * FROM songs', (error, results, fields) => {
-        if (error) {
-            res.send(err.message);
-        };
-        res.send(results);
-      });
 });
 
-
-
-app.get('/songs/:id', async (req, res) =>{ //working
-    mysqlCon.query(`SELECT * FROM songs WHERE song_id = ${req.params.id}` ,(error, results, fields) => {
-        if (error) {
-            res.send(err.message);
-            throw error;
-        };
-        res.send(results);
-      });
-});
 
 
 module.exports = app;
