@@ -222,9 +222,10 @@ app.post('/artists', (req, res) => { // working
 app.post('/albums', (req, res) => { // working
   const data = req.body;
   mysqlCon.query(`INSERT INTO albums (name,  artist_id, published_at, uploaded_at, likes)
-                VALUES ('${data.name}', '${data.artist_id}', '${data.published_at}', '${newDateToSQL()}', '${data.likes}')`,
+                VALUES ('${data.name}', '${data.artist_id}', '${data.published_at}', '${newDateToSQL()}', '0')`,
   (error, results, fields) => {
     if (error) {
+      console.log(error);
       if (error.errno === 1452) {
         res.status(404).send('an invalid artist id has been submited');
       } else {
