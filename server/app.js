@@ -37,6 +37,32 @@ function newDateToSQL() {
   return new Date().toISOString().slice(0, -5).replace('T', ' ');
 }
 
+app.get('/albumsOptions/:searchInput', (req, res) => {
+  mysqlCon.query(`SELECT album_id, name, likes, cover_img FROM albums WHERE name LIKE '%${req.params.searchInput}%' ORDER BY -likes LIMIT 5`,
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error.message);
+      } else if (results.length === 0) {
+        res.status(404).send(false);
+      } else {
+        res.json(results);
+      }
+    });
+});
+
+app.get('/artistsOptions/:searchInput', (req, res) => {
+  mysqlCon.query(`SELECT artist_id, name, likes, cover_img FROM artists WHERE name LIKE '%${req.params.searchInput}%' ORDER BY -likes LIMIT 5`,
+    (error, results) => {
+      if (error) {
+        res.status(400).send(error.message);
+      } else if (results.length === 0) {
+        res.status(404).send(false);
+      } else {
+        res.json(results);
+      }
+    });
+});
+
 app.get('/songsInPlaylist/:id', (req, res) => {
   mysqlCon.query(`SELECT * FROM songs_in_playlists p JOIN songs s ON p.song_id = s.song_id WHERE playlist_id = ${req.params.id}`, (error, results) => {
     if (error) {
@@ -127,6 +153,17 @@ app.put('/:tableName/:id', (req, res) => {
   });
 });
 
+app.get('/top/:tableName', (req, res) => {
+  mysqlCon.query(`SELECT * FROM ${req.params.tableName} ORDER BY -likes LIMIT 20;`, (error, results) => {
+    if (error) {
+      return res.status(400).send(error.message);
+    } if (results.length === 0) {
+      return res.status(404).send(`no ${req.params.tableName} found`);
+    }
+    return res.json(results);
+  });
+});
+
 app.get('/:tableName/:id', (req, res) => {
   const { id } = req.params;
   const { tableName } = req.params;
@@ -153,41 +190,7 @@ app.get('/:tableName', (req, res) => {
   });
 });
 
-app.get('/top_playlists', (req, res) => { // working
-  mysqlCon.query('SELECT * FROM playlists ORDER BY -likes LIMIT 20;', (error, results) => {
-    if (error) {
-      return res.status(400).send(error.message);
-    }
-    return res.json(results);
-  });
-});
-
-app.get('/top_artists', (req, res) => { // working
-  mysqlCon.query('SELECT * FROM artists ORDER BY -likes LIMIT 20;', (error, results) => {
-    if (error) {
-      return res.status(400).send(error.message);
-    }
-    return res.json(results);
-  });
-});
-
-app.get('/top_albums', (req, res) => { // working
-  mysqlCon.query('SELECT * FROM albums ORDER BY -likes LIMIT 20;', (error, results) => {
-    if (error) {
-      return res.status(400).send(error.message);
-    }
-    return res.json(results);
-  });
-});
-
-app.get('/top_songs', (req, res) => { // working
-  mysqlCon.query('SELECT * FROM songs ORDER BY -likes LIMIT 20;', (error, results) => {
-    if (error) {
-      return res.status(400).send(error.message);
-    }
-    return res.json(results);
-  });
-});
+// minimize all this
 
 app.post('/playlists', (req, res) => { // working
   const data = req.body;
@@ -205,10 +208,11 @@ app.post('/playlists', (req, res) => { // working
 app.post('/artists', (req, res) => { // working
   const data = req.body;
 
-  mysqlCon.query(`INSERT INTO artists (first_name, last_name, birth_date, cover_img, uploaded_at, likes)
-                VALUES ('${data.first_name}', '${data.last_name}', '${data.birth_date}',${data.cover_img}, '${newDateToSQL()}', '${data.likes}')`,
+  mysqlCon.query(`INSERT INTO artists (name, birth_date, cover_img, uploaded_at, likes)
+                VALUES ('${data.name}', '${data.birth_date}', '${data.cover_img}', '${newDateToSQL()}', '0')`,
   (error, results, fields) => {
     if (error) {
+      console.log(error);
       return res.status(400).send(error.message);
     }
     return res.status(201).json(data);
@@ -235,12 +239,13 @@ app.post('/albums', (req, res) => { // working
 app.post('/songs', (req, res) => { // working
   const data = req.body;
   mysqlCon.query(`INSERT INTO songs (title, artist_id, album_id, lyrics, length, created_at, uploaded_at, youtube_link, track_number, likes)
-                VALUES ('${data.title}', '${data.artist_id}', '${data.album_id}', '${data.lyrics}', '${data.length}', '${data.created_at}', '${newDateToSQL()}', '${data.youtube_link}', '${data.track_number}', '${data.likes}')`,
+                VALUES ('${data.title}', '${data.artist_id}', '${data.album_id}', '${data.lyrics}', '300', '${data.created_at}', '${newDateToSQL()}', '${data.youtube_link}', '0', '0')`,
   (error, results, fields) => {
     if (error) {
       if (error.errno === 1452) {
         res.status(404).send("an invalid artist or album id's has been submited");
       } else {
+        console.log(error);
         return res.status(400).send(error.message);
       }
     } else {

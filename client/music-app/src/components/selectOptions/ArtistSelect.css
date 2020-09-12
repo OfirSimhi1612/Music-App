@@ -1,0 +1,16 @@
+.artistDiv{
+    border: solid 0.5px black;
+    width: 130%;
+}
+
+.optionsDiv{
+    position: absolute;
+    left: 50px;
+    z-index: 2;
+    
+}
+
+#ArtistSelect{
+    width: 30vW;
+    
+}
