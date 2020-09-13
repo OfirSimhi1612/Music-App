@@ -195,10 +195,11 @@ app.get('/:tableName', (req, res) => {
 app.post('/playlists', (req, res) => { // working
   const data = req.body;
 
-  mysqlCon.query(`INSERT INTO playlists (name, cover_img, created_at, uploaded_at, genre)
-                VALUES ('${data.name}', '${data.cover_img}', '${data.created_at}', '${newDateToSQL()}','${data.genre}')`,
+  mysqlCon.query(`INSERT INTO playlists (name, cover_img, created_at, genre)
+                VALUES ('${data.name}', '${data.cover_img}', '${newDateToSQL()}','${data.genre}')`,
   (error, results, fields) => {
     if (error) {
+      console.log(error);
       return res.status(400).send(error.message);
     }
     return res.status(201).json(data);

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 function AddAlbum (){
-
+    
     const [AlbumDetails, setAlbumDetails] = useState({});
 
     const updateDetails = React.useCallback((column, value) => {
