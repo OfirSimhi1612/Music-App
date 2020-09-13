@@ -37,6 +37,44 @@ function newDateToSQL() {
   return new Date().toISOString().slice(0, -5).replace('T', ' ');
 }
 
+app.put('/like/:song_id', (req, res) => {
+  mysqlCon.query(`UPDATE songs SET likes = (likes + 1) WHERE song_id='${req.params.song_id}'`, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(400).send(error.message);
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.put('/dislike/:song_id', (req, res) => {
+  mysqlCon.query(`UPDATE songs SET likes = (likes - 1) WHERE song_id='${req.params.song_id}'`, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(400).send(error.message);
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.get('/topSongsList', (req, res) => {
+  mysqlCon.query(`select s.song_id AS id, s.title AS song_name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
+                  from songs s 
+                  left join artists ar on s.artist_id = ar.artist_id
+                  left join albums al on s.album_id = al.album_id
+                  ORDER BY -s.likes
+                  LIMIT 20;`, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(400).send(error.message);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.get('/albumsOptions/:searchInput', (req, res) => {
   mysqlCon.query(`SELECT album_id, name, likes, cover_img FROM albums WHERE name LIKE '%${req.params.searchInput}%' ORDER BY -likes LIMIT 5`,
     (error, results) => {
@@ -154,7 +192,7 @@ app.put('/:tableName/:id', (req, res) => {
 });
 
 app.get('/top/:tableName', (req, res) => {
-  mysqlCon.query(`SELECT * FROM ${req.params.tableName} ORDER BY -likes LIMIT 20;`, (error, results) => {
+  mysqlCon.query(`SELECT * FROM ${req.params.tableName} ORDER BY -likes LIMIT 6;`, (error, results) => {
     if (error) {
       return res.status(400).send(error.message);
     } if (results.length === 0) {

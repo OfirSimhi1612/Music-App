@@ -1,0 +1,24 @@
+#HeaderDiv{
+    display: flex;
+    background-color: rgb(35, 36, 35);
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.pageTitle{
+    color: white;
+    margin-left: 20px;
+}
+
+#navBar{
+    display: flex;
+    gap: 10px;
+    justify-content: space-around;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.dropdown{
+    display: inline;
+}
