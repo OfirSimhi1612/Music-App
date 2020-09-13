@@ -12,10 +12,10 @@ function PlaylistDisplay(props){
         <>
             <div className='playlist' onClick={goToLink}>
                 <img className='playlistImage' src={ 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <div className='platlistDetails'>
+                <div className='playlistDetails'>
                     <div className='playlistName'>{props.name}</div>
                     <div className='PlaylistGenre'>{props.genre}</div>
-                    <div className='playlistLikes'>{props.likes} </div>
+                    <div className='playlistLikes'>{props.likes} Likes</div>
                 </div>
             </div>
         </>

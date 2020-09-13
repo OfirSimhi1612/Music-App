@@ -37,8 +37,8 @@ function newDateToSQL() {
   return new Date().toISOString().slice(0, -5).replace('T', ' ');
 }
 
-app.put('/like/:song_id', (req, res) => {
-  mysqlCon.query(`UPDATE songs SET likes = (likes + 1) WHERE song_id='${req.params.song_id}'`, (error, results) => {
+app.put('/like/:table/:id', (req, res) => {
+  mysqlCon.query(`UPDATE ${req.params.table} SET likes = (likes + 1) WHERE song_id='${req.params.id}'`, (error, results) => {
     if (error) {
       console.log(error);
       res.status(400).send(error.message);
@@ -48,13 +48,27 @@ app.put('/like/:song_id', (req, res) => {
   });
 });
 
-app.put('/dislike/:song_id', (req, res) => {
-  mysqlCon.query(`UPDATE songs SET likes = (likes - 1) WHERE song_id='${req.params.song_id}'`, (error, results) => {
+app.put('/dislike/:table/:id', (req, res) => {
+  mysqlCon.query(`UPDATE ${req.params.table} SET likes = (likes - 1) WHERE song_id='${req.params.id}'`, (error, results) => {
     if (error) {
       console.log(error);
       res.status(400).send(error.message);
     } else {
       res.status(204).end();
+    }
+  });
+});
+
+app.get('/topAlbumsList', (req, res) => {
+  mysqlCon.query(`SELECT al.artist_id AS id, al.name AS name, al.cover_img AS cover_img, al.likes AS likes, ar.name AS artist
+                  FROM albums al
+                  JOIN artists ar ON al.artist_id = ar.artist_id
+                  ORDER BY -al.likes
+                  LIMIT 6;`, (error, results) => {
+    if (error) {
+      res.status(400).send(error.message);
+    } else {
+      res.json(results);
     }
   });
 });

@@ -13,7 +13,7 @@ function SongDisplay(props){
     async function addLike(){
         try{
             setLiked(true);
-            axios.put(`/like/${props.id}`);
+            axios.put(`/like/songs/${props.id}`);
         } catch(error){
             console.log(error.message);
         }
@@ -22,7 +22,7 @@ function SongDisplay(props){
     async function disLike(){
         try{
             setLiked(false);
-            axios.put(`/dislike/${props.id}`);
+            axios.put(`/dislike/songs/${props.id}`);
         } catch(error){
             console.log(error.message);
         }
