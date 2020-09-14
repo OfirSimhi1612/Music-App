@@ -1,5 +1,6 @@
 CREATE DATABASE music_app;
 USE music_app;
+
 CREATE TABLE `users`(
     `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `first_name` VARCHAR(15) NOT NULL,
@@ -51,6 +52,7 @@ CREATE TABLE `songs`(
     `title` VARCHAR(20) NOT NULL,
     `artist_id` INT UNSIGNED,
     `album_id` INT UNSIGNED,
+    `cover_img` TEXT,
     `lyrics` TEXT,
     `length` INT NOT NULL,
     `created_at` DATE,

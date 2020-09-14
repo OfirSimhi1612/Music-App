@@ -11,7 +11,8 @@ function SongDisplay(props){
         props.playVideo(props.link);
     },[props.link]);
 
-    const addLike = React.useCallback(async () => {
+    const addLike = React.useCallback(async (e) => {
+        e.stopPropagation();
         try{
             setLiked(true);
             axios.put(`/like/songs/${props.id}`);
@@ -20,14 +21,15 @@ function SongDisplay(props){
         }
     }, [props.id]);
 
-    const disLike = React.useCallback(async () => {
+    const disLike = React.useCallback(async (e) => {
+        e.stopPropagation();
         try{
             setLiked(false);
             axios.put(`/dislike/songs/${props.id}`);
         } catch(error){
             console.log(error.message);
         }
-    }, [prop.id]);
+    }, [props.id]);
 
 
     return (
@@ -40,8 +42,8 @@ function SongDisplay(props){
                 </div>
                 <span className='SongLength'>{parseInt(props.length.slice(0,2))>0 ? props.length : props.length.slice(3)}</span>
                 {liked ? 
-                        <img className='likeButton' onClick={disLike} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
-                        : <img className='likeButton' onClick={addLike} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
+                        <img className='likeButton' onClick={(e) => disLike(e)} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
+                        : <img className='likeButton' onClick={(e) => addLike(e)} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
                 }
             </div>
         </>
