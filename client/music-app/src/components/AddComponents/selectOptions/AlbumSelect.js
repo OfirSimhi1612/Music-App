@@ -19,9 +19,9 @@ function AlbumOption(props){
     return (
         <>
             <div className='albumDiv' onClick={chooseAlbum}>
+                <img className = 'AlbumImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <label class='albumName'>{props.name}</label>
                 <label class='albumLikes'>{props.likes} likes</label>
-                <img src={props.cover_img}></img>
             </div>
         </>
     );
@@ -57,6 +57,7 @@ function AlbumSelect(props){
 
     return(
         <>
+        <div id='AlbumSelect'>
             <label htmlFor='AlbumInput'>Album:</label>
             {!isAlbumChosen ?
                 <input id='AlbumInput' placeholder='Album'
@@ -65,16 +66,19 @@ function AlbumSelect(props){
                 onBlur={() => setTimeout(() => setAlbumFocused(false), 300)}
                 ></input>
                 :<>
+                    <img className='ChoosenAlbumImage' src={AlbumChosen.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <label class='albumName'>{AlbumChosen.name}</label>
-                    <label class='albumLikes'>{AlbumChosen.likes} likes</label>
-                    <img src={AlbumChosen.cover_img}></img>
-                    <button onClick={() => setIsAlbumChosen(false)}>change...</button>
+                    <button onClick={() => {
+                        props.updateDetails('album_id', null)
+                        setIsAlbumChosen(false)}
+                        }>change...</button>
                 </>
                 
             }   
                 {AlbumsFocused &&
                     (AlbumsOptions.length > 0 ?
-                    AlbumsOptions.map(album => {
+                    <div className='optionsDiv'>
+                    {AlbumsOptions.map(album => {
                         return <div>
                             <AlbumOption
                             className='albumOption'
@@ -85,11 +89,13 @@ function AlbumSelect(props){
                             handleAlbumChoice={handleAlbumChoice}
                             />  
                         </div>
-                    })
+                    })}
+                    </div>
                     : <div className='addNewAlbum'>
                         Add new album +
                     </div>)
                 }
+        </div>
         </>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ArtistSelect from './selectOptions/ArtistSelect.js';
 import axios from 'axios';
+import './AddAlbum.css';
 
 
 function AddAlbum (){
@@ -21,9 +22,10 @@ function AddAlbum (){
     return (
         <>
             <form id='addAlbumForm' autoComplete="off">
-                <div>
+                <h3>Add Album:</h3>
+                <div className='inputRow'>
                     <label htmlFor='NameInput'>Album Name:</label>
-                    <input type='text' id ='NameInput' placeholder='Name'
+                    <input className='inputField' type='text' id ='NameInput' placeholder='Name'
                     onChange={(e) => updateDetails('name', e.target.value)}
                     ></input>
                 </div>
@@ -32,15 +34,15 @@ function AddAlbum (){
                     updateDetails={updateDetails}
                     />
                 </div>
-                <div>
+                <div  className='inputRow'>
                     <label htmlFor='ImageInput'>Image Link:</label>
-                    <input type='text' id ='ImageInput' placeholder='Image Link'
+                    <input className='inputField' type='text' id ='ImageInput' placeholder='Image Link'
                     onChange={(e) => updateDetails('cover_img', e.target.value)}
                     ></input>
                 </div>
-                <div>
+                <div  className='inputRow'>
                     <label htmlFor='PublishTime'>Published at:</label>
-                    <input type='date' id='PublishTime'
+                    <input className='inputField' type='date' id='PublishTime'
                     onChange={(e) => updateDetails('published_at', e.target.value)}
                     ></input>
                 </div>

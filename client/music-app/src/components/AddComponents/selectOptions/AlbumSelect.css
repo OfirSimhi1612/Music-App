@@ -1,0 +1,68 @@
+label{
+    margin-bottom: 0px;
+}
+
+.albumDiv{
+    border: solid 0.5px black;
+    width: 200%;
+    background-color: rgb(17, 17, 17);
+    display: flex;
+    padding: 5px;
+    height: 50px;
+    align-items: center;
+}
+
+.optionsDiv{
+    position: absolute;
+    left: 50%;
+    top:30px;
+    z-index: 2;
+    
+}
+
+.albumDiv:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
+#AlbumSelect{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.AlbumImage{
+    height: 100%;
+    width: 15%;
+}
+
+.albumLikes{
+    align-self: flex-start;
+}
+
+.addNewAlbum{
+    border: solid 0.5px black;
+    width: 100%;
+    background-color: rgb(17, 17, 17);
+    display: flex;
+    padding: 5px;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    top:30px;
+    z-index: 2;
+}
+
+.addNewAlbum:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
+.ChoosenAlbumImage{
+    height: 30px;
+    width: 30px;
+    margin-left: 20px;
+}

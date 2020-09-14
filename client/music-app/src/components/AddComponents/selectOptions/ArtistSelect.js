@@ -19,9 +19,9 @@ function ArtistOption(props){
     return (
         <>
             <div className='artistDiv' onClick={chooseArtist}>
+                <img className='ArtistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <label class='artistName'>{props.name}</label>
                 <label class='artistLikes'>{props.likes} likes</label>
-                <img src={props.cover_img}></img>
             </div>
         </>
     );
@@ -65,9 +65,8 @@ function ArtistSelect(props){
                 onBlur={() => setTimeout(() => setArtistsFocused(false), 300)}
                 ></input>
                 :<>
+                    <img className='ChoosenArtistImage' src={ArtistChosen.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <label class='artistName'>{ArtistChosen.name}</label>
-                    <label class='artistLikes'>{ArtistChosen.likes} likes</label>
-                    <img src={ArtistChosen.cover_img}></img>
                     <button onClick={() => setIsArtistChosen(false)}>change...</button>
                 </>
                 
@@ -92,7 +91,7 @@ function ArtistSelect(props){
                 </div>
                 : <div className='addNewArtist'>
                     Add new artist +
-                </div>)
+                  </div>)
             }
         </div>
         </>

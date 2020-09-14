@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './AddPlaylist.css';
 
 
 function AddPlaylist (){
@@ -19,21 +20,22 @@ function AddPlaylist (){
     return (
         <>
             <form id='addPlaylistForm' autoComplete="off">
-                <div>
+                <h3>Add Playlist:</h3>
+                <div className='inputRow'>
                     <label htmlFor='NameInput'>Playlist Name:</label>
-                    <input type='text' id ='NameInput' placeholder='Name'
+                    <input className='inputField' type='text' id ='NameInput' placeholder='Name'
                     onChange={(e) => updateDetails('name', e.target.value)}
                     ></input>
                 </div>
-                <div>
+                <div className='inputRow'>
                     <label htmlFor='GenreInput'>Genre:</label>
-                    <input type='text' id ='GenreInput' placeholder='Genre'
+                    <input className='inputField' type='text' id ='GenreInput' placeholder='Genre'
                     onChange={(e) => updateDetails('genre', e.target.value)}
                     ></input>
                 </div>
-                <div>
+                <div className='inputRow'>
                     <label htmlFor='ImageInput'>Image Link:</label>
-                    <input type='text' id ='ImageInput' placeholder='Image Link'
+                    <input className='inputField' type='text' id ='ImageInput' placeholder='Image Link'
                     onChange={(e) => updateDetails('cover_img', e.target.value)}
                     ></input>
                 </div>

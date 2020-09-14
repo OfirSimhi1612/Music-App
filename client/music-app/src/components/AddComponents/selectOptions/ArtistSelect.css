@@ -1,16 +1,68 @@
+label{
+    margin-bottom: 0px;
+}
+
 .artistDiv{
     border: solid 0.5px black;
-    width: 130%;
+    width: 200%;
+    background-color: rgb(17, 17, 17);
+    display: flex;
+    padding: 5px;
+    height: 50px;
+    align-items: center;
 }
 
 .optionsDiv{
     position: absolute;
-    left: 50px;
+    left: 50%;
+    top:30px;
     z-index: 2;
     
 }
 
+.artistDiv:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
 #ArtistSelect{
-    width: 30vW;
-    
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.ArtistImage{
+    height: 100%;
+    width: 15%;
+}
+
+.artistLike{
+    align-self: flex-start;
+}
+
+.addNewArtist{
+    border: solid 0.5px black;
+    width: 100%;
+    background-color: rgb(17, 17, 17);
+    display: flex;
+    padding: 5px;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    top:30px;
+    z-index: 2;
+}
+
+.addNewArtist:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
+.ChoosenArtistImage{
+    height: 30px;
+    width: 30px;
+    margin-left: 20px;
 }

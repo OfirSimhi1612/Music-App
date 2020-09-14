@@ -1,0 +1,18 @@
+#addAlbumForm{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    gap: 20px;
+    width: 30vw;
+    color: white;
+    padding: 20px;
+}
+
+.inputRow{
+    display: flex;
+}
+
+.inputField{
+    margin-left: auto;
+}
+

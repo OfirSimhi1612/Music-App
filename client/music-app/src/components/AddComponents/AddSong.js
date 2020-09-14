@@ -1,30 +1,38 @@
 import React, { useState } from 'react';
+import DurationPicker from 'react-duration-picker'
 import ArtistSelect from './selectOptions/ArtistSelect.js';
 import AlbumSelect from './selectOptions/AlbumSelect.js';
 import axios from 'axios';
+import './AddSong.css';
 
 
 function AddSong (){
 
-    const [SongDetails, setSongDetails] = useState({});
+    const [SongDetails, setSongDetails] = useState({title: null});
+    const [error, setError] = useState(null);
 
     const updateDetails = React.useCallback((column, value) => {
         const details = Object.assign(SongDetails)
         details[column] = value;
         setSongDetails(details);
+        console.log(SongDetails)
     }, [SongDetails]);
 
+
     const addSong = React.useCallback(() => {
-        axios.post(`http://localhost:8080/songs`, SongDetails)
+            axios.post(`http://localhost:8080/songs`, SongDetails)
+            .catch((error) => setError(error.response.data));
     }, [SongDetails]);
 
     return (
         <>
             <form id='addSongForm' autoComplete="off">
-                <div>
+            <h3>Add Song:</h3>
+                <div className='inputRow'>
                     <label htmlFor='TitleInput'>Song Title:</label>
-                    <input type='text' id ='TitleInput' placeholder='Title'
+                    <input  className='inputField' type='text' id ='TitleInput' placeholder='Title'
                     onChange={(e) => updateDetails('title', e.target.value)}
+                    required
                     ></input>
                 </div>
                 <div>
@@ -37,24 +45,36 @@ function AddSong (){
                     updateDetails={updateDetails}
                     />
                 </div>
-                <div>
+                <div className='inputRow'>
                     <label htmlFor='LinkInput'>Youtube Link:</label>
-                    <input type='text' id ='LinkInput' placeholder='Youtube Link'
+                    <input required className='inputField' type='text' id ='LinkInput' placeholder='Youtube Link'
                     onChange={(e) => updateDetails('youtube_link', e.target.value)}
                     ></input>
                 </div>
-                <div>
+                {/* <div className='inputRow'>
+                    <label htmlFor='LinkInput'>Length:</label>
+                    <span className='inputField'>
+                    <input type='text' id ='minInput'
+                    onChange={(e) => updateDetails('youtube_link', e.target.value)}
+                    ></input>:
+                    <input type='text' id ='secInput'
+                    onChange={(e) => updateDetails('youtube_link', e.target.val)}>
+                    </input>
+                    </span>
+                </div> */}
+                <div className='inputRow'>
                     <label htmlFor='addLyrics'>Add Lyrics</label>
-                    <textarea id='addLyricsButton' placeholder='type lyrics...'
+                    <textarea className='inputField' id='addLyricsButton' placeholder='type lyrics...'
                     onChange={(e) => updateDetails('lyrics', e.target.value)}
                     ></textarea>
                 </div>
-                <div>
+                <div className='inputRow'>
                     <label htmlFor='creationTime'>Released at:</label>
-                    <input type='date' id='creationTime'
+                    <input className='inputField' type='date' id='creationTime'
                     onChange={(e) => updateDetails('created_at', e.target.value)}
                     ></input>
                 </div>
+                {error && <div className='error'>*{error}</div>}
                 <div>
                     <button type='submit' onClick={addSong}>Add song!</button>
                 </div>

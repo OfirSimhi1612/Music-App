@@ -95,7 +95,7 @@ app.get('/albumsOptions/:searchInput', (req, res) => {
       if (error) {
         res.status(400).send(error.message);
       } else if (results.length === 0) {
-        res.status(404).send(false);
+        res.status(200).send(false);
       } else {
         res.json(results);
       }
@@ -108,7 +108,7 @@ app.get('/artistsOptions/:searchInput', (req, res) => {
       if (error) {
         res.status(400).send(error.message);
       } else if (results.length === 0) {
-        res.status(404).send(false);
+        res.status(200).send(false);
       } else {
         res.json(results);
       }
@@ -258,7 +258,7 @@ app.post('/playlists', (req, res) => { // working
   });
 });
 
-app.post('/artists', (req, res) => { // working
+app.post('/artists', (req, res) => {
   const data = req.body;
 
   mysqlCon.query(`INSERT INTO artists (name, birth_date, cover_img, uploaded_at, likes)
@@ -272,7 +272,7 @@ app.post('/artists', (req, res) => { // working
   });
 });
 
-app.post('/albums', (req, res) => { // working
+app.post('/albums', (req, res) => {
   const data = req.body;
   mysqlCon.query(`INSERT INTO albums (name,  artist_id, published_at, uploaded_at, likes)
                 VALUES ('${data.name}', '${data.artist_id}', '${data.published_at}', '${newDateToSQL()}', '0')`,
@@ -290,17 +290,16 @@ app.post('/albums', (req, res) => { // working
   });
 });
 
-app.post('/songs', (req, res) => { // working
+app.post('/songs', (req, res) => {
   const data = req.body;
   mysqlCon.query(`INSERT INTO songs (title, artist_id, album_id, lyrics, length, created_at, uploaded_at, youtube_link, track_number, likes)
-                VALUES ('${data.title}', '${data.artist_id}', '${data.album_id}', '${data.lyrics}', '300', '${data.created_at}', '${newDateToSQL()}', '${data.youtube_link}', '0', '0')`,
+                  VALUES ('${data.title}', '${data.artist_id}', '${data.album_id}', '${data.lyrics}', '300', '${data.created_at}', '${newDateToSQL()}', '${data.youtube_link}', '0', '0')`,
   (error, results, fields) => {
     if (error) {
       if (error.errno === 1452) {
         res.status(404).send("an invalid artist or album id's has been submited");
       } else {
-        console.log(error);
-        return res.status(400).send(error.message);
+        return res.status(400).send(error.sqlMessage);
       }
     } else {
       return res.status(201).json(data);
