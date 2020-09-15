@@ -1,20 +1,18 @@
 .album{
     display: flex;
-    background-color: rgb(17, 17, 17);
+    flex-direction: column;
+    justify-content: space-between;
     color: white;
     padding: 3px;
-    width:40%;
-    height: 100px;
 }
 
 .album:hover{
     transform: scale(1.01);
     cursor: pointer;
-    box-shadow: 0px 0px 2px rgb(143, 143, 143);
 }
 
 .albumImage{
-    width: 35%;
+    width: 70%;
     height: 90%;
     align-self: center;
     margin-left: 5px;
@@ -23,12 +21,9 @@
 
 
 #topAlbums{
-    width:60vw;
-    height: 65vh;
-    display: flex;
-    flex-direction: column;
-    gap: 5x;
-    padding: 10px;
+    width:90vw;
+    height:40vh;
+    margin-bottom: 70px;
 }
 
 .albums{
@@ -49,9 +44,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-right: 10px;
-    margin-left: 10px;
-    width:60%;
+    margin-right: auto;
+    margin-left: auto;
+    width:70%;
 }
 
 .albumName{
@@ -73,5 +68,5 @@
     color: rgb(63, 63, 63);
     width: 70%;
     text-align: right;
-    margin-right: 5px;
+    margin-left: auto;
 }

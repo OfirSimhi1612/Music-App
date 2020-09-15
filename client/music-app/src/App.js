@@ -13,23 +13,23 @@ import AddPlaylist from './components/AddComponents/AddPlaylist';
 
 
 function App() {
-return (
-  <>
-    <BrowserRouter>
-    <div id='body'>
-    <Header></Header>
-    <Switch>
-      <Route path={'/'} exact component={MainFeed} />
-      <Route path={'/addSong'} exact component={AddSong} />
-      <Route path={'/addArtist'} exact component={AddArtist} />
-      <Route path={'/addAlbum'} exact component={AddAlbum} />
-      <Route path={'/addPlaylist'} exact component={AddPlaylist} />
-    </Switch>
-    </div>
-    </BrowserRouter>
+  return (
+    <>
+      <BrowserRouter>
+        <div id='body'>
+          <Header></Header>
+          <Switch>
+            <Route path={'/'} exact component={MainFeed} />
+            <Route path={'/addSong'} exact component={AddSong} />
+            <Route path={'/addArtist'} exact component={AddArtist} />
+            <Route path={'/addAlbum'} exact component={AddAlbum} />
+            <Route path={'/addPlaylist'} exact component={AddPlaylist} />
+          </Switch>
+        </div>
+      </BrowserRouter>
 
 
-    {/* <Header></Header>
+      {/* <Header></Header>
   <div id='body'>
     <AddSong></AddSong>
     <AddAlbum></AddAlbum> 
@@ -37,8 +37,8 @@ return (
     <AddPlaylist></AddPlaylist>
      <MainFeed></MainFeed>
   </div> */}
-  </>
-);
+    </>
+  );
 }
 
 export default App;

@@ -1,32 +1,35 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './TopArtists.css'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-function ArtistDisplay(props){
+function ArtistDisplay(props) {
 
-    function goToLink(){
+    function goToLink() {
         //go to props.link
     }
 
     return (
         <>
             <div className='artist' onClick={goToLink}>
-                <img className='artistImage' src={ 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                
+                <img className='artistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <div className='artistDetails'>
                     <div className='artistName'>{props.name}</div>
                     <div className='artistLikes'>{props.likes} Likes</div>
-                
+                </div>
             </div>
         </>
     );
 }
 
-function TopArtists(props){
+function TopArtists(props) {
 
     const [Artists, setArtists] = useState([])
 
     useEffect(() => {
-        async function fetch(){
+        async function fetch() {
             const { data } = await axios.get(`/top/artists`);
             console.log(data)
             setArtists(data);
@@ -34,20 +37,29 @@ function TopArtists(props){
         fetch()
     }, [])
 
+    const settings = {
+        className: "center",
+        centerMode: true,
+        infinite: true,
+        centerPadding: "60px",
+        slidesToShow: 4,
+        speed: 500
+    };
+
     return (
         <>
             <div id='topArtists'>
                 <h3 className='topArtistsHead'>Top Artists</h3>
-                <div className='artists'>
-                {Artists.map(artist => {
-                    return <ArtistDisplay
+                <Slider {...settings}>
+                    {Artists.map(artist => {
+                        return <ArtistDisplay
                             name={artist.name}
                             cover_img={artist.cover_img}
-                            likes={artist.likes} 
-                            likes={artist.likes}/>
+                            likes={artist.likes}
+                            likes={artist.likes} />
                     })
-                }
-                </div>
+                    }
+                </Slider>
             </div>
         </>
     );

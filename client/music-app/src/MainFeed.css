@@ -1,15 +1,9 @@
 #feed{
     display: flex;
+    flex-direction: column;
     /* justify-content: space-around; */
     gap:100px;
-    padding:40px
+    padding:40px;
+    padding-top: 70px;
 }
 
-#rightSection{
-    display: flex;
-    flex-direction: column;
-    width: 40vw;
-    /* justify-content: space-around; */
-    gap: 20px;
-
-}

@@ -1,17 +1,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './TopPlaylists.css'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-function PlaylistDisplay(props){
 
-    function goToLink(){
+function PlaylistDisplay(props) {
+
+    function goToLink() {
         //go to props.link
     }
 
     return (
         <>
             <div className='playlist' onClick={goToLink}>
-                <img className='playlistImage' src={ 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <img className='playlistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='playlistDetails'>
                     <div className='playlistName'>{props.name}</div>
                     <div className='PlaylistGenre'>{props.genre}</div>
@@ -22,12 +26,12 @@ function PlaylistDisplay(props){
     );
 }
 
-function TopPlaylists(props){
+function TopPlaylists(props) {
 
     const [Playlists, setPlaylists] = useState([])
 
     useEffect(() => {
-        async function fetch(){
+        async function fetch() {
             const { data } = await axios.get(`/top/playlists`);
             console.log(data)
             setPlaylists(data);
@@ -35,20 +39,30 @@ function TopPlaylists(props){
         fetch()
     }, [])
 
+    const settings = {
+        className: "center",
+        centerMode: true,
+        infinite: true,
+        centerPadding: "60px",
+        slidesToShow: 4,
+        speed: 500
+    };
+
+
     return (
         <>
             <div id='topPlaylists'>
                 <h3 className='topPlaylistsHead'>Top Playlists</h3>
-                <div className='playlists'>
-                {Playlists.map(playlist => {
-                    return <PlaylistDisplay
+                <Slider {...settings}>
+                    {Playlists.map(playlist => {
+                        return <PlaylistDisplay
                             name={playlist.name}
                             genre={playlist.genre}
                             cover_img={playlist.cover_img}
                             likes={playlist.likes} />
                     })
-                }
-                </div>
+                    }
+                </Slider>
             </div>
         </>
     );

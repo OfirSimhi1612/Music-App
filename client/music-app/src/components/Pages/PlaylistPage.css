@@ -1,0 +1,64 @@
+#playlistHead{
+    display: flex;
+    color: white;
+    gap: 10px;
+    padding-left: 50px;
+}
+
+.playlistDetails{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    /* gap: 10px; */
+}
+
+.bottomDetails{
+    display: flex;
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.playlistLikes{
+    margin-left: auto;
+}
+
+.palylistGenre{
+    font-size: 13px;
+    color: gray;
+    margin-left: 30px;
+}
+
+.likeButton:hover{
+    cursor: pointer;
+}
+
+.songInPlaylist{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+}
+
+.songInPlaylist:hover{
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
+.SongImage{
+    height: 40px; 
+    width: 40px;
+}
+
+.playlistSongs{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.playlistTime{
+    font-size: 14px;
+    color: rgb(160, 159, 159);
+}
+
+.playlistName{
+    margin-left: 0px;
+}
