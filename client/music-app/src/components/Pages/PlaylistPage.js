@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PlaylistPage.css';
+import LikeButton from '../LikesButton/LikesButton'
 
 function SongInPlaylist(props) {
 
@@ -10,25 +11,6 @@ function SongInPlaylist(props) {
         props.playVideo(props.link);
     }, [props.link]);
 
-    const addLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(true);
-            axios.put(`/like/songs/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
-
-    const disLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(false);
-            axios.put(`/dislike/songs/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
 
     return (
         <>
@@ -40,10 +22,10 @@ function SongInPlaylist(props) {
                     <div className='SongArtist'>{props.artist} / {props.album}</div>
                 </div>
                 <span className='SongLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>
-                {liked ?
-                    <img className='likeButton' onClick={(e) => disLike(e)} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
-                    : <img className='likeButton' onClick={(e) => addLike(e)} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
-                }
+                <LikeButton
+                    id={props.id}
+                    table={'songs'}
+                />
             </div>
         </>
     );
@@ -57,8 +39,8 @@ function PlaylistPage(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/playlists/${'2'}`);
-            console.log(data)
+            const { data } = await axios.get(`/playlists/${props.match.params.id}`);
+            console.log(data[0])
             setDisplayedPlaylist(data[0]);
         }
         fetch()
@@ -66,7 +48,7 @@ function PlaylistPage(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/songsInPlaylist/${'2'}`);
+            const { data } = await axios.get(`/songsInPlaylist/${props.match.params.id}`);
             console.log(data)
             setPlaylistSongs(data);
         }
@@ -103,25 +85,19 @@ function PlaylistPage(props) {
 
     }, [playlistSongs])
 
-    const addLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(true);
-            axios.put(`/like/playlists/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
+    function updateLikes(liked) {
+        if (liked) {
+            setDisplayedPlaylist({
+                ...displayedPlaylist,
+                likes: displayedPlaylist.likes + 1
+            })
+        } else {
+            setDisplayedPlaylist({
+                ...displayedPlaylist,
+                likes: displayedPlaylist.likes - 1
+            })
         }
-    }, [props.id]);
-
-    const disLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(false);
-            axios.put(`/dislike/playlist/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
+    }
 
     return (
         <>
@@ -135,10 +111,11 @@ function PlaylistPage(props) {
                     <span className='playlistTime'>{playlistTime()}</span>
                     <div className='bottomDetails'>
                         <span className='playlistLikes'>{displayedPlaylist.likes} Likes</span>
-                        {!Liked ?
-                            <img className='likeButton' onClick={(e) => disLike(e)} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
-                            : <img className='likeButton' onClick={(e) => addLike(e)} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
-                        }
+                        <LikeButton
+                            id={displayedPlaylist.playlist_id}
+                            table={'playlists'}
+                            updateLikes={updateLikes}
+                        />
                     </div>
                 </div>
             </div>

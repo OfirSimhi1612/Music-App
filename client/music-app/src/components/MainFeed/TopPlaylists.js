@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './TopPlaylists.css'
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
@@ -14,14 +15,16 @@ function PlaylistDisplay(props) {
 
     return (
         <>
-            <div className='playlist' onClick={goToLink}>
-                <img className='playlistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <div className='playlistDetails'>
-                    <div className='playlistName'>{props.name}</div>
-                    <div className='PlaylistGenre'>{props.genre}</div>
-                    <div className='playlistLikes'>{props.likes} Likes</div>
+            <Link to={`playlist/${props.id}`}>
+                <div className='playlist' onClick={goToLink}>
+                    <img className='playlistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='playlistDetails'>
+                        <div className='playlistName'>{props.name}</div>
+                        <div className='PlaylistGenre'>{props.genre}</div>
+                        <div className='playlistLikes'>{props.likes} Likes</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </>
     );
 }
@@ -59,7 +62,9 @@ function TopPlaylists(props) {
                             name={playlist.name}
                             genre={playlist.genre}
                             cover_img={playlist.cover_img}
-                            likes={playlist.likes} />
+                            likes={playlist.likes}
+                            id={playlist.playlist_id}
+                        />
                     })
                     }
                 </Slider>

@@ -6,10 +6,10 @@
     padding: 3px;
 }
 
-.album:hover{
+/* .album:hover{
     transform: scale(1.01);
     cursor: pointer;
-}
+} */
 
 .albumImage{
     width: 70%;

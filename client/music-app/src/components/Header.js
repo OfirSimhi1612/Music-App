@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import './Header.css';
 
-function Header(props){
+function Header(props) {
 
 
     return (
@@ -12,7 +12,7 @@ function Header(props){
             <div id='HeaderDiv'>
                 <h1 className="pageTitle">Music App</h1>
                 <div id='navBar'>
-                    <Link to={'/'}><Button variant="outline-success">Feed</Button></Link>
+                    <NavLink to={'/'}><Button variant="outline-success">Feed</Button></NavLink>
                     <Link to={'/'}><Button variant="outline-success">My Songs</Button></Link>
                     <Link to={'/'}><Button variant="outline-success">My Playlists</Button></Link>
                     <Dropdown className='dropdwon'>

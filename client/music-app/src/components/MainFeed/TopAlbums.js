@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TopAlbums.css'
 import Slider from 'react-slick';
@@ -7,20 +8,19 @@ import "slick-carousel/slick/slick-theme.css";
 
 function AlbumDisplay(props) {
 
-    function goToLink() {
-        //go to props.link
-    }
 
     return (
         <>
-            <div className='album' onClick={goToLink}>
-                <img className='albumImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <div className='albumDetails'>
-                    <div className='albumtName'>{props.name}</div>
-                    <div className='albumArtist'>{props.artist}</div>
-                    <div className='albumLikes'>{props.likes} Likes</div>
+            <Link to={`/album/${props.id}`}>
+                <div className='album'>
+                    <img className='albumImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='albumDetails'>
+                        <div className='albumtName'>{props.name}</div>
+                        <div className='albumArtist'>{props.artist}</div>
+                        <div className='albumLikes'>{props.likes} Likes</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </>
     );
 }
@@ -57,7 +57,8 @@ function TopAlbums(props) {
                             name={album.name}
                             cover_img={album.cover_img}
                             artist={album.artist}
-                            likes={album.likes} />
+                            likes={album.likes}
+                            id={album.id} />
                     })
                     }
                 </Slider>

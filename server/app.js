@@ -59,6 +59,10 @@ app.put('/dislike/:table/:id', (req, res) => {
   });
 });
 
+// app.get('/ArtistSongs/:id', (req, res) => {
+//   mysqlCon.query(`SELECT `)
+// })
+
 app.get('/topAlbumsList', (req, res) => {
   mysqlCon.query(`SELECT al.artist_id AS id, al.name AS name, al.cover_img AS cover_img, al.likes AS likes, ar.name AS artist
                   FROM albums al
@@ -74,7 +78,7 @@ app.get('/topAlbumsList', (req, res) => {
 });
 
 app.get('/topSongsList', (req, res) => {
-  mysqlCon.query(`select s.song_id AS id, s.title AS song_name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
+  mysqlCon.query(`select s.likes AS likes, s.song_id AS id, s.title AS song_name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
                   from songs s 
                   left join artists ar on s.artist_id = ar.artist_id
                   left join albums al on s.album_id = al.album_id

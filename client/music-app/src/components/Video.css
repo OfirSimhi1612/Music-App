@@ -1,9 +1,87 @@
-.container{
-    width: 380px;
-    height: 220px;
-    padding: 10px;
-    background-color:  rgb(17, 17, 17);
-    z-index: 3;
-    position: absolute;
-    cursor: pointer;
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
+
+.VideoPage{
+    display: flex;
+
+}
+
+.queue{
+    height: 80vh;
+    width: 35vw;
+    overflow-y: auto;
+    margin-top: 20px;
+    
+}
+
+.Video{
+    width: 60vw;
+    color: white;
+    padding: 20px
+}
+
+.player{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.songInPlaylist{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+}
+
+.songInPlaylist:hover{
+    box-shadow: 0px 0px 2px rgb(143, 143, 143);
+}
+
+.songDetails{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-self: flex-end;
+}
+
+.SongName{
+    color: white;
+}
+
+.songName{
+    font-size: 23px;
+}
+
+.songLength{
+    font-size: 12px;
+    margin-left: 20px;
+    color: rgb(160, 159, 159);
+}
+
+.playnigSongDetails{
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+.songArtist{
+    font-size: 12px;
+    color: rgb(160, 159, 159);
+}
+
+.songAlbum{
+    font-size: 12px;
+    margin-left: 20px;
+    color: rgb(160, 159, 159);
+}
+
+.likesDiv{
+    align-self: flex-end;
+    font-size: 15px;
+}
+
+
+

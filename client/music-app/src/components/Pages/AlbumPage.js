@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AlbumPage.css';
+import LikeButton from '../LikesButton/LikesButton'
 
 function SongInAlbum(props) {
 
@@ -10,25 +11,6 @@ function SongInAlbum(props) {
         props.playVideo(props.link);
     }, [props.link]);
 
-    const addLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(true);
-            axios.put(`/like/songs/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
-
-    const disLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(false);
-            axios.put(`/dislike/songs/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
 
     return (
         <>
@@ -39,10 +21,10 @@ function SongInAlbum(props) {
                     <div className='SongName'>{props.name}</div>
                 </div>
                 <span className='SongLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>
-                {liked ?
-                    <img className='likeButton' onClick={(e) => disLike(e)} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
-                    : <img className='likeButton' onClick={(e) => addLike(e)} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
-                }
+                <LikeButton
+                    id={props.id}
+                    table={'songs'}
+                />
             </div>
         </>
     );
@@ -56,7 +38,7 @@ function AlbumPage(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/Albums/${'2'}`);
+            const { data } = await axios.get(`/Albums/${props.match.params.id}`);
             console.log(data)
             setDisplayedAlbum(data[0]);
             console.log(data);
@@ -66,12 +48,26 @@ function AlbumPage(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/songsInAlbum/${'2'}`);
+            const { data } = await axios.get(`/songsInAlbum/${props.match.params.id}`);
             console.log(data)
             setAlbumSongs(data);
         }
         fetch()
     }, [])
+
+    function updateLikes(liked) {
+        if (liked) {
+            setDisplayedAlbum({
+                ...displayedAlbum,
+                likes: displayedAlbum.likes + 1
+            })
+        } else {
+            setDisplayedAlbum({
+                ...displayedAlbum,
+                likes: displayedAlbum.likes - 1
+            })
+        }
+    }
 
     const AlbumTime = React.useCallback(() => {
         let length = [0, 0, 0];
@@ -103,28 +99,11 @@ function AlbumPage(props) {
 
     }, [AlbumSongs])
 
-    const addLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(true);
-            axios.put(`/like/albums/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
-
-    const disLike = React.useCallback(async (e) => {
-        e.stopPropagation();
-        try {
-            setLiked(false);
-            axios.put(`/dislike/albums/${props.id}`);
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, [props.id]);
 
     return (
         <>
+
+            <div>{props.match.params.id}</div>
             <div id='albumHead'>
                 <img src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='albumDetails'>
@@ -135,10 +114,11 @@ function AlbumPage(props) {
                     <span className='albumTime'>{AlbumTime()}</span>
                     <div className='bottomDetails'>
                         <span className='albumLikes'>{displayedAlbum.likes} Likes</span>
-                        {!Liked ?
-                            <img className='likeButton' onClick={(e) => disLike(e)} src='https://cdn.pixabay.com/photo/2013/07/13/10/27/dislike-157252_1280.png'></img>
-                            : <img className='likeButton' onClick={(e) => addLike(e)} src='https://jeannecolemanlaw.com/wp-content/uploads/2015/07/hand-like-thumb-up-confirm-okay-go-green.png'></img>
-                        }
+                        <LikeButton
+                            id={displayedAlbum.album_id}
+                            table={'albums'}
+                            updateLikes={updateLikes}
+                        />
                     </div>
                 </div>
             </div>

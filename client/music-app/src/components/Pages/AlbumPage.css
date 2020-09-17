@@ -3,6 +3,7 @@
     color: white;
     gap: 10px;
     padding-left: 50px;
+    margin-bottom: 50px ;
 }
 
 .albumDetails{
@@ -46,6 +47,8 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 50px;
+    color: white;
 }
 
 .albumTime{

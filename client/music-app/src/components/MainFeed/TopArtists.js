@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TopArtists.css'
 import Slider from 'react-slick';
@@ -7,19 +8,17 @@ import "slick-carousel/slick/slick-theme.css";
 
 function ArtistDisplay(props) {
 
-    function goToLink() {
-        //go to props.link
-    }
-
     return (
         <>
-            <div className='artist' onClick={goToLink}>
-                <img className='artistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <div className='artistDetails'>
-                    <div className='artistName'>{props.name}</div>
-                    <div className='artistLikes'>{props.likes} Likes</div>
+            <Link to={`/artist/${props.id}`}>
+                <div className='artist'>
+                    <img className='artistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='artistDetails'>
+                        <div className='artistName'>{props.name}</div>
+                        <div className='artistLikes'>{props.likes} Likes</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </>
     );
 }
@@ -56,7 +55,9 @@ function TopArtists(props) {
                             name={artist.name}
                             cover_img={artist.cover_img}
                             likes={artist.likes}
-                            likes={artist.likes} />
+                            likes={artist.likes}
+                            id={artist.id}
+                        />
                     })
                     }
                 </Slider>
