@@ -38,7 +38,7 @@
     box-shadow: 0px 0px 2px rgb(143, 143, 143);
 }
 
-.songDetails{
+.displayedSongDetails{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -47,7 +47,7 @@
     justify-self: flex-end;
 }
 
-.SongName{
+.displayedSongName{
     color: white;
 }
 
@@ -55,7 +55,7 @@
     font-size: 23px;
 }
 
-.songLength{
+.playedSongLength{
     font-size: 12px;
     margin-left: 20px;
     color: rgb(160, 159, 159);
@@ -81,6 +81,11 @@
 .likesDiv{
     align-self: flex-end;
     font-size: 15px;
+}
+
+.displayedSongImage{
+    height: 40px; 
+    width: 40px;
 }
 
 

@@ -9,29 +9,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 function SongDisplay(props) {
 
-    const [liked, setLiked] = useState(false);
-
-    // const addLike = React.useCallback(async (e) => {
-    //     e.stopPropagation();
-    //     try {
-    //         setLiked(true);
-    //         axios.put(`/like/songs/${props.id}`);
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }, [props.id]);
-
-    // const disLike = React.useCallback(async (e) => {
-    //     e.stopPropagation();
-    //     try {
-    //         setLiked(false);
-    //         axios.put(`/dislike/songs/${props.id}`);
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }, [props.id]);
-
-
     return (
         <>
             <Link to={`/song/${props.id}?playlist=topSongs`}>
@@ -89,7 +66,7 @@ function SongsList() {
                 <Slider {...settings}>
                     {SongsList.map(song => {
                         return <SongDisplay
-                            name={song.song_name}
+                            name={song.name}
                             artist={song.artist}
                             album={song.album}
                             length={song.length}

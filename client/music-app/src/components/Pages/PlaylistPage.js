@@ -1,39 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PlaylistPage.css';
-import LikeButton from '../LikesButton/LikesButton'
+import playlistTime from './playlistTime';
+import LikeButton from '../LikesButton/LikesButton';
+import Song from './Song';
 
-function SongInPlaylist(props) {
-
-    const [liked, setLiked] = useState(false)
-
-    const goToLink = React.useCallback(() => {
-        props.playVideo(props.link);
-    }, [props.link]);
-
-
-    return (
-        <>
-            <div className='songInPlaylist' onClick={goToLink}>
-                <span className='songIndex'>{props.index}</span>
-                <img className='SongImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <div className='songDetails'>
-                    <div className='SongName'>{props.name}</div>
-                    <div className='SongArtist'>{props.artist} / {props.album}</div>
-                </div>
-                <span className='SongLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>
-                <LikeButton
-                    id={props.id}
-                    table={'songs'}
-                />
-            </div>
-        </>
-    );
-}
 
 function PlaylistPage(props) {
 
-    const [Liked, setLiked] = useState('false')
     const [displayedPlaylist, setDisplayedPlaylist] = useState({});
     const [playlistSongs, setPlaylistSongs] = useState([]);
 
@@ -54,36 +28,6 @@ function PlaylistPage(props) {
         }
         fetch()
     }, [])
-
-    const playlistTime = React.useCallback(() => {
-        let length = [0, 0, 0];
-        const totalLength = playlistSongs.map((song) => {
-            const h = parseInt(song.length.slice(0, song.length.indexOf(':')));
-            const m = parseInt(song.length.slice(3, 5));
-            const s = parseInt(song.length.slice(6, 8));
-            let remain = Math.floor((length[2] + s) / 60)
-            length[2] = (length[2] + s) % 60;
-            length[1] = length[1] + remain;
-            remain = Math.floor((length[1] + m) / 60)
-            length[1] = (length[1] + m) % 60;
-            length[0] = length[0] + remain + h;
-        });
-
-        let lengthInWords = '';
-
-        if (length[0]) {
-            lengthInWords += `${length[0]} Hours `;
-            if (length[1]) {
-                lengthInWords += `and ${length[1]} Minutes`;
-            }
-        } else {
-            lengthInWords += `${length[1]} Minutes`;
-        }
-
-        return lengthInWords
-
-
-    }, [playlistSongs])
 
     function updateLikes(liked) {
         if (liked) {
@@ -108,7 +52,7 @@ function PlaylistPage(props) {
                         <span className='palylistGenre'>{displayedPlaylist.genre}</span>
                     </h2>
                     <span className='playlistLength'>{playlistSongs.length} Songs</span>
-                    <span className='playlistTime'>{playlistTime()}</span>
+                    <span className='playlistTime'>{playlistTime(playlistSongs)}</span>
                     <div className='bottomDetails'>
                         <span className='playlistLikes'>{displayedPlaylist.likes} Likes</span>
                         <LikeButton
@@ -121,7 +65,7 @@ function PlaylistPage(props) {
             </div>
             <div className='playlistSongs'>
                 {playlistSongs.map((song) => {
-                    return <SongInPlaylist
+                    return <Song
                         name={song.name}
                         artist={song.artist}
                         album={song.album}
@@ -130,6 +74,7 @@ function PlaylistPage(props) {
                         cover_img={song.cover_img}
                         index={song.index}
                         id={song.id}
+                        orgin={`playlist=${displayedPlaylist.playlist_id}`}
                     />
                 })}
             </div>

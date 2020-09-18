@@ -16,12 +16,12 @@ function PlaylistDisplay(props) {
     return (
         <>
             <Link to={`playlist/${props.id}`}>
-                <div className='playlist' onClick={goToLink}>
-                    <img className='playlistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                    <div className='playlistDetails'>
-                        <div className='playlistName'>{props.name}</div>
-                        <div className='PlaylistGenre'>{props.genre}</div>
-                        <div className='playlistLikes'>{props.likes} Likes</div>
+                <div className='playlist'>
+                    <img className='topPlaylistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='topPlaylistDetails'>
+                        <div className='topPlaylistName'>{props.name}</div>
+                        <div className='topPlaylistGenre'>{props.genre}</div>
+                        <div className='topPlaylistLikes'>{props.likes} Likes</div>
                     </div>
                 </div>
             </Link>

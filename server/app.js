@@ -78,7 +78,7 @@ app.get('/topAlbumsList', (req, res) => {
 });
 
 app.get('/topSongsList', (req, res) => {
-  mysqlCon.query(`select s.likes AS likes, s.song_id AS id, s.title AS song_name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
+  mysqlCon.query(`select s.likes AS likes, s.song_id AS id, s.title AS name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
                   from songs s 
                   left join artists ar on s.artist_id = ar.artist_id
                   left join albums al on s.album_id = al.album_id
@@ -120,7 +120,7 @@ app.get('/artistsOptions/:searchInput', (req, res) => {
 });
 
 app.get('/songsInPlaylist/:id', (req, res) => {
-  mysqlCon.query(`SELECT p.song_index AS 'index', s.title AS name, s.cover_img AS cover_img, ar.name AS artist, al.name AS album, s.length AS length, s.youtube_link AS link, s.song_id AS song_id
+  mysqlCon.query(`SELECT p.song_index AS 'index', s.title AS name, s.cover_img AS cover_img, ar.name AS artist, al.name AS album, s.length AS length, s.youtube_link AS link, s.song_id AS id
                   FROM songs_in_playlists p 
                   LEFT JOIN songs s ON p.song_id = s.song_id 
                   LEFT JOIN artists ar ON s.artist_id =ar.artist_id
@@ -155,6 +155,41 @@ app.get('/songsInAlbum/:id', (req, res) => {
     }
   });
 });
+
+app.get('/songsInArtist/:id', (req, res) => {
+  mysqlCon.query(`SELECT s.title AS name, s.cover_img AS cover_img, s.length AS length, s.youtube_link AS link, s.song_id AS id, al.name AS album_name
+                  FROM artists ar
+                  LEFT JOIN songs s ON ar.artist_id = s.artist_id 
+                  LEFT JOIN albums al ON al.album_id = s.album_id 
+                  WHERE ar.artist_id = ${req.params.id};`, (error, results) => {
+    if (error) {
+      if (error.errno === 1452) {
+        res.status(404).send('an invalid artist id has been submited');
+      } else {
+        return res.status(400).send(error.message);
+      }
+    } else {
+      return res.status(201).json(results);
+    }
+  });
+})
+
+app.get('/artistAlbums/:id', (req, res) => {
+  mysqlCon.query(`SELECT al.album_id AS id, al.name AS name, al.published_at, al.cover_img, al.likes
+                  FROM artists ar
+                  JOIN albums al ON  ar.artist_id = al.artist_id
+                  WHERE ar.artist_id = ${req.params.id}`, (error, results) => {
+    if (error) {
+      if (error.errno === 1452) {
+        res.status(404).send('an invalid artist id has been submited');
+      } else {
+        return res.status(400).send(error.message);
+      }
+    } else {
+      return res.status(201).json(results);
+    }
+  });
+})
 
 app.post('/addSongToPlaylist', async (req, res) => {
   const data = req.body;

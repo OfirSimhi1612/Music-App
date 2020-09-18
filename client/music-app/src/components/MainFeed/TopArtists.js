@@ -12,10 +12,10 @@ function ArtistDisplay(props) {
         <>
             <Link to={`/artist/${props.id}`}>
                 <div className='artist'>
-                    <img className='artistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                    <div className='artistDetails'>
-                        <div className='artistName'>{props.name}</div>
-                        <div className='artistLikes'>{props.likes} Likes</div>
+                    <img className='topArtistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='topArtistDetails'>
+                        <div className='topArtistName'>{props.name}</div>
+                        <div className='topArtistLikes'>{props.likes} Likes</div>
                     </div>
                 </div>
             </Link>
@@ -56,7 +56,7 @@ function TopArtists(props) {
                             cover_img={artist.cover_img}
                             likes={artist.likes}
                             likes={artist.likes}
-                            id={artist.id}
+                            id={artist.artist_id}
                         />
                     })
                     }

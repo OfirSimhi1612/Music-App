@@ -10,6 +10,7 @@ import AddSong from './components/AddComponents/AddSong';
 import AddPlaylist from './components/AddComponents/AddPlaylist';
 import PlaylistPage from './components/Pages/PlaylistPage';
 import AlbumPage from './components/Pages/AlbumPage';
+import ArtistPage from './components/Pages/ArtistPage';
 import Video from './components/Video';
 
 
@@ -37,6 +38,7 @@ function App() {
             <Route path={'/addPlaylist'} exact component={AddPlaylist} />
             <Route path={'/playlist/:id'} exact component={PlaylistPage} />
             <Route path={'/album/:id'} exact component={AlbumPage} />
+            <Route path={'/artist/:id'} exact component={ArtistPage} />
             <Route path={'/song/:id'}>
               <Video />
             </Route>
