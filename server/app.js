@@ -37,8 +37,74 @@ function newDateToSQL() {
   return new Date().toISOString().slice(0, -5).replace('T', ' ');
 }
 
+app.get('/songDetails/:id', (req, res) => {
+  mysqlCon.query(`SELECT s.song_id AS id, s.likes AS likes, s.youtube_link AS link, s.title AS name,  ar.name AS artist, al.name AS album, s.length AS length
+      FROM songs s
+      JOIN artists ar ON s.artist_id = ar.artist_id
+      JOIN albums al ON s.album_id = al.album_id
+      WHERE s.song_id = ${req.params.id};`, (error, results) => {
+    if (error) {
+      if (error.errno === 1452) {
+        res.status(404).send('an invalid artist id has been submited');
+      } else {
+        return res.status(400).send(error.message);
+      }
+    } else {
+      return res.status(201).json(results);
+    }
+  });
+})
+
+app.get('/MainSearch/:searchInput', async (req, res) => {
+
+  const input = req.params.searchInput
+  const searchResults = {};
+
+  try {
+    // songs search
+    const songsResults = await query(`SELECT s.title AS name, al.name AS album, ar.name AS artist, s.song_id AS id, s.cover_img  
+        FROM songs s
+        JOIN albums al ON s.album_id = al.album_id
+        JOIN artists ar ON s.artist_id = ar.artist_id
+        WHERE s.title LIKE '%${input}%'
+        ORDER BY s.likes
+        LIMIT 6;`)
+    console.log(JSON.stringify(songsResults))
+    //artist search
+    const artistsResults = await query(`SELECT ar.name , ar.artist_id AS id, ar.cover_img  
+        FROM artists ar
+        WHERE ar.name LIKE '%${input}%'
+        ORDER BY ar.likes
+        LIMIT 6;`)
+    console.log(artistsResults[0])
+    //playlist search
+    const playlistsResults = await query(`SELECT name, cover_img, playlist_id AS id, genre
+        FROM music_app.playlists
+        WHERE name LIKE '%${input}%'
+        ORDER BY likes
+        LIMIT 6;`)
+    console.log(playlistsResults[0])
+    //album search
+    const albumsResults = await query(`SELECT al.name AS name, ar.name AS artist, al.album_id AS id, al.cover_img AS cover_img 
+        FROM albums al
+        JOIN artists ar ON al.artist_id = ar.artist_id
+        WHERE al.name LIKE '%${input}%'
+        ORDER BY al.likes
+        LIMIT 6;`)
+
+    res.json({
+      songs: songsResults.length > 0 ? songsResults : null,
+      artists: artistsResults.length > 0 ? artistsResults : null,
+      playlists: playlistsResults.length > 0 ? playlistsResults : null,
+      albums: albumsResults.length > 0 ? albumsResults : null
+    });
+  } catch (error) {
+    res.status(400).send(error.mesaage);
+  }
+})
+
 app.put('/like/:table/:id', (req, res) => {
-  mysqlCon.query(`UPDATE ${req.params.table} SET likes = (likes + 1) WHERE song_id='${req.params.id}'`, (error, results) => {
+  mysqlCon.query(`UPDATE ${req.params.table} SET likes = (likes + 1) WHERE ${req.params.table.slice(0, -1)}_id='${req.params.id}'`, (error, results) => {
     if (error) {
       console.log(error);
       res.status(400).send(error.message);
@@ -59,16 +125,12 @@ app.put('/dislike/:table/:id', (req, res) => {
   });
 });
 
-// app.get('/ArtistSongs/:id', (req, res) => {
-//   mysqlCon.query(`SELECT `)
-// })
-
 app.get('/topAlbumsList', (req, res) => {
-  mysqlCon.query(`SELECT al.artist_id AS id, al.name AS name, al.cover_img AS cover_img, al.likes AS likes, ar.name AS artist
+  mysqlCon.query(`SELECT al.album_id AS id, al.name AS name, al.cover_img AS cover_img, al.likes AS likes, ar.name AS artist
                   FROM albums al
                   JOIN artists ar ON al.artist_id = ar.artist_id
                   ORDER BY -al.likes
-                  LIMIT 6;`, (error, results) => {
+                  LIMIT 20;`, (error, results) => {
     if (error) {
       res.status(400).send(error.message);
     } else {
@@ -78,7 +140,7 @@ app.get('/topAlbumsList', (req, res) => {
 });
 
 app.get('/topSongsList', (req, res) => {
-  mysqlCon.query(`select s.likes AS likes, s.song_id AS id, s.title AS name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
+  mysqlCon.query(`select s.cover_img, s.likes AS likes, s.song_id AS id, s.title AS name, al.name AS album, ar.name AS artist, s.length AS length, s.youtube_link AS link
                   from songs s 
                   left join artists ar on s.artist_id = ar.artist_id
                   left join albums al on s.album_id = al.album_id
@@ -139,7 +201,7 @@ app.get('/songsInPlaylist/:id', (req, res) => {
 });
 
 app.get('/songsInAlbum/:id', (req, res) => {
-  mysqlCon.query(`SELECT s.title AS name,ar.name AS artist, s.cover_img AS cover_img, s.length AS length, s.youtube_link AS link, s.song_id AS song_id
+  mysqlCon.query(`SELECT al.name AS album,  s.title AS name,ar.name AS artist, s.cover_img AS cover_img, s.length AS length, s.youtube_link AS link, s.song_id AS id
                   FROM albums al
                   LEFT JOIN songs s ON al.album_id = s.album_id 
                   LEFT JOIN artists ar ON al.artist_id =ar.artist_id 
@@ -157,11 +219,12 @@ app.get('/songsInAlbum/:id', (req, res) => {
 });
 
 app.get('/songsInArtist/:id', (req, res) => {
-  mysqlCon.query(`SELECT s.title AS name, s.cover_img AS cover_img, s.length AS length, s.youtube_link AS link, s.song_id AS id, al.name AS album_name
+  mysqlCon.query(`SELECT s.title AS name, s.cover_img AS cover_img, s.length AS length, s.youtube_link AS link, s.song_id AS id, al.name AS album
                   FROM artists ar
                   LEFT JOIN songs s ON ar.artist_id = s.artist_id 
                   LEFT JOIN albums al ON al.album_id = s.album_id 
-                  WHERE ar.artist_id = ${req.params.id};`, (error, results) => {
+                  WHERE ar.artist_id = ${req.params.id}
+                  ORDER BY -s.likes;`, (error, results) => {
     if (error) {
       if (error.errno === 1452) {
         res.status(404).send('an invalid artist id has been submited');
@@ -336,8 +399,8 @@ app.post('/artists', (req, res) => {
 
 app.post('/albums', (req, res) => {
   const data = req.body;
-  mysqlCon.query(`INSERT INTO albums (name,  artist_id, published_at, uploaded_at, likes)
-                VALUES ('${data.name}', '${data.artist_id}', '${data.published_at}', '${newDateToSQL()}', '0')`,
+  mysqlCon.query(`INSERT INTO albums (name,  artist_id, published_at, uploaded_at, cover_img,  likes)
+                VALUES ('${data.name}', '${data.artist_id}', '${data.published_at}', '${newDateToSQL()}', '${data.cover_img}', '0')`,
     (error, results, fields) => {
       if (error) {
         console.log(error);
@@ -354,10 +417,11 @@ app.post('/albums', (req, res) => {
 
 app.post('/songs', (req, res) => {
   const data = req.body;
-  mysqlCon.query(`INSERT INTO songs (title, artist_id, album_id, lyrics, length, created_at, uploaded_at, youtube_link, track_number, likes)
-                  VALUES ('${data.title}', '${data.artist_id}', '${data.album_id}', '${data.lyrics}', '300', '${data.created_at}', '${newDateToSQL()}', '${data.youtube_link}', '0', '0')`,
+  mysqlCon.query(`INSERT INTO songs (title, artist_id, album_id, lyrics, length, created_at, uploaded_at, youtube_link, cover_img, track_number, likes)
+                  VALUES ("${data.title}", '${data.artist_id}', '${data.album_id}', "${data.lyrics}", '300', '${data.created_at}', '${newDateToSQL()}', "${data.youtube_link}", "${data.cover_img}", '0', '0')`,
     (error, results, fields) => {
       if (error) {
+        console.log(error)
         if (error.errno === 1452) {
           res.status(404).send("an invalid artist or album id's has been submited");
         } else {

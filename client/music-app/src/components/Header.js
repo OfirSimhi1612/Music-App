@@ -13,8 +13,9 @@ function Header(props) {
                 <h1 className="pageTitle">Music App</h1>
                 <div id='navBar'>
                     <NavLink to={'/'}><Button variant="outline-success">Feed</Button></NavLink>
-                    <Link to={'/'}><Button variant="outline-success">My Songs</Button></Link>
-                    <Link to={'/'}><Button variant="outline-success">My Playlists</Button></Link>
+                    {/* <Link to={'/'}><Button variant="outline-success">My Songs</Button></Link>
+                    <Link to={'/'}><Button variant="outline-success">My Playlists</Button></Link> */}
+                    <Link to={'/SearchPage'}><Button variant="outline-success">Search</Button></Link>
                     <Dropdown className='dropdwon'>
                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
                             Add

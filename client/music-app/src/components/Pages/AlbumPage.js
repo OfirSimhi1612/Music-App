@@ -74,7 +74,7 @@ function AlbumPage(props) {
                         length={song.length}
                         link={song.link}
                         cover_img={song.cover_img}
-                        id={song.song_id}
+                        id={song.id}
                         orgin={`album=${displayedAlbum.album_id}`}
                     />
                 })}

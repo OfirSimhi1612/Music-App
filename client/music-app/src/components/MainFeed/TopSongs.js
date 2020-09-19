@@ -14,7 +14,7 @@ function SongDisplay(props) {
             <Link to={`/song/${props.id}?playlist=topSongs`}>
                 <div class='song'>
                     <img className='TopSongImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                    <div className='songDetails'>
+                    <div className='topSongDetails'>
                         <div className='SongName'>{props.name}</div>
                         <div className='SongArtist'>{props.artist} / {props.album}</div>
                     </div>

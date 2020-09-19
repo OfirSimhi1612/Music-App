@@ -12,7 +12,7 @@ function ArtistDisplay(props) {
         <>
             <Link to={`/artist/${props.id}`}>
                 <div className='artist'>
-                    <img className='topArtistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <img className='topArtistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <div className='topArtistDetails'>
                         <div className='topArtistName'>{props.name}</div>
                         <div className='topArtistLikes'>{props.likes} Likes</div>

@@ -13,7 +13,7 @@ function AlbumDisplay(props) {
         <>
             <Link to={`/album/${props.id}`}>
                 <div className='album'>
-                    <img className='topAlbumImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <img className='topAlbumImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <div className='topAlbumDetails'>
                         <div className='topAlbumtName'>{props.name}</div>
                         <div className='topAlbumArtist'>{props.artist}</div>

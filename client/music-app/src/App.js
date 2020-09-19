@@ -12,18 +12,13 @@ import PlaylistPage from './components/Pages/PlaylistPage';
 import AlbumPage from './components/Pages/AlbumPage';
 import ArtistPage from './components/Pages/ArtistPage';
 import Video from './components/Video';
+import SearchPage from './components/Pages/SearchPage';
 
 
 
 
 
 function App() {
-
-  const [playingSong, setPlayingSong] = useState(null);
-
-  function playSong(song) {
-
-  }
 
   return (
     <>
@@ -39,12 +34,13 @@ function App() {
             <Route path={'/playlist/:id'} exact component={PlaylistPage} />
             <Route path={'/album/:id'} exact component={AlbumPage} />
             <Route path={'/artist/:id'} exact component={ArtistPage} />
+            <Route path={'/SearchPage'} exact component={SearchPage} />
             <Route path={'/song/:id'}>
               <Video />
             </Route>
             <Route
               render={() => {
-                return <div>error 404, page not found</div>
+                return <div style={{ color: 'white' }}>error 404, page not found</div>
               }}
             />
           </Switch>

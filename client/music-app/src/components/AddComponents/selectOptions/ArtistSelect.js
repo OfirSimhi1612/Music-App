@@ -12,7 +12,8 @@ function ArtistOption(props) {
             name: props.name,
             likes: props.likes,
             img: props.cover_img,
-            id: props.id
+            id: props.id,
+            cover_img: props.cover_img
         }
         props.handleArtistChoice(artistInfo);
     }
@@ -20,9 +21,9 @@ function ArtistOption(props) {
     return (
         <>
             <div className='artistDiv' onClick={chooseArtist}>
-                <img className='ArtistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <label class='artistName'>{props.name}</label>
-                <label class='artistLikes'>{props.likes} likes</label>
+                <img className='selectArtistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <label class='selectArtistName'>{props.name}</label>
+                <label class='selectArtistLikes'>{props.likes} likes</label>
             </div>
         </>
     );
@@ -55,6 +56,11 @@ function ArtistSelect(props) {
         }
     }, []);
 
+    function cancelSelection() {
+        setIsArtistChosen(false);
+        props.updateDetails('artist_id', null)
+    }
+
     return (
         <>
             <div id='ArtistSelect'>
@@ -64,11 +70,12 @@ function ArtistSelect(props) {
                         onChange={(e) => displayArtistOptions(e)}
                         onFocus={() => setArtistsFocused(true)}
                         onBlur={() => setTimeout(() => setArtistsFocused(false), 300)}
+                        required
                     ></input>
                     : <>
                         <img className='ChoosenArtistImage' src={ArtistChosen.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                         <label class='artistName'>{ArtistChosen.name}</label>
-                        <button onClick={() => setIsArtistChosen(false)}>change...</button>
+                        <button onClick={cancelSelection}>change...</button>
                     </>
 
                 }

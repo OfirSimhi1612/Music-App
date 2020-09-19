@@ -33,13 +33,16 @@ label{
     position: relative;
 }
 
-.ArtistImage{
-    height: 100%;
-    width: 15%;
+.selectArtistImage{
+    height: 40px;
+    width: 40px;
 }
 
-.artistLike{
-    align-self: flex-start;
+.selectArtistLikes{
+    align-self: flex-end;
+    font-size: small;
+    color: grey;
+    margin-left: auto;
 }
 
 .addNewArtist{
@@ -69,4 +72,8 @@ label{
 
 Link{
     text-decoration: none;
+}
+
+.selectArtistName{
+    margin-left: 10px;
 }

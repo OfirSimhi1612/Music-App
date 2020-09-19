@@ -17,13 +17,17 @@ function SongInQueue(props) {
                     <Link to={`/song/${props.id}?${props.qParams}`}>
                         <div className='displayedSongName'>{props.name}</div>
                     </Link>
-                    <div className='displayedSongArtist'>{props.artist} / {props.album}</div>
+                    <div>
+                        <span className='displayedSongArtist'>{props.artist}</span>
+                        {(props.artist && props.album) && <span> / </span>}
+                        <span className='displayedSongAlbum'>{props.album}</span>
+                    </div>
                 </div>
                 <span className='displayedSongLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>
-                <LikeButton
+                {/* <LikeButton
                     id={props.id}
                     table={'songs'}
-                />
+                /> */}
             </div>
 
         </>
@@ -50,18 +54,16 @@ function Video() {
         }
     } else if (qParams.has('artist')) {
         req = `/songsInArtist/${qParams.get('artist')}`
-    } else if (qParams.has('artist')) {
+    } else if (qParams.has('album')) {
         req = `/songsInAlbum/${qParams.get('album')}`
     }
 
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(req);
-            const song = data.filter(song => {
-                return song.id === parseInt(params.id);
-            })
+            const song = await axios.get(`/songDetails/${params.id}`)
             console.log(data);
-            setCurrentSong(song[0]);
+            setCurrentSong(song.data[0]);
             setQueue(data);
 
         }
@@ -96,7 +98,7 @@ function Video() {
         height: '390',
         width: '640',
         playerVars: {
-            autoplay: 0,
+            autoplay: 1,
         },
     };
 

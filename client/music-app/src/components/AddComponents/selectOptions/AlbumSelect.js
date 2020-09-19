@@ -20,9 +20,9 @@ function AlbumOption(props) {
     return (
         <>
             <div className='albumDiv' onClick={chooseAlbum}>
-                <img className='AlbumImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                <label class='albumName'>{props.name}</label>
-                <label class='albumLikes'>{props.likes} likes</label>
+                <img className='selectAlbumImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <label class='selectAlbumName'>{props.name}</label>
+                <label class='selectAlbumLikes'>{props.likes} likes</label>
             </div>
         </>
     );
@@ -65,9 +65,10 @@ function AlbumSelect(props) {
                         onChange={(e) => displayAlbumsOptions(e)}
                         onFocus={() => setAlbumFocused(true)}
                         onBlur={() => setTimeout(() => setAlbumFocused(false), 300)}
+
                     ></input>
                     : <>
-                        <img className='ChoosenAlbumImage' src={AlbumChosen.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                        <img className='ChoosenAlbumImage' src={AlbumChosen.img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                         <label class='albumName'>{AlbumChosen.name}</label>
                         <button onClick={() => {
                             props.updateDetails('album_id', null)

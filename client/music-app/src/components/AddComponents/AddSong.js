@@ -8,7 +8,7 @@ import './AddSong.css';
 function AddSong() {
 
     const [SongDetails, setSongDetails] = useState({ title: null });
-    const [error, setError] = useState(null);
+    const [error, setError] = useState([]);
 
     const updateDetails = React.useCallback((column, value) => {
         const details = Object.assign(SongDetails)
@@ -19,13 +19,15 @@ function AddSong() {
 
 
     const addSong = React.useCallback(() => {
-        axios.post(`http://localhost:8080/songs`, SongDetails)
-            .catch((error) => setError(error.response.data));
+        axios.post(`/songs`, SongDetails)
+            .catch((error) => console.log(error));
+
     }, [SongDetails]);
+
 
     return (
         <>
-            <form id='addSongForm' autoComplete="off">
+            <form id='addSongForm' autoComplete="off" onSubmit={addSong}>
                 <h3>Add Song:</h3>
                 <div className='inputRow'>
                     <label htmlFor='TitleInput'>Song Title:</label>
@@ -50,17 +52,12 @@ function AddSong() {
                         onChange={(e) => updateDetails('youtube_link', e.target.value)}
                     ></input>
                 </div>
-                {/* <div className='inputRow'>
-                    <label htmlFor='LinkInput'>Length:</label>
-                    <span className='inputField'>
-                    <input type='text' id ='minInput'
-                    onChange={(e) => updateDetails('youtube_link', e.target.value)}
-                    ></input>:
-                    <input type='text' id ='secInput'
-                    onChange={(e) => updateDetails('youtube_link', e.target.val)}>
-                    </input>
-                    </span>
-                </div> */}
+                <div className='inputRow'>
+                    <label htmlFor='coverImgInput'>Cover Image:</label>
+                    <input className='inputField' type='text' id='coverImageInput' placeholder='Cover Image'
+                        onChange={(e) => updateDetails('cover_img', e.target.value)}
+                    ></input>
+                </div>
                 <div className='inputRow'>
                     <label htmlFor='addLyrics'>Add Lyrics</label>
                     <textarea className='inputField' id='addLyricsButton' placeholder='type lyrics...'
@@ -69,13 +66,15 @@ function AddSong() {
                 </div>
                 <div className='inputRow'>
                     <label htmlFor='creationTime'>Released at:</label>
-                    <input className='inputField' type='date' id='creationTime'
+                    <input required className='inputField' type='date' id='creationTime'
                         onChange={(e) => updateDetails('created_at', e.target.value)}
                     ></input>
                 </div>
-                {error && <div className='error'>*{error}</div>}
+                {error.length > 0 && <div className='error'>*{error.map(error => {
+                    return <div>{error}</div>
+                })}</div>}
                 <div>
-                    <button type='submit' onClick={addSong}>Add song!</button>
+                    <button type='submit'>Add song!</button>
                 </div>
             </form>
         </>

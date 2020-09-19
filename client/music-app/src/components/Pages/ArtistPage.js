@@ -12,7 +12,7 @@ function AlbumInArtist(props) {
 
             <Link to={`/album/${props.id}`}>
                 <div className='album'>
-                    <img className='AlbumImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <img className='AlbumImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <div className='AlbumDetails'>
                         <div className='AlbumtName'>{props.name}</div>
                         <div className='AlbumArtist'>{props.artist}</div>
@@ -29,7 +29,7 @@ function ArtistPage(props) {
 
     const [DisplayedArtist, setDisplayedArtist] = useState();
     const [ArtistSongs, setArtistSongs] = useState();
-    const [ArtistAlbums, setArtistAlbums] = useState();
+    const [ArtistAlbums, setArtistAlbums] = useState([]);
 
     useEffect(() => {
         async function fetch() {
@@ -82,7 +82,7 @@ function ArtistPage(props) {
                     <div className='displayedArtistLikesDiv'>
                         <span className='displayedArtistLikes'>{DisplayedArtist.likes} Likes</span>
                         <LikeButton
-                            id={DisplayedArtist.id}
+                            id={DisplayedArtist.artist_id}
                             table={'artists'}
                             updateLikes={updateLikes}
                         />
@@ -100,7 +100,7 @@ function ArtistPage(props) {
                                 cover_img={song.cover_img}
                                 album={song.album}
                                 id={song.id}
-                                orgin={`artist=${DisplayedArtist.album_id}`}
+                                orgin={`artist=${DisplayedArtist.artist_id}`}
                             />
                         })
                         : <div>
@@ -108,7 +108,7 @@ function ArtistPage(props) {
                     </div>
                     }
                 </div>
-                {ArtistAlbums && <div className='artistAlbums'>
+                {ArtistAlbums.length > 0 && <div className='artistAlbums'>
                     <h3 className='AlbumsHead'>Leading Albums</h3>
                     <div className='albumsSlider'>
                         {ArtistAlbums.slice(0, 5).map(album => {
