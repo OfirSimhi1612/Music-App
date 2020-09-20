@@ -9,15 +9,11 @@ import "slick-carousel/slick/slick-theme.css";
 
 function PlaylistDisplay(props) {
 
-    function goToLink() {
-        //go to props.link
-    }
-
     return (
         <>
             <Link to={`playlist/${props.id}`}>
                 <div className='playlist'>
-                    <img className='topPlaylistImage' src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <img className='topPlaylistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <div className='topPlaylistDetails'>
                         <div className='topPlaylistName'>{props.name}</div>
                         <div className='topPlaylistGenre'>{props.genre}</div>
@@ -36,7 +32,7 @@ function TopPlaylists(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/top/playlists`);
-            console.log(data)
+            console.log(data, 'top playlists')
             setPlaylists(data);
         }
         fetch()

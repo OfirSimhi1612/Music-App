@@ -3,6 +3,7 @@ import ArtistSelect from './selectOptions/ArtistSelect.js';
 import AlbumSelect from './selectOptions/AlbumSelect.js';
 import axios from 'axios';
 import './AddSong.css';
+import swal from 'sweetalert';
 
 
 function AddSong() {
@@ -18,16 +19,26 @@ function AddSong() {
     }, [SongDetails]);
 
 
-    const addSong = React.useCallback(() => {
-        axios.post(`/songs`, SongDetails)
-            .catch((error) => console.log(error));
+    const addSong = React.useCallback((e) => {
+        e.preventDefault()
+        try {
+            axios.post(`/songs`, SongDetails)
+            swal({
+                text: "Song Added!",
+                icon: "success",
+                button: "ok",
+            });
+            e.target.reset();
+        } catch (error) {
+            console.log(error);
+        }
 
     }, [SongDetails]);
 
 
     return (
         <>
-            <form id='addSongForm' autoComplete="off" onSubmit={addSong}>
+            <form id='addSongForm' autoComplete="off" onSubmit={(e) => addSong(e)}>
                 <h3>Add Song:</h3>
                 <div className='inputRow'>
                     <label htmlFor='TitleInput'>Song Title:</label>

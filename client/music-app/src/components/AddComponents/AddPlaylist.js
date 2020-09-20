@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPlaylist.css';
+import swal from 'sweetalert';
 
 
 function AddPlaylist() {
@@ -13,14 +14,25 @@ function AddPlaylist() {
         setPlaylistDetails(details);
     }, [PlaylistDetails]);
 
-    const addPlaylist = React.useCallback(() => {
-        axios.post(`http://localhost:8080/playlists`, PlaylistDetails)
+    const addPlaylist = React.useCallback((e) => {
+        e.preventDefault()
+        try {
+            axios.post(`/playlists`, PlaylistDetails)
+            swal({
+                text: "Playlist Added!",
+                icon: "success",
+                button: "ok",
+            });
+            e.target.reset()
+        } catch (error) {
+            console.log(error);
+        }
     }, [PlaylistDetails]);
 
 
     return (
         <>
-            <form id='addPlaylistForm' autoComplete="off">
+            <form id='addPlaylistForm' autoComplete="off" onSubmit={(e) => addPlaylist(e)}>
                 <h3>Add Playlist:</h3>
                 <div className='inputRow'>
                     <label htmlFor='NameInput'>Playlist Name:</label>
@@ -41,13 +53,9 @@ function AddPlaylist() {
                     ></input>
                 </div>
                 <div>
-                    <button type='submit' onClick={addPlaylist}>Add Playlist!</button>
+                    <button type='submit'>Add Playlist!</button>
                 </div>
             </form>
-
-            <div className='songsChoose'>
-                <input></input>
-            </div>
         </>
     );
 }

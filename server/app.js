@@ -69,21 +69,21 @@ app.get('/MainSearch/:searchInput', async (req, res) => {
         WHERE s.title LIKE '%${input}%'
         ORDER BY s.likes
         LIMIT 6;`)
-    console.log(JSON.stringify(songsResults))
+
     //artist search
     const artistsResults = await query(`SELECT ar.name , ar.artist_id AS id, ar.cover_img  
         FROM artists ar
         WHERE ar.name LIKE '%${input}%'
         ORDER BY ar.likes
         LIMIT 6;`)
-    console.log(artistsResults[0])
+
     //playlist search
     const playlistsResults = await query(`SELECT name, cover_img, playlist_id AS id, genre
         FROM music_app.playlists
         WHERE name LIKE '%${input}%'
         ORDER BY likes
         LIMIT 6;`)
-    console.log(playlistsResults[0])
+
     //album search
     const albumsResults = await query(`SELECT al.name AS name, ar.name AS artist, al.album_id AS id, al.cover_img AS cover_img 
         FROM albums al
@@ -101,6 +101,17 @@ app.get('/MainSearch/:searchInput', async (req, res) => {
   } catch (error) {
     res.status(400).send(error.mesaage);
   }
+})
+
+app.get('/searchPlaylists/:searchValue', (req, res) => {
+  mysqlCon.query(`SELECT name, cover_img, playlist_id FROM playlists WHERE name LIKE '%${req.params.searchValue}%'`, (error, results) => {
+    if (error) {
+      return res.status(400).send(error.message);
+    } if (results.length === 0) {
+      return res.status(404).send(`no playlists found`);
+    }
+    return res.json(results);
+  });
 })
 
 app.put('/like/:table/:id', (req, res) => {
@@ -271,10 +282,6 @@ app.post('/addSongToPlaylist', async (req, res) => {
       }
     });
 });
-
-// app.delete('/removeSongFromPlaylist', (req, res) => {
-
-// })
 
 app.post('/songPlayed', (req, res) => {
   const data = req.body;

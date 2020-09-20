@@ -10,27 +10,26 @@ CREATE TABLE `users`(
     `email` VARCHAR(30) NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `is_Admin` BOOLEAN NOT NULL DEFAULT FALSE,
-    `preferences` JSON NOT NULL,
     `remember_token` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
 );
 
 CREATE TABLE `playlists`(
     `playlist_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(15) NOT NULL,
-    `cover_img` VARCHAR(255),
-    `created_at` DATE,
+    `name` VARCHAR(30) NOT NULL,
+    `cover_img` TEXT,
+    `created_at` TIMESTAMP,
     `uploaded_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `genre` VARCHAR(15) NOT NULL,
+    `likes` INT DEFAULT 0,
     PRIMARY KEY(playlist_id)
 );
 
 CREATE TABLE `artists`(
     `artist_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `first_name` VARCHAR(15) NOT NULL,
-    `last_name` VARCHAR(15) NOT NULL,
+    `name` VARCHAR(40) NOT NULL,
     `birth_date` DATE,
-    `cover_img` VARCHAR(255),
+    `cover_img` TEXT,
     `uploaded_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `likes` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (artist_id)
@@ -38,7 +37,7 @@ CREATE TABLE `artists`(
 
 CREATE TABLE `albums`(
     `album_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(15) NOT NULL,
+    `name` VARCHAR(40) NOT NULL,
     `artist_id` INT UNSIGNED,
     `published_at` DATE,
     `uploaded_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -49,7 +48,7 @@ CREATE TABLE `albums`(
 
 CREATE TABLE `songs`(
     `song_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(20) NOT NULL,
+    `title` VARCHAR(50) NOT NULL,
     `artist_id` INT UNSIGNED,
     `album_id` INT UNSIGNED,
     `cover_img` TEXT,
@@ -69,7 +68,7 @@ CREATE TABLE `songs_in_playlists`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `song_id` INT UNSIGNED NOT NULL,
     `playlist_id` INT UNSIGNED NOT NULL,
-    `index` INT NOT NULL,
+    `song_index` INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (song_id) REFERENCES songs(song_id),
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id)

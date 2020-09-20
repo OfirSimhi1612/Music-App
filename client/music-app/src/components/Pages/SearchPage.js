@@ -58,7 +58,6 @@ function SearchPage(props) {
                 const { data } = await axios.get(`/MainSearch/${value}`)
                 setSearchInput(value);
                 setSearchResults(data);
-                console.log(data);
             } catch (error) {
                 console.log(error.message);
             }

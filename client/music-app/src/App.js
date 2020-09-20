@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
@@ -46,15 +46,6 @@ function App() {
           </Switch>
         </div>
       </BrowserRouter>
-
-      {/* <Header></Header>
-  <div id='body'>
-    <AddSong></AddSong>
-    <AddAlbum></AddAlbum> 
-    <AddArtist></AddArtist>
-    <AddPlaylist></AddPlaylist>
-     <MainFeed></MainFeed>
-  </div> */}
     </>
   );
 }
