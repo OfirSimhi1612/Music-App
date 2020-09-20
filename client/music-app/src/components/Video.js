@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './Video.css';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import LikeButton from './LikesButton/LikesButton'
 
-function SongInQueue(props) {
+function SongInQueue({ song, qParams }) {
 
     return (
         <>
 
             <div className='songInPlaylist' >
-                <img className='displayedSongImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <img className='displayedSongImage' src={song.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='displayedSongDetails'>
-                    <Link to={`/song/${props.id}?${props.qParams}`}>
-                        <div className='displayedSongName'>{props.name}</div>
+                    <Link to={`/song/${song.id}?${qParams}`}>
+                        <div className='displayedSongName'>{song.name}</div>
                     </Link>
                     <div>
-                        <span className='displayedSongArtist'>{props.artist}</span>
-                        {(props.artist && props.album) && <span> / </span>}
-                        <span className='displayedSongAlbum'>{props.album}</span>
+                        <span className='displayedSongArtist'>{song.artist}</span>
+                        {(song.artist && song.album) && <span> / </span>}
+                        <span className='displayedSongAlbum'>{song.album}</span>
                     </div>
                 </div>
-                <span className='displayedSongLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>
-                {/* <LikeButton
-                    id={props.id}
-                    table={'songs'}
-                /> */}
+                <span className='displayedSongLength'>{parseInt(song.length.slice(0, 2)) > 0 ? song.length : song.length.slice(3)}</span>
             </div>
 
         </>
@@ -44,6 +40,7 @@ function Video() {
 
     const location = useLocation();
     const params = useParams();
+    const history = useHistory()
     const qParams = new URLSearchParams(location.search);
     let req = '';
     if (qParams.has('playlist')) {
@@ -60,16 +57,26 @@ function Video() {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(req);
             const song = await axios.get(`/songDetails/${params.id}`)
-            console.log(data);
             setCurrentSong(song.data[0]);
+        }
+
+        fetch();
+    }, [params])
+
+    useEffect(() => {
+        async function fetch() {
+            let { data } = await axios.get(req);
+            const index = data.findIndex((song) => song.id === parseInt(params.id))
+            const beforeCurrent = data.splice(0, index);
+            data = [...data, ...beforeCurrent];
+            console.log(data);
             setQueue(data);
 
         }
 
         fetch();
-    }, [params])
+    }, [])
 
     function updateLikes(liked) {
         if (liked) {
@@ -94,6 +101,23 @@ function Video() {
         return id;
     }
 
+    function nextSong() {
+        let nextIndex = 0;
+        Queue.forEach((song, index) => {
+            if (song.id === CurrentSong.id && index < Queue.length - 1) {
+                nextIndex = index + 1;
+            }
+
+        })
+        if (nextIndex) {
+            const nextSong = Queue[nextIndex];
+            history.push(`/song/${nextSong.id}?${qParams}`)
+        } else {
+            return
+        }
+
+    }
+
     const opts = {
         height: '390',
         width: '640',
@@ -107,7 +131,7 @@ function Video() {
             <div className='VideoPage'>
                 {CurrentSong &&
                     <div className='Video'>
-                        <YouTube className='player' videoId={getVideosId()} opts={opts} />
+                        <YouTube className='player' videoId={getVideosId()} opts={opts} onEnd={nextSong} />
                         <div className='playnigSongDetails'>
                             <div>
                                 <span className='songName'>{CurrentSong.name}</span>
@@ -132,13 +156,7 @@ function Video() {
                 <div className='queue'>
                     {Queue.map((song) => {
                         return <SongInQueue
-                            name={song.name}
-                            artist={song.artist}
-                            album={song.album}
-                            length={song.length}
-                            link={song.link}
-                            cover_img={song.cover_img}
-                            id={song.id}
+                            song={song}
                             qParams={qParams}
                         />
                     })}

@@ -16,7 +16,6 @@ function AlbumPage(props) {
             const { data } = await axios.get(`/Albums/${props.match.params.id}`);
             console.log(data)
             setDisplayedAlbum(data[0]);
-            console.log(data);
         }
         fetch()
     }, [])
@@ -50,7 +49,7 @@ function AlbumPage(props) {
 
             <div>{props.match.params.id}</div>
             <div id='albumHead'>
-                <img src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <img src={displayedAlbum.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='albumDetails'>
                     <h2 className='albumName'>{displayedAlbum.name}
                         <span className='albumArtist'>{AlbumSongs.length > 0 && AlbumSongs[0].artist}</span>

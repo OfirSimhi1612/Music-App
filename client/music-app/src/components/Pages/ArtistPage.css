@@ -31,8 +31,8 @@
 }
 
 .AlbumImage{
-    width: 70%;
-    height: 90%;
+    width: 160px;
+    height: 160px;
     align-self: center;
     margin-bottom: 5px;
 }
@@ -50,7 +50,7 @@
     align-items: flex-start;
     margin-right: auto;
     margin-left: auto;
-    width:70%;
+    width:100%;
 }
 
 .AlbumName{
@@ -85,6 +85,7 @@
 
 .albumsSlider{
     display: flex;
+    gap: 40px;
 
 }
 
