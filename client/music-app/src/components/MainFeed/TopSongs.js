@@ -28,15 +28,6 @@ function SongDisplay(props) {
 function SongsList() {
 
     const [SongsList, setSongsList] = useState([])
-    const [VideoSrc, setVideoSrc] = useState(null);
-
-    const playVideo = React.useCallback((src) => {
-        setVideoSrc(src);
-    }, []);
-
-    const closeVideo = React.useCallback(() => {
-        setVideoSrc(null);
-    }, [])
 
     useEffect(() => {
         async function fetch() {
@@ -50,7 +41,7 @@ function SongsList() {
     const settings = {
         className: "center",
         centerMode: true,
-        infinite: true,
+        infinite: SongsList.length > 4,
         centerPadding: "60px",
         slidesToShow: 5,
         speed: 500
@@ -59,9 +50,6 @@ function SongsList() {
     return (
         <>
             <div id='topSongsList'>
-                {
-                    VideoSrc && <Video src={VideoSrc} closeVideo={closeVideo} />
-                }
                 <h3 class='topSongsHead'>Top Songs</h3>
                 <Slider {...settings}>
                     {SongsList.map(song => {
@@ -73,7 +61,6 @@ function SongsList() {
                             link={song.link}
                             cover_img={song.cover_img}
                             id={song.id}
-                            playVideo={playVideo}
                         />
                     })
                     }

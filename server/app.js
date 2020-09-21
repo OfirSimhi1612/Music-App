@@ -374,9 +374,7 @@ app.get('/:tableName', (req, res) => {
   });
 });
 
-// minimize all this
-
-app.post('/playlists', (req, res) => { // working
+app.post('/playlists', (req, res) => {
   const data = req.body;
 
   mysqlCon.query(`INSERT INTO playlists (name, cover_img, created_at, genre)

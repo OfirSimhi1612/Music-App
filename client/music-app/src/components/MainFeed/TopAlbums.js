@@ -41,7 +41,7 @@ function TopAlbums(props) {
     const settings = {
         className: "center",
         centerMode: true,
-        infinite: true,
+        infinite: Albums.length > 3,
         centerPadding: "60px",
         slidesToShow: 4,
         speed: 500

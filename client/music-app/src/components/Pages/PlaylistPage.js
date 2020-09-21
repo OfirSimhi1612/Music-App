@@ -14,7 +14,7 @@ function PlaylistPage(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/playlists/${props.match.params.id}`);
-            console.log(data[0])
+            console.log(data[0], 'playlist')
             setDisplayedPlaylist(data[0]);
         }
         fetch()
@@ -46,7 +46,7 @@ function PlaylistPage(props) {
     return (
         <>
             <div id='playlistHead'>
-                <img src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <img className='playlistPageImage' src={displayedPlaylist.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='playlistDetails'>
                     <h2 className='playlistName'>{displayedPlaylist.name}
                         <span className='palylistGenre'>{displayedPlaylist.genre}</span>

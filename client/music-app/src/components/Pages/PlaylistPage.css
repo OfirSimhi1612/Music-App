@@ -61,3 +61,8 @@
 .playlistName{
     margin-left: 0px;
 }
+
+.playlistPageImage{
+    width: 225px;
+    height: 225px;
+}

@@ -4,6 +4,7 @@ import AlbumSelect from './selectOptions/AlbumSelect.js';
 import axios from 'axios';
 import './AddSong.css';
 import swal from 'sweetalert';
+import DurationPicker from './DurationPicker';
 
 
 function AddSong() {
@@ -54,6 +55,11 @@ function AddSong() {
                 </div>
                 <div>
                     <AlbumSelect
+                        updateDetails={updateDetails}
+                    />
+                </div>
+                <div>
+                    <DurationPicker
                         updateDetails={updateDetails}
                     />
                 </div>

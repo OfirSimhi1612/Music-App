@@ -39,7 +39,7 @@ function TopArtists(props) {
     const settings = {
         className: "center",
         centerMode: true,
-        infinite: true,
+        infinite: Artists.length > 3,
         centerPadding: "60px",
         slidesToShow: 4,
         speed: 500

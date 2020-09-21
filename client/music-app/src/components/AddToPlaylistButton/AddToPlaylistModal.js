@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
+import './AddToPlaylistModal.css'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Link } from 'react-router-dom';
 
 function PlaylistInModal(props) {
 
     return (
         <>
-            <div>
+            <div className='playlistCardInModal'>
                 <img onClick={() => props.add(props.id)} className='playlistInModalImg' src={props.cover_img}></img>
                 <span onClick={() => props.add(props.id)} className='playlistInModalName'>{props.name}</span>
             </div>
@@ -25,8 +30,7 @@ function AddToPlaylistModal(props) {
         async function fetch() {
             try {
                 const { data } = await axios.get('/playlists');
-                setPlaylists(data, 'datataaa');
-                console.log(data)
+                setPlaylists(data);
             } catch (error) {
                 console.log(error);
             }
@@ -61,8 +65,24 @@ function AddToPlaylistModal(props) {
         }
         if (searchValue !== '') {
             search();
+        } else {
+            try {
+                const { data } = await axios.get('/playlists');
+                setPlaylists(data);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
+
+    const settings = {
+        className: "center",
+        centerMode: true,
+        infinite: Playlists.length > 3,
+        centerPadding: "60px",
+        slidesToShow: 3,
+        speed: 500,
+    };
 
 
     return (
@@ -71,31 +91,35 @@ function AddToPlaylistModal(props) {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className='addToPlaylistModal'
         >
-            <Modal.Header closeButton>
+            <Modal.Header className='ModalHeaderContainer'>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Add To Playlist...
-            </Modal.Title>
+                    <h1 className='ModalHeader'>Add To Playlist</h1>
+                </Modal.Title>
+                <input placeholder='Search Playlist' className='searchInputInModal' onChange={(e) => SearchPlaylist(e)}></input>
             </Modal.Header>
             <Modal.Body>
-                <div className='searchPlaylistsInModal'>
-                    <input className='searchInputInModal' onChange={(e) => SearchPlaylist(e)}></input>
-                </div>
+
                 <div className='playlistsInModal'>
-                    {Playlists.map(playlist => {
-                        return (
-                            <PlaylistInModal
-                                add={addSongToPlaylist}
-                                name={playlist.name}
-                                cover_img={playlist.cover_img}
-                                id={playlist.playlist_id}
-                            />
-                        );
-                    })
-                    }
-                    <div className='addPlaylistInModal'>
-                        add plalist
+                    <Slider {...settings}>
+                        {Playlists.map(playlist => {
+                            return (
+                                <PlaylistInModal
+                                    add={addSongToPlaylist}
+                                    name={playlist.name}
+                                    cover_img={playlist.cover_img}
+                                    id={playlist.playlist_id}
+                                />
+                            );
+                        })
+                        }
+                    </Slider>
+                    <Link to={'/addPlaylist'}>
+                        <div className='addPlaylistInModal'>
+                            Add New Playlist +
                     </div>
+                    </Link>
                 </div>
             </Modal.Body>
         </Modal>
