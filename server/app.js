@@ -423,7 +423,7 @@ app.post('/albums', (req, res) => {
 app.post('/songs', (req, res) => {
   const data = req.body;
   mysqlCon.query(`INSERT INTO songs (title, artist_id, album_id, lyrics, length, created_at, uploaded_at, youtube_link, cover_img, track_number, likes)
-                  VALUES ("${data.title}", '${data.artist_id}', '${data.album_id}', "${data.lyrics}", '300', '${data.created_at}', '${newDateToSQL()}', "${data.youtube_link}", "${data.cover_img}", '0', '0')`,
+                  VALUES ("${data.title}", '${data.artist_id}', '${data.album_id}', "${data.lyrics}", '${data.length}', '${data.created_at}', '${newDateToSQL()}', "${data.youtube_link}", "${data.cover_img}", '0', '0')`,
     (error, results, fields) => {
       if (error) {
         console.log(error)
