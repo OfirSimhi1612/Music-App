@@ -1,6 +1,6 @@
 # Music-App
  
-SQL script it in 'SQL Scripts' follder
+SQL script it in 'SQL Scripts' follder. \n
 After creating the database change 'mySqlCon' params in server/app.js file.
 
 known issues:
