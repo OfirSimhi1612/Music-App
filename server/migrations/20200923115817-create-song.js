@@ -15,11 +15,13 @@ module.exports = {
       artist_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'artists', key: 'id' }
+        onDelete: 'CASCADE',
+        references: { model: 'artists', key: 'id', as: 'artistId' }
       },
       album_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'albums', key: 'id' }
+        onDelete: 'SET NULL',
+        references: { model: 'albums', key: 'id', as: 'albumId' }
       },
       lyrics: {
         type: Sequelize.TEXT

@@ -11,12 +11,14 @@ module.exports = {
       song_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'songs', key: 'id' }
+        onDelete: 'CASCADE',
+        references: { model: 'songs', key: 'id', as: 'songId' }
       },
       playlist_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'playlists', key: 'id' }
+        onDelete: 'CASCADE',
+        references: { model: 'playlists', key: 'id', as: 'playlistId' }
       },
       index: {
         type: Sequelize.INTEGER,

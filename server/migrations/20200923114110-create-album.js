@@ -15,7 +15,8 @@ module.exports = {
       artist_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'artists', key: 'id' }
+        onDelete: 'CASCADE',
+        references: { model: 'artists', key: 'id', as: 'artistId' }
       },
       published_at: {
         type: Sequelize.DATEONLY
