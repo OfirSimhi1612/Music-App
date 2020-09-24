@@ -129,6 +129,7 @@ router.post('/', async (req, res) => {
         const album = await Album.create(req.body)
         res.status(201).json(album);
     } catch (error) {
+        console.log(error)
         res.status(400).send(error.message)
     }
 })

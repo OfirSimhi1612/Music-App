@@ -7,13 +7,13 @@ const { Op } = require('sequelize');
 const mock = [
     {
         name: 'Dire Straits',
-        birth_date: '1970-10-12',
-        cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+        birthDate: '1970-10-12',
+        coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
     },
     {
         name: 'Tom Misch',
-        birth_date: '1990-01-01',
-        cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+        birthDate: '1990-01-01',
+        coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
     }
 ]
 
@@ -29,26 +29,16 @@ describe('test artist model', () => {
         })
     })
 
-    // afterAll(async () => {
-    //     await Artist.destroy({
-    //         where: {
-    //             id: {
-    //                 [Op.gt]: 0
-    //             }
-    //         }
-    //     })
-    // })
-
-    test('can insert new artist', async () => {
+    await test('can insert new artist', async () => {
         const { body: newArtist } = await request(app).post('/artist').send(mock[0]);
 
         expect(newArtist.id).not.toBe(null);
         expect(newArtist.name).toBe(mock[0].name);
-        expect(newArtist.birth_date).toBe(mock[0].birth_date);
+        expect(newArtist.birthDate).toBe(mock[0].birthDate);
     })
 
 
-    test('can get artist by id', async () => {
+    await test('can get artist by id', async () => {
         const { body: postArtist1 } = await request(app).post('/artist').send(mock[0]);
         const { body: postArtist2 } = await request(app).post('/artist').send(mock[1]);
 
@@ -59,10 +49,10 @@ describe('test artist model', () => {
         const { body: getArtist2 } = await request(app).get(`/artist/${postArtist2.id}`)
 
         expect(getArtist1.name).toBe(mock[0].name);
-        expect(getArtist1.birth_date).toBe(mock[0].birth_date)
+        expect(getArtist1.birthDate).toBe(mock[0].birthDate)
 
         expect(getArtist2.name).toBe(mock[1].name);
-        expect(getArtist2.birth_date).toBe(mock[1].birth_date)
+        expect(getArtist2.birthDate).toBe(mock[1].birthDate)
 
     })
 

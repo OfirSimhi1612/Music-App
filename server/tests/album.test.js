@@ -6,14 +6,14 @@ const { Op } = require('sequelize');
 
 const mock = [
     {
-        name: "Telegraph Road",
-        published_at: '1990-01-01',
-        cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+        name: "Love Over Gold",
+        publishedAt: '1990-01-01',
+        coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
     },
     {
         name: "Geograpy",
-        published_at: '2000-01-01',
-        cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+        publishedAt: '2000-01-01',
+        coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
     }
 ]
 
@@ -31,17 +31,17 @@ describe('test album model', () => {
 
         const Artist1 = await Artist.create({
             name: 'Dire Straits',
-            birth_date: '1970-10-12',
-            cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+            birthDate: '1970-10-12',
+            coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
         });
         const Artist2 = await Artist.create({
             name: 'Tom Misch',
-            birth_date: '1990-01-01',
-            cover_img: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
+            birthDate: '1990-01-01',
+            coverImg: 'https://img.discogs.com/zFVoxciYn3vOd3svZgQAXQrkNDQ=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-13706512-1559425307-3223.jpeg.jpg'
         });
 
-        mock[0].artist_id = Artist1.id;
-        mock[1].artist_id = Artist2.id;
+        mock[0].artistId = Artist1.id;
+        mock[1].artistId = Artist2.id;
 
     })
 
@@ -78,7 +78,7 @@ describe('test album model', () => {
         console.log(newAlbum);
         expect(newAlbum.id).not.toBe(null);
         expect(newAlbum.name).toBe(mock[0].name);
-        expect(newAlbum.birth_date).toBe(mock[0].birth_date);
+        expect(newAlbum.birthDate).toBe(mock[0].birthDate);
     })
 
 
@@ -93,10 +93,10 @@ describe('test album model', () => {
         const { body: getAlbum2 } = await request(app).get(`/album/${postAlbum2.id}`)
 
         expect(getAlbum1.name).toBe(mock[0].name);
-        expect(getAlbum1.published_at).toBe(mock[0].published_at)
+        expect(getAlbum1.publishedAt).toBe(mock[0].publishedAt)
 
         expect(getAlbum2.name).toBe(mock[1].name);
-        expect(getAlbum2.published_at).toBe(mock[1].published_at)
+        expect(getAlbum2.publishedAt).toBe(mock[1].publishedAt)
 
     })
 
