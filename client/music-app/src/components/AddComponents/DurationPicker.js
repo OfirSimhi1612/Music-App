@@ -25,12 +25,12 @@ function DurationPicker(props) {
 
     return (
         <>
-            <spn className='durationPickerRow'>
+            <span className='durationPickerRow'>
                 <label>Length:</label>
                 <input type='number' min={0} max={59} id='min' required onChange={(e) => updateLength(e)} placeholder='m' className='durationMinInput'></input>
                 <span> : </span>
                 <input type='number' min={0} max={59} id='sec' required onChange={(e) => updateLength(e)} placeholder='s' className='durationSecInput'></input>
-            </spn>
+            </span>
         </>
     );
 }

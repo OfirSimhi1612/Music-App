@@ -1,28 +1,40 @@
+const { Playlist } = require('./')
+
 'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Songs_in_playlist extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
+    static async getIndex(playlistId) {
+      try {
+        const index = await this.findAll({
+          where: {
+            playlistId: playlistId
+          },
+          attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'index']]
+        })
+        return index[0].index + 1
+      } catch (error) {
+        throw error.message
+      }
+    }
+
     static associate(models) {
       this.belongsTo(models.Song, {
-        foreignKey: 'song_id',
+        foreignKey: 'songId',
         onDelete: 'CASCADE'
       });
       this.belongsTo(models.Playlist, {
-        foreignKey: 'playlist_id',
+        foreignKey: 'playlistId',
         onDelete: 'CASCADE'
       });
     }
   };
   Songs_in_playlist.init({
-    song_id: DataTypes.INTEGER,
-    playlist_id: DataTypes.INTEGER,
+    songId: DataTypes.INTEGER,
+    playlistId: DataTypes.INTEGER,
     index: DataTypes.INTEGER
   }, {
     sequelize,

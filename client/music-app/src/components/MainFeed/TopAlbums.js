@@ -31,7 +31,7 @@ function TopAlbums(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/topAlbumsList`);
+            const { data } = await axios.get(`/album/top`);
             console.log(data)
             setAlbums(data);
         }
@@ -55,8 +55,8 @@ function TopAlbums(props) {
                     {Albums.map(album => {
                         return <AlbumDisplay
                             name={album.name}
-                            cover_img={album.cover_img}
-                            artist={album.artist}
+                            cover_img={album.coverImg}
+                            artist={album.Artist.name}
                             likes={album.likes}
                             id={album.id} />
                     })

@@ -31,8 +31,8 @@ function SongsList() {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/topSongsList`);
-            console.log(data)
+            const { data } = await axios.get(`/song/top`);
+
             setSongsList(data);
         }
         fetch()
@@ -54,12 +54,12 @@ function SongsList() {
                 <Slider {...settings}>
                     {SongsList.map(song => {
                         return <SongDisplay
-                            name={song.name}
-                            artist={song.artist}
-                            album={song.album}
+                            name={song.title}
+                            artist={song.Artist.name}
+                            album={song.Album.name}
                             length={song.length}
                             link={song.link}
-                            cover_img={song.cover_img}
+                            cover_img={song.coverImg}
                             id={song.id}
                         />
                     })

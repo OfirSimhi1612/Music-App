@@ -19,7 +19,7 @@ function AddAlbum() {
     const addAlbum = React.useCallback((e) => {
         e.preventDefault()
         try {
-            axios.post(`/albums`, AlbumDetails)
+            axios.post(`/album`, AlbumDetails)
             swal({
                 text: "Album Added!",
                 icon: "success",
@@ -50,13 +50,13 @@ function AddAlbum() {
                 <div className='inputRow'>
                     <label htmlFor='ImageInput'>Image Link:</label>
                     <input className='inputField' type='text' id='ImageInput' placeholder='Image Link'
-                        onChange={(e) => updateDetails('cover_img', e.target.value)}
+                        onChange={(e) => updateDetails('coverImg', e.target.value)}
                     ></input>
                 </div>
                 <div className='inputRow'>
                     <label htmlFor='PublishTime'>Published at:</label>
                     <input className='inputField' type='date' id='PublishTime'
-                        onChange={(e) => updateDetails('published_at', e.target.value)}
+                        onChange={(e) => updateDetails('publishedAt', e.target.value)}
                     ></input>
                 </div>
                 <div>

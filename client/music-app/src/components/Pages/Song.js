@@ -7,9 +7,6 @@ import AddToPlaylistButton from '../AddToPlaylistButton/AddToPlaylistButton'
 
 function Song(props) {
 
-  const addToPlaylist = React.useCallback(() => {
-
-  }, []);
 
   return (
     <>

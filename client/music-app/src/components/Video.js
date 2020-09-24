@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import './Video.css';
 import axios from 'axios';
 import YouTube from 'react-youtube';
-import LikeButton from './LikesButton/LikesButton'
+import LikeButton from './LikesButton/LikesButton';
+import AddToPlaylistButton from './AddToPlaylistButton/AddToPlaylistButton';
 
 function SongInQueue({ song, qParams }) {
 
@@ -12,15 +13,16 @@ function SongInQueue({ song, qParams }) {
     <>
 
       <div className='songInPlaylist' >
-        <img className='displayedSongImage' src={song.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+        <img className='displayedSongImage' src={song.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
         <div className='displayedSongDetails'>
           <Link to={`/song/${song.id}?${qParams}`}>
-            <div className='displayedSongName'>{song.name}</div>
+            <div className='displayedSongName'>{song.title}</div>
           </Link>
           <div>
-            <span className='displayedSongArtist'>{song.artist}</span>
-            {(song.artist && song.album) && <span> / </span>}
-            <span className='displayedSongAlbum'>{song.album}</span>
+            {console.log(song.Artist)}
+            <span className='displayedSongArtist'>{song.Artist.name}</span>
+            {(song.Artist.name && song.Album.name) && <span> / </span>}
+            <span className='displayedSongAlbum'>{song.Album.name}</span>
           </div>
         </div>
         <span className='displayedSongLength'>{parseInt(song.length.slice(0, 2)) > 0 ? song.length : song.length.slice(3)}</span>
@@ -44,31 +46,26 @@ function Video() {
 
   useEffect(() => {
     async function fetch() {
-      const song = await axios.get(`/songDetails/${params.id}`);
-      setCurrentSong(song.data[0]);
+      const { data } = await axios.get(`/song/${params.id}`);
+      setCurrentSong(data);
     }
     fetch();
   }, [params])
 
   useEffect(() => {
     async function fetch() {
+      let model = `${qParams.toString().slice(0, qParams.toString().indexOf('='))}`
       let req = '';
-      if (qParams.has('playlist')) {
-        if (qParams.get('playlist') === 'topSongs') {
-          req = '/topSongsList'
-        } else {
-          req = `/songsInPlaylist/${qParams.get('playlist')}`
-        }
-      } else if (qParams.has('artist')) {
-        req = `/songsInArtist/${qParams.get('artist')}`
-      } else if (qParams.has('album')) {
-        req = `/songsInAlbum/${qParams.get('album')}`
+
+      if (qParams.get(model) === 'topSongs') {
+        req = '/song/top';
+      } else {
+        req = `/${model}/songs/${qParams.get(model)}`
       }
       let { data } = await axios.get(req);
       const index = data.findIndex((song) => song.id === parseInt(params.id))
       const beforeCurrent = data.splice(0, index);
       data = [...data, ...beforeCurrent];
-      console.log(data);
       setQueue(data);
     }
     fetch();
@@ -89,7 +86,7 @@ function Video() {
   }, [CurrentSong]);
 
   const getVideosId = React.useCallback(() => {
-    const link = CurrentSong.link
+    const link = CurrentSong.youtubeLink
     let id = link.slice(link.indexOf('/watch?v=') + 9);
     if (id.indexOf('&') !== -1) {
       id = id.slice(0, id.indexOf('&'));
@@ -130,18 +127,21 @@ function Video() {
             <YouTube className='player' videoId={getVideosId()} opts={opts} onEnd={nextSong} />
             <div className='playnigSongDetails'>
               <div>
-                <span className='songName'>{CurrentSong.name}</span>
+                <span className='songName'>{CurrentSong.title}</span>
                 <span className='playedSongLength'>{CurrentSong.length}</span>
               </div>
               <div>
-                <span className='songArtist'>Artist: {CurrentSong.artist}</span>
-                <span className='songAlbum'>Album: {CurrentSong.album}</span>
+                <span className='songArtist'>Artist: {CurrentSong.Artist.name}</span>
+                <span className='songAlbum'>Album: {CurrentSong.Album.name}</span>
               </div>
 
               <div className='likesDiv'>
+                <AddToPlaylistButton
+                  id={CurrentSong.id}
+                />
                 <LikeButton
                   id={CurrentSong.id}
-                  table={'songs'}
+                  model={'song'}
                   updateLikes={updateLikes}
                 />
                 <span className='songLikes'>{CurrentSong.likes} Likes</span>
@@ -150,12 +150,13 @@ function Video() {
           </div>
         }
         <div className='queue'>
-          {Queue.map((song) => {
-            return <SongInQueue
-              song={song}
-              qParams={qParams}
-            />
-          })}
+          {Queue.length > 0 &&
+            Queue.map((song) => {
+              return <SongInQueue
+                song={song}
+                qParams={qParams}
+              />
+            })}
         </div>
       </div>
     </>

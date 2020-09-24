@@ -9,19 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
     static associate(models) {
       this.hasMany(models.Album, {
-        foreignKey: 'artist_id'
+        foreignKey: 'artistId'
       });
       this.hasMany(models.Song, {
-        foreignKey: 'artist_id'
+        foreignKey: 'artistId'
       });
     }
   };
   Artist.init({
     name: DataTypes.STRING,
-    birth_date: DataTypes.DATEONLY,
-    cover_img: DataTypes.TEXT,
+    birthDate: DataTypes.DATEONLY,
+    coverImg: DataTypes.TEXT,
     likes: DataTypes.INTEGER
   }, {
     sequelize,

@@ -39,13 +39,13 @@ function ArtistSelect(props) {
     function handleArtistChoice(artistInfo) {
         setArtistChosen(artistInfo);
         setIsArtistChosen(true);
-        props.updateDetails('artist_id', artistInfo.id)
+        props.updateDetails('artistId', artistInfo.id)
     }
 
     const displayArtistOptions = React.useCallback(async (e) => {
         if (e.target.value) {
             try {
-                const artists = await axios.get(`http://localhost:8080/artistsOptions/${e.target.value}`);
+                const artists = await axios.get(`/artist/search/${e.target.value}`);
                 setArtistsOptions(artists.data);
             } catch (error) {
                 console.log(error.message)
@@ -90,8 +90,8 @@ function ArtistSelect(props) {
                                         className='artistOption'
                                         name={artist.name}
                                         likes={artist.likes}
-                                        cover_img={artist.cover_img}
-                                        id={artist.artist_id}
+                                        cover_img={artist.coverImg}
+                                        id={artist.id}
                                         handleArtistChoice={handleArtistChoice}
                                     />
                                 </div>

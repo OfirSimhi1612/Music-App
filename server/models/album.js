@@ -11,19 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.Song, {
-        foreignKey: 'album_id'
+        foreignKey: 'albumId'
       });
       this.belongsTo(models.Artist, {
-        foreignKey: 'artist_id',
+        foreignKey: 'artistId',
         onDelete: 'CASCADE'
       })
     }
   };
   Album.init({
     name: DataTypes.STRING,
-    artist_id: DataTypes.INTEGER,
-    published_at: DataTypes.DATEONLY,
-    cover_img: DataTypes.TEXT,
+    artistId: DataTypes.INTEGER,
+    publishedAt: DataTypes.DATEONLY,
+    coverImg: DataTypes.TEXT,
     likes: DataTypes.INTEGER
   }, {
     sequelize,

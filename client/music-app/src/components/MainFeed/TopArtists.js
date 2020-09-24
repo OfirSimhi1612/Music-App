@@ -29,7 +29,7 @@ function TopArtists(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/top/artists`);
+            const { data } = await axios.get(`/artist/top`);
             console.log(data)
             setArtists(data);
         }
@@ -53,10 +53,9 @@ function TopArtists(props) {
                     {Artists.map(artist => {
                         return <ArtistDisplay
                             name={artist.name}
-                            cover_img={artist.cover_img}
+                            cover_img={artist.coverImg}
                             likes={artist.likes}
-                            likes={artist.likes}
-                            id={artist.artist_id}
+                            id={artist.id}
                         />
                     })
                     }

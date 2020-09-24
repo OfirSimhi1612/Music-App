@@ -60,3 +60,8 @@
 .albumName{
     margin-left: 0px;
 }
+
+.albumPageImg{
+    width: 225px;
+    height: 225px;
+}

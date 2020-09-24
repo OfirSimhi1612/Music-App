@@ -18,7 +18,7 @@ function AddSong() {
     const addArtist = React.useCallback((e) => {
         e.preventDefault();
         try {
-            axios.post(`/artists`, ArtistDetails)
+            axios.post(`/artist`, ArtistDetails)
             swal({
                 text: "Artist Added!",
                 icon: "success",
@@ -43,13 +43,13 @@ function AddSong() {
                 <div className='inputRow'>
                     <label htmlFor='ImageInput'>Image Link:</label>
                     <input className='inputField' type='text' id='ImageInput' placeholder='Cover Image'
-                        onChange={(e) => updateDetails('cover_img', e.target.value)}
+                        onChange={(e) => updateDetails('coverImg', e.target.value)}
                     ></input>
                 </div>
                 <div className='inputRow'>
                     <label htmlFor='birthDate'>Birth Date:</label>
                     <input className='inputField' type='date' id='birthDate'
-                        onChange={(e) => updateDetails('birth_date', e.target.value)}
+                        onChange={(e) => updateDetails('birthDate', e.target.value)}
                     ></input>
                 </div>
                 <div>

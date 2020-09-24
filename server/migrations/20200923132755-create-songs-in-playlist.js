@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Songs_in_playlists', {
+    await queryInterface.createTable('songs_in_playlists', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,31 +12,31 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: 'songs', key: 'id', as: 'songId' }
+        references: { model: 'songs', key: 'id' }
       },
       playlist_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: 'playlists', key: 'id', as: 'playlistId' }
+        references: { model: 'playlists', key: 'id' }
       },
       index: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('now')
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('now')
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Songs_in_playlists');
+    await queryInterface.dropTable('songs_in_playlists');
   }
 };

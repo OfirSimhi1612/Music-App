@@ -17,7 +17,7 @@ function AddPlaylist() {
     const addPlaylist = React.useCallback((e) => {
         e.preventDefault()
         try {
-            axios.post(`/playlists`, PlaylistDetails)
+            axios.post(`/playlist`, PlaylistDetails)
             swal({
                 text: "Playlist Added!",
                 icon: "success",
@@ -49,7 +49,7 @@ function AddPlaylist() {
                 <div className='inputRow'>
                     <label htmlFor='ImageInput'>Image Link:</label>
                     <input className='inputField' type='text' id='ImageInput' placeholder='Image Link'
-                        onChange={(e) => updateDetails('cover_img', e.target.value)}
+                        onChange={(e) => updateDetails('coverImg', e.target.value)}
                     ></input>
                 </div>
                 <div>

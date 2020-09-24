@@ -34,11 +34,11 @@ function ArtistPage(props) {
     useEffect(() => {
         async function fetch() {
             try {
-                const ArtistData = await axios.get(`/artists/${props.match.params.id}`);
-                const SongsData = await axios.get(`/songsInArtist/${props.match.params.id}`);
-                const AlbumsData = await axios.get(`/artistAlbums/${props.match.params.id}`);
+                const ArtistData = await axios.get(`/artist/${props.match.params.id}`);
+                const SongsData = await axios.get(`/artist/songs/${props.match.params.id}`);
+                const AlbumsData = await axios.get(`/artist/albums/${props.match.params.id}`);
 
-                setDisplayedArtist(ArtistData.data[0]);
+                setDisplayedArtist(ArtistData.data);
                 setArtistSongs(SongsData.data);
                 setArtistAlbums(AlbumsData.data);
 
@@ -77,13 +77,13 @@ function ArtistPage(props) {
         <>
             <div className='ArtistPage'>
                 {DisplayedArtist && <div className='ArtistDetails'>
-                    <img src={DisplayedArtist.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <img src={DisplayedArtist.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                     <h2 className='displayedArtistsName'>{DisplayedArtist.name}</h2>
                     <div className='displayedArtistLikesDiv'>
                         <span className='displayedArtistLikes'>{DisplayedArtist.likes} Likes</span>
                         <LikeButton
-                            id={DisplayedArtist.artist_id}
-                            table={'artists'}
+                            id={DisplayedArtist.id}
+                            model={'artist'}
                             updateLikes={updateLikes}
                         />
                     </div>
@@ -94,13 +94,13 @@ function ArtistPage(props) {
                     {ArtistSongs ?
                         ArtistSongs.slice(0, 5).map(song => {
                             return <Song
-                                name={song.name}
+                                name={song.title}
                                 length={song.length}
                                 link={song.link}
-                                cover_img={song.cover_img}
+                                cover_img={song.coverImg}
                                 album={song.album}
                                 id={song.id}
-                                orgin={`artist=${DisplayedArtist.artist_id}`}
+                                orgin={`artist=${DisplayedArtist.id}`}
                             />
                         })
                         : <div>
@@ -114,7 +114,7 @@ function ArtistPage(props) {
                         {ArtistAlbums.slice(0, 5).map(album => {
                             return <AlbumInArtist
                                 name={album.name}
-                                cover_img={album.cover_img}
+                                cover_img={album.coverImg}
                                 artist={album.artist}
                                 likes={album.likes}
                                 id={album.id} />

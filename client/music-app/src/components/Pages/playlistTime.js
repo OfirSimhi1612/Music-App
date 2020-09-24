@@ -1,7 +1,8 @@
-import PlaylistPage from "./PlaylistPage";
+
 
 const PlaylistTime = (list) => {
     let length = [0, 0, 0];
+    console.log(list)
     list.map((song) => {
         const h = parseInt(song.length.slice(0, song.length.indexOf(':')));
         const m = parseInt(song.length.slice(3, 5));

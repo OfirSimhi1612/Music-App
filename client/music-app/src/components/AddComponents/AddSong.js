@@ -23,7 +23,7 @@ function AddSong() {
     const addSong = React.useCallback((e) => {
         e.preventDefault()
         try {
-            axios.post(`/songs`, SongDetails)
+            axios.post(`/song`, SongDetails)
             swal({
                 text: "Song Added!",
                 icon: "success",
@@ -66,13 +66,13 @@ function AddSong() {
                 <div className='inputRow'>
                     <label htmlFor='LinkInput'>Youtube Link:</label>
                     <input required className='inputField' type='text' id='LinkInput' placeholder='Youtube Link'
-                        onChange={(e) => updateDetails('youtube_link', e.target.value)}
+                        onChange={(e) => updateDetails('youtubeLink', e.target.value)}
                     ></input>
                 </div>
                 <div className='inputRow'>
                     <label htmlFor='coverImgInput'>Cover Image:</label>
                     <input className='inputField' type='text' id='coverImageInput' placeholder='Cover Image'
-                        onChange={(e) => updateDetails('cover_img', e.target.value)}
+                        onChange={(e) => updateDetails('coverImg', e.target.value)}
                     ></input>
                 </div>
                 <div className='inputRow'>
@@ -84,7 +84,7 @@ function AddSong() {
                 <div className='inputRow'>
                     <label htmlFor='creationTime'>Released at:</label>
                     <input required className='inputField' type='date' id='creationTime'
-                        onChange={(e) => updateDetails('created_at', e.target.value)}
+                        onChange={(e) => updateDetails('releasedAt', e.target.value)}
                     ></input>
                 </div>
                 {error.length > 0 && <div className='error'>*{error.map(error => {

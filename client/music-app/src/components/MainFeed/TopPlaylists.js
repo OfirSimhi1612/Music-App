@@ -31,8 +31,7 @@ function TopPlaylists(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/top/playlists`);
-            console.log(data, 'top playlists')
+            const { data } = await axios.get(`/playlist/top`);
             setPlaylists(data);
         }
         fetch()
@@ -57,9 +56,9 @@ function TopPlaylists(props) {
                         return <PlaylistDisplay
                             name={playlist.name}
                             genre={playlist.genre}
-                            cover_img={playlist.cover_img}
+                            cover_img={playlist.coverImg}
                             likes={playlist.likes}
-                            id={playlist.playlist_id}
+                            id={playlist.id}
                         />
                     })
                     }

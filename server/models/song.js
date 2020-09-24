@@ -11,27 +11,32 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Artist, {
-        foreignKey: 'artist_id',
+        foreignKey: 'artistId',
         onDelete: 'CASCADE'
       });
       this.belongsTo(models.Album, {
-        foreignKey: { name: 'album_id', allowNull: true },
+        foreignKey: { name: 'albumId', allowNull: true },
         onDelete: 'SET NULL'
       });
-      this.hasMany(models.Songs_in_playlist, {
-        foreignKey: 'song_id'
+      this.belongsToMany(models.Playlist, {
+        through: models.Songs_in_playlist,
+        foreignKey: 'songId',
+        onDelete: 'CASCADE'
       });
     }
   };
   Song.init({
     title: DataTypes.STRING,
-    artist_id: DataTypes.INTEGER,
-    album_id: DataTypes.INTEGER,
+    artistId: DataTypes.INTEGER,
+    albumId: {
+      type: DataTypes.INTEGER
+
+    },
     lyrics: DataTypes.TEXT,
     length: DataTypes.TIME,
-    released_at: DataTypes.DATEONLY,
-    youtube_link: DataTypes.TEXT,
-    cover_img: DataTypes.TEXT,
+    releasedAt: DataTypes.DATEONLY,
+    youtubeLink: DataTypes.TEXT,
+    coverImg: DataTypes.TEXT,
     likes: DataTypes.INTEGER
   }, {
     sequelize,

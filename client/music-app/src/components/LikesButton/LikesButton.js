@@ -11,7 +11,7 @@ function LikeButton(props) {
         e.stopPropagation()
         try {
             setIsLiked(true);
-            axios.put(`/like/${table}/${id}`);
+            axios.patch(`/${props.model}/like/${id}?like`);
             props.updateLikes(true)
         } catch (error) {
             console.log(error.message);
@@ -22,7 +22,7 @@ function LikeButton(props) {
         e.stopPropagation()
         try {
             setIsLiked(false);
-            axios.put(`/dislike/${table}/${id}`);
+            axios.patch(`/${props.model}/like/${id}`);
             props.updateLikes(false)
         } catch (error) {
             console.log(error.message);

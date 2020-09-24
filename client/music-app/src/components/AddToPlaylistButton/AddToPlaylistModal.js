@@ -29,7 +29,7 @@ function AddToPlaylistModal(props) {
 
         async function fetch() {
             try {
-                const { data } = await axios.get('/playlists');
+                const { data } = await axios.get('/playlist');
                 setPlaylists(data);
             } catch (error) {
                 console.log(error);
@@ -42,10 +42,10 @@ function AddToPlaylistModal(props) {
     async function addSongToPlaylist(playlist_id) {
         try {
             const body = {
-                "song_id": props.song_id,
-                "playlist_id": playlist_id
+                "songId": props.song_id,
+                "playlistId": playlist_id
             }
-            await axios.post('/addSongToPlaylist', body);
+            await axios.post('/playlist/song', body);
             props.onHide();
         } catch (error) {
             console.log(error);
@@ -56,7 +56,7 @@ function AddToPlaylistModal(props) {
         const searchValue = e.target.value;
         async function search() {
             try {
-                const { data } = await axios.get(`/searchPlaylists/${searchValue}`)
+                const { data } = await axios.get(`/playlist/search/${searchValue}`)
                 console.log(data)
                 setPlaylists(data);
             } catch (error) {
@@ -108,8 +108,8 @@ function AddToPlaylistModal(props) {
                                 <PlaylistInModal
                                     add={addSongToPlaylist}
                                     name={playlist.name}
-                                    cover_img={playlist.cover_img}
-                                    id={playlist.playlist_id}
+                                    cover_img={playlist.coverImg}
+                                    id={playlist.id}
                                 />
                             );
                         })

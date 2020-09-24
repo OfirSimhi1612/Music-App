@@ -38,15 +38,15 @@ function AlbumSelect(props) {
     function handleAlbumChoice(albumInfo) {
         setAlbumChosen(albumInfo);
         setIsAlbumChosen(true);
-        props.updateDetails('album_id', albumInfo.id)
+        props.updateDetails('albumId', albumInfo.id)
     }
 
 
     const displayAlbumsOptions = React.useCallback(async (e) => {
         if (e.target.value) {
             try {
-                const albums = await axios.get(`http://localhost:8080/albumsOptions/${e.target.value}`);
-                setAlbumsOptions(albums.data);
+                const albums = await axios.get(`/album/search/${e.target.value}`);
+                setAlbumsOptions(albums.data.slice(0, 5));
             } catch (error) {
                 console.log(error.message)
                 setAlbumsOptions([]);
@@ -87,8 +87,8 @@ function AlbumSelect(props) {
                                         className='albumOption'
                                         name={album.name}
                                         likes={album.likes}
-                                        cover_img={album.cover_img}
-                                        id={album.album_id}
+                                        cover_img={album.coverImg}
+                                        id={album.id}
                                         handleAlbumChoice={handleAlbumChoice}
                                     />
                                 </div>

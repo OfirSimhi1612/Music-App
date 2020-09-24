@@ -13,16 +13,16 @@ function AlbumPage(props) {
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/Albums/${props.match.params.id}`);
+            const { data } = await axios.get(`/album/${props.match.params.id}`);
             console.log(data)
-            setDisplayedAlbum(data[0]);
+            setDisplayedAlbum(data);
         }
         fetch()
     }, [])
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/songsInAlbum/${props.match.params.id}`);
+            const { data } = await axios.get(`/album/songs/${props.match.params.id}`);
             console.log(data)
             setAlbumSongs(data);
         }
@@ -49,7 +49,7 @@ function AlbumPage(props) {
 
             <div>{props.match.params.id}</div>
             <div id='albumHead'>
-                <img src={displayedAlbum.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                <img className='albumPageImg' src={displayedAlbum.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <div className='albumDetails'>
                     <h2 className='albumName'>{displayedAlbum.name}
                         <span className='albumArtist'>{AlbumSongs.length > 0 && AlbumSongs[0].artist}</span>
@@ -59,8 +59,8 @@ function AlbumPage(props) {
                     <div className='bottomDetails'>
                         <span className='albumLikes'>{displayedAlbum.likes} Likes</span>
                         <LikeButton
-                            id={displayedAlbum.album_id}
-                            table={'albums'}
+                            id={displayedAlbum.id}
+                            model={'album'}
                             updateLikes={updateLikes}
                         />
                     </div>
@@ -69,12 +69,11 @@ function AlbumPage(props) {
             <div className='albumSongs'>
                 {AlbumSongs.map((song, index) => {
                     return <Song
-                        name={song.name}
+                        name={song.title}
                         length={song.length}
-                        link={song.link}
-                        cover_img={song.cover_img}
+                        cover_img={song.coverImg}
                         id={song.id}
-                        orgin={`album=${displayedAlbum.album_id}`}
+                        orgin={`album=${displayedAlbum.id}`}
                     />
                 })}
             </div>

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Songs', {
+    await queryInterface.createTable('songs', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,12 +16,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: 'artists', key: 'id', as: 'artistId' }
+        references: { model: 'artists', key: 'id' }
       },
       album_id: {
         type: Sequelize.INTEGER,
         onDelete: 'SET NULL',
-        references: { model: 'albums', key: 'id', as: 'albumId' }
+        references: { model: 'albums', key: 'id' }
       },
       lyrics: {
         type: Sequelize.TEXT
@@ -45,19 +45,19 @@ module.exports = {
         allowNull: false,
         defaultValue: 0
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('now')
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('now')
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Songs');
+    await queryInterface.dropTable('songs');
   }
 };
