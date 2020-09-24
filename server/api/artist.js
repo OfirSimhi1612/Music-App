@@ -1,8 +1,15 @@
 const { Router } = require('express');
 const { Artist, Song, Album } = require('../models');
 const { Op } = require('Sequelize')
-
+const Joi = require('joi');
 const router = Router();
+
+const createArtistSchema = Joi.object({
+    name: Joi.string().min(1).max(50).required(),
+    birthDate: Joi.date().less('now'),
+    likes: Joi.number().min(0).max(0),
+    coverImg: Joi.string()
+})
 
 router.get('/', async (req, res) => {
     try {
@@ -133,10 +140,12 @@ router.patch('/like/:artistId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newArtist = await Artist.create(req.body);
+        const artist = await Joi.attempt(req.body, createArtistSchema);
+        const newArtist = await Artist.create(artist);
         res.status(201).send(newArtist);
     } catch (error) {
-        res.status(500).send(error.message);
+        console.log(error)
+        res.status(500).send(error);
     }
 })
 
