@@ -133,7 +133,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/song', async (req, res) => {
+router.post('/addSong', async (req, res) => {
     try {
         const body = { ...req.body, index: await Songs_in_playlist.getIndex(req.body.playlistId) }
         const song = await Songs_in_playlist.create(body).catch(err => console.log(err))
@@ -143,4 +143,50 @@ router.post('/song', async (req, res) => {
         res.status(400).send(error.message)
     }
 })
+
+router.delete('/removeSong', async (req, res) => {
+    try {
+        const removed = await Songs_in_playlist.destroy({
+            where: {
+                playlistId: parseInt(req.query.playlist),
+                songId: parseInt(req.query.song)
+            }
+        })
+
+        res.json(Boolean(removed))
+    } catch (error) {
+        res.status(404).send(errror, 'test')
+    }
+})
+
+//delete and restore
+
+router.delete('/:playlistId', async (req, res) => {
+    try {
+        const playlist = await Playlist.destroy({
+            where: {
+                id: req.params.playlistId
+            }
+        })
+
+        res.json(playlist)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.patch('/restore/:playlistId', async (req, res) => {
+    try {
+        const playlist = await Playlist.restore({
+            where: {
+                id: req.params.playlistId
+            }
+        })
+
+        res.json(playlist)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
 module.exports = router;

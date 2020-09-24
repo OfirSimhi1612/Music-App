@@ -134,4 +134,36 @@ router.post('/', async (req, res) => {
     }
 })
 
+
+//delete and restore
+
+router.delete('/:albumId', async (req, res) => {
+    try {
+        const album = await Album.destroy({
+            where: {
+                id: req.params.albumId
+            }
+        })
+
+        res.json(album)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.patch('/restore/:albumId', async (req, res) => {
+    try {
+        const album = await Album.restore({
+            where: {
+                id: req.params.albumId
+            }
+        })
+
+        res.json(album)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+
 module.exports = router;

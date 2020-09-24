@@ -45,7 +45,7 @@ function AddToPlaylistModal(props) {
                 "songId": props.song_id,
                 "playlistId": playlist_id
             }
-            await axios.post('/playlist/song', body);
+            await axios.post('/playlist/addSong', body);
             props.onHide();
         } catch (error) {
             console.log(error);

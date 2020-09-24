@@ -140,4 +140,34 @@ router.post('/', async (req, res) => {
     }
 })
 
+
+//delete and restore
+
+router.delete('/:artistId', async (req, res) => {
+    try {
+        const artist = await Artist.destroy({
+            where: {
+                id: req.params.artistId
+            }
+        })
+
+        res.json(artist)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.patch('/restore/:artistId', async (req, res) => {
+    try {
+        const artist = await Artist.restore({
+            where: {
+                id: req.params.artistId
+            }
+        })
+
+        res.json(artist)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
 module.exports = router;
