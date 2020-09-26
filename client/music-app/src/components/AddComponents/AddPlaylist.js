@@ -16,17 +16,26 @@ function AddPlaylist() {
 
     const addPlaylist = React.useCallback((e) => {
         e.preventDefault()
-        try {
-            axios.post(`/playlist`, PlaylistDetails)
-            swal({
-                text: "Playlist Added!",
-                icon: "success",
-                button: "ok",
-            });
-            e.target.reset()
-        } catch (error) {
-            console.log(error);
+        const form = e.target;
+        async function send() {
+            try {
+                await axios.post(`/playlist`, PlaylistDetails)
+                swal({
+                    text: "Playlist Added!",
+                    icon: "success",
+                    button: "ok",
+                });
+                form.reset();
+            } catch (error) {
+                console.log(error.response)
+                swal({
+                    text: error.response.data,
+                    icon: "error",
+                    button: "ok",
+                });
+            }
         }
+        send()
     }, [PlaylistDetails]);
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArtistSelect from './selectOptions/ArtistSelect.js';
 import axios from 'axios';
 import './AddAlbum.css';
@@ -8,28 +8,39 @@ import swal from 'sweetalert'
 function AddAlbum() {
 
     const [AlbumDetails, setAlbumDetails] = useState({});
+    const [reset, setReset] = useState(false);
 
     const updateDetails = React.useCallback((column, value) => {
         const details = Object.assign(AlbumDetails)
         details[column] = value;
         setAlbumDetails(details);
-        console.log(AlbumDetails)
+        setReset(false)
     }, [AlbumDetails]);
 
     const addAlbum = React.useCallback((e) => {
         e.preventDefault()
-        try {
-            axios.post(`/album`, AlbumDetails)
-            swal({
-                text: "Album Added!",
-                icon: "success",
-                button: "ok",
-            });
-            e.target.reset();
-        } catch (error) {
-            console.log(error)
+        const form = e.target;
+        async function send() {
+            try {
+                await axios.post(`/album`, AlbumDetails)
+                swal({
+                    text: "Album Added!",
+                    icon: "success",
+                    button: "ok",
+                });
+                form.reset();
+                setReset(!reset)
+            } catch (error) {
+                console.log(error.response)
+                swal({
+                    text: error.response.data,
+                    icon: "error",
+                    button: "ok",
+                })
+                setAlbumDetails({})
+            }
         }
-
+        send()
     }, [AlbumDetails]);
 
     return (
@@ -45,6 +56,7 @@ function AddAlbum() {
                 <div>
                     <ArtistSelect
                         updateDetails={updateDetails}
+                        reset={reset}
                     />
                 </div>
                 <div className='inputRow'>

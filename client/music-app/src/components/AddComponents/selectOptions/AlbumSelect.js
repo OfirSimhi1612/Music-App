@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AlbumSelect.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -34,6 +34,10 @@ function AlbumSelect(props) {
     const [isAlbumChosen, setIsAlbumChosen] = useState(false);
     const [AlbumChosen, setAlbumChosen] = useState(false);
 
+
+    useEffect(() => {
+        setIsAlbumChosen(false)
+    }, [props.reset])
 
     function handleAlbumChoice(albumInfo) {
         setAlbumChosen(albumInfo);
@@ -71,7 +75,7 @@ function AlbumSelect(props) {
                         <img className='ChoosenAlbumImage' src={AlbumChosen.img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                         <label class='albumName'>{AlbumChosen.name}</label>
                         <button onClick={() => {
-                            props.updateDetails('album_id', null)
+                            props.updateDetails('albumId', null)
                             setIsAlbumChosen(false)
                         }
                         }>change...</button>

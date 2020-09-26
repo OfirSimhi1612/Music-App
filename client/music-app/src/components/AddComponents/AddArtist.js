@@ -17,17 +17,28 @@ function AddSong() {
 
     const addArtist = React.useCallback((e) => {
         e.preventDefault();
-        try {
-            axios.post(`/artist`, ArtistDetails)
-            swal({
-                text: "Artist Added!",
-                icon: "success",
-                button: "ok",
-            });
-            e.target.reset()
-        } catch (error) {
-            console.log(error)
+        const form = e.target;
+        async function sendArtist() {
+            try {
+                await axios.post(`/artist`, ArtistDetails)
+                swal({
+                    text: "Artist Added!",
+                    icon: "success",
+                    button: "ok",
+                });
+                form.reset()
+            } catch (error) {
+                console.log(error.response)
+                swal({
+                    text: error.response.data,
+                    icon: "error",
+                    button: "ok",
+                });
+                setArtistDetails({})
+            }
         }
+        sendArtist()
+
     }, [ArtistDetails]);
 
     return (

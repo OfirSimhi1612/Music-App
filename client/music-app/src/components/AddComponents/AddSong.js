@@ -10,29 +10,40 @@ import DurationPicker from './DurationPicker';
 function AddSong() {
 
     const [SongDetails, setSongDetails] = useState({ title: null });
-    const [error, setError] = useState([]);
+    const [reset, setreset] = useState(false);
 
     const updateDetails = React.useCallback((column, value) => {
         const details = Object.assign(SongDetails)
         details[column] = value;
         setSongDetails(details);
+        setreset(false)
         console.log(SongDetails)
     }, [SongDetails]);
 
 
     const addSong = React.useCallback((e) => {
         e.preventDefault()
-        try {
-            axios.post(`/song`, SongDetails)
-            swal({
-                text: "Song Added!",
-                icon: "success",
-                button: "ok",
-            });
-            e.target.reset();
-        } catch (error) {
-            console.log(error);
+        const form = e.target
+        async function send() {
+            try {
+                await axios.post(`/song`, SongDetails)
+                swal({
+                    text: "Song Added!",
+                    icon: "success",
+                    button: "ok",
+                });
+                form.reset()
+                setreset(true)
+            } catch (error) {
+                console.log(error.response)
+                swal({
+                    text: error.response.data,
+                    icon: "error",
+                    button: "ok",
+                });
+            }
         }
+        send()
 
     }, [SongDetails]);
 
@@ -51,11 +62,13 @@ function AddSong() {
                 <div>
                     <ArtistSelect
                         updateDetails={updateDetails}
+                        reset={reset}
                     />
                 </div>
                 <div>
                     <AlbumSelect
                         updateDetails={updateDetails}
+                        reset={reset}
                     />
                 </div>
                 <div>
@@ -87,9 +100,6 @@ function AddSong() {
                         onChange={(e) => updateDetails('releasedAt', e.target.value)}
                     ></input>
                 </div>
-                {error.length > 0 && <div className='error'>*{error.map(error => {
-                    return <div>{error}</div>
-                })}</div>}
                 <div>
                     <button type='submit'>Add song!</button>
                 </div>

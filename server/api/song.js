@@ -1,9 +1,20 @@
 const { Router } = require('express');
 const { Song, Artist, Album } = require('../models')
 const { Op } = require('Sequelize')
+const Joi = require('joi');
 
 const router = Router();
 
+const SongSchema = Joi.object({
+    title: Joi.string().max(50).required(),
+    artistId: Joi.number().min(1).required(),
+    albumId: Joi.number().min(1),
+    lyrics: Joi.string(),
+    length: Joi.string().regex(/^([0-5])([0-9])\:([0-5])([0-9])\:([0-5])([0-9])$/),
+    releasedAt: Joi.date().less('now'),
+    youtubeLink: Joi.string().uri().regex(/^(https:\/\/((music)|(www)).youtube.com\/watch\?v=)/).required(),
+    coverImg: Joi.string()
+})
 
 router.get('/', async (req, res) => {
     try {
@@ -101,7 +112,8 @@ router.get('/search/:searchInput', async (req, res) => {
 
 router.patch('/:songId', async (req, res) => {
     try {
-        const updated = await Song.update(req.body, {
+        const validatedSong = await Joi.attempt(req.body, SongSchema)
+        const updated = await Song.update(validatedSong, {
             where: {
                 id: req.params.songId
             }
@@ -109,7 +121,8 @@ router.patch('/:songId', async (req, res) => {
 
         res.send(Boolean(updated[0]))
     } catch (error) {
-        res.status(500).send(error.message)
+        console.log(error)
+        res.status(400).send(error.message)
     }
 })
 
@@ -132,9 +145,11 @@ router.patch('/like/:songId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const song = await Song.create(req.body)
+        const validatedSong = await Joi.attempt(req.body, SongSchema)
+        const song = await Song.create(validatedSong)
         res.status(201).send(song)
     } catch (error) {
+        console.log(error)
         res.status(400).send(error.message)
     }
 })

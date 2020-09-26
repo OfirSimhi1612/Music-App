@@ -1,10 +1,16 @@
 const { Router } = require('express');
 const { Song, Artist, Album, Playlist, Songs_in_playlist } = require('../models');
 const { Op } = require('Sequelize')
+const Joi = require('joi');
 
 
 const router = Router();
 
+const PlaylistSchema = Joi.object({
+    name: Joi.string().max(50).required(),
+    coverImg: Joi.string(),
+    genre: Joi.string().max(50)
+})
 
 router.get('/', async (req, res) => {
     try {

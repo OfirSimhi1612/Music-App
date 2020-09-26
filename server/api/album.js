@@ -1,9 +1,17 @@
 const { Router } = require('express');
 const { Album, Artist, Song } = require('../models');
 const { Op } = require('Sequelize');
+const Joi = require('joi');
+const { number } = require('joi');
 
 const router = Router();
 
+const AlbumSchema = Joi.object({
+    name: Joi.string().max(50).required(),
+    artistId: Joi.number().min(1),
+    publishedAt: Joi.date().less('now'),
+    coverImg: Joi.string()
+})
 
 router.get('/', async (req, res) => {
     try {
@@ -95,7 +103,8 @@ router.get('/search/:searchInput', async (req, res) => {
 
 router.patch('/:albumId', async (req, res) => {
     try {
-        const updated = await Album.update(req.body, {
+        const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
+        const updated = await Album.update(validatedAlbum, {
             where: {
                 id: req.params.albumId
             }
@@ -103,7 +112,7 @@ router.patch('/:albumId', async (req, res) => {
 
         res.send(Boolean(updated[0]))
     } catch (error) {
-        res.status(500).send(error.message)
+        res.status(400).send(error.message)
     }
 })
 
@@ -126,7 +135,8 @@ router.patch('/like/:albumId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const album = await Album.create(req.body)
+        const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
+        const album = await Album.create(validatedAlbum)
         res.status(201).json(album);
     } catch (error) {
         console.log(error)

@@ -4,10 +4,9 @@ const { Op } = require('Sequelize')
 const Joi = require('joi');
 const router = Router();
 
-const createArtistSchema = Joi.object({
-    name: Joi.string().min(1).max(50).required(),
+const ArtistSchema = Joi.object({
+    name: Joi.string().max(50).required(),
     birthDate: Joi.date().less('now'),
-    likes: Joi.number().min(0).max(0),
     coverImg: Joi.string()
 })
 
@@ -109,7 +108,8 @@ router.get('/search/:searchInput', async (req, res) => {
 
 router.patch('/:artistId', async (req, res) => {
     try {
-        const updated = await Artist.update(req.body, {
+        const validatedArtist = await Joi.attempt(req.body, ArtistSchema)
+        const updated = await Artist.update(validatedArtist, {
             where: {
                 id: req.params.artistId
             }
@@ -117,7 +117,7 @@ router.patch('/:artistId', async (req, res) => {
 
         res.send(Boolean(updated[0]))
     } catch (error) {
-        res.status(500).send(error.message)
+        res.status(400).send(error.message)
     }
 })
 
@@ -140,12 +140,11 @@ router.patch('/like/:artistId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const artist = await Joi.attempt(req.body, createArtistSchema);
-        const newArtist = await Artist.create(artist);
+        const validatedArtist = await Joi.attempt(req.body, ArtistSchema);
+        const newArtist = await Artist.create(validatedArtist);
         res.status(201).send(newArtist);
     } catch (error) {
-        console.log(error)
-        res.status(500).send(error);
+        res.status(400).send(error.message);
     }
 })
 
@@ -179,4 +178,6 @@ router.patch('/restore/:artistId', async (req, res) => {
         res.status(400).send(error.message)
     }
 })
+
+
 module.exports = router;

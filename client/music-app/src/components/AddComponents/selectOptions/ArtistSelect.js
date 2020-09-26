@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './ArtistSelect.css';
 import axios from 'axios';
@@ -35,6 +35,9 @@ function ArtistSelect(props) {
     const [isArtistChosen, setIsArtistChosen] = useState(false);
     const [ArtistChosen, setArtistChosen] = useState(false);
 
+    useEffect(() => {
+        cancelSelection()
+    }, [props.reset])
 
     function handleArtistChoice(artistInfo) {
         setArtistChosen(artistInfo);
@@ -48,7 +51,7 @@ function ArtistSelect(props) {
                 const artists = await axios.get(`/artist/search/${e.target.value}`);
                 setArtistsOptions(artists.data);
             } catch (error) {
-                console.log(error.message)
+                console.log(error.response)
                 setArtistsOptions([]);
             }
         } else {
@@ -58,7 +61,7 @@ function ArtistSelect(props) {
 
     function cancelSelection() {
         setIsArtistChosen(false);
-        props.updateDetails('artist_id', null)
+        props.updateDetails('artistId', null)
     }
 
     return (
