@@ -3,12 +3,9 @@ const { Artist, Song, Album } = require('../models');
 const { Op } = require('Sequelize')
 const Joi = require('joi');
 const router = Router();
+const { ArtistSchema } = require('./validationSchemas')
 
-const ArtistSchema = Joi.object({
-    name: Joi.string().max(50).required(),
-    birthDate: Joi.date().less('now'),
-    coverImg: Joi.string()
-})
+
 
 router.get('/', async (req, res) => {
     try {

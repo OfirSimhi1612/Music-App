@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     artistId: DataTypes.INTEGER,
     albumId: {
       type: DataTypes.INTEGER
-
     },
     lyrics: DataTypes.TEXT,
     length: DataTypes.TIME,

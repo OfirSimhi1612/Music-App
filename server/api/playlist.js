@@ -2,15 +2,12 @@ const { Router } = require('express');
 const { Song, Artist, Album, Playlist, Songs_in_playlist } = require('../models');
 const { Op } = require('Sequelize')
 const Joi = require('joi');
+const { PlaylistSchema } = require('./validationSchemas')
 
 
 const router = Router();
 
-const PlaylistSchema = Joi.object({
-    name: Joi.string().max(50).required(),
-    coverImg: Joi.string(),
-    genre: Joi.string().max(50)
-})
+
 
 router.get('/', async (req, res) => {
     try {
@@ -101,7 +98,8 @@ router.get('/:playlistId', async (req, res) => {
 
 router.patch('/:playlistId', async (req, res) => {
     try {
-        const updated = await Playlist.update(req.body, {
+        const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
+        const updated = await Playlist.update(validatedPlaylist, {
             where: {
                 id: req.params.playlistIdId
             }
@@ -132,7 +130,8 @@ router.patch('/like/:playlistId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const playlist = await Playlist.create(req.body)
+        const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
+        const playlist = await Playlist.create(validatedPlaylist)
         res.status(201).json(playlist);
     } catch (error) {
         res.status(400).send(message.error)
