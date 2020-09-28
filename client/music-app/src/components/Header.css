@@ -22,3 +22,22 @@
 .dropdown{
     display: inline;
 }
+
+.userHeader{
+    color: white;
+    font-size: 20px;
+    /* align-self: flex-end; */
+    width: 30%;
+}
+
+.LogoutButton{
+    margin-right: 10px;
+}
+
+.userWelcome{
+    margin-right: 100px;
+}
+
+.LibraryDropdwon{
+    margin-right: 10px;
+}

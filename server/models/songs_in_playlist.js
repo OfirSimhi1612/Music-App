@@ -1,5 +1,3 @@
-const { Playlist } = require('./')
-
 'use strict';
 const {
   Model

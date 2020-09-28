@@ -4,13 +4,35 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
+    static async getTakenEmails() {
+      try {
+        const takenEmails = await this.findAll({
+          attributes: ['email']
+        })
+
+        const takenEmailsArray = [];
+        for (let email of takenEmails) {
+          takenEmailsArray.push(email.email)
+        }
+
+        return takenEmailsArray
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     static associate(models) {
-      // define association here
+
+      this.hasMany(models.Playlist, {
+        foreignKey: 'creator'
+      })
+
+      this.hasMany(models.Interaction, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      })
     }
   };
   User.init({
@@ -19,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     birthDate: DataTypes.DATEONLY,
     password: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,

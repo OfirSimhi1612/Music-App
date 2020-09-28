@@ -7,6 +7,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
+import { useUserDetails } from '../../UserContext';
 
 function PlaylistInModal(props) {
 
@@ -25,11 +26,13 @@ function AddToPlaylistModal(props) {
 
     const [Playlists, setPlaylists] = useState([]);
 
+    const userDetails = useUserDetails()
+
     useEffect(() => {
 
         async function fetch() {
             try {
-                const { data } = await axios.get('/playlist');
+                const { data } = await axios.get(`/playlist/byUser/${userDetails.id}`);
                 setPlaylists(data);
             } catch (error) {
                 console.log(error);

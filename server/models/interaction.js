@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Playlist extends Model {
+  class Interaction extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,28 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
 
-      this.belongsToMany(models.Song, {
-        through: models.Songs_in_playlist,
-        foreignKey: 'playlistId',
+      this.belongsTo(models.Song, {
+        foreignKey: 'userId',
         onDelete: 'CASCADE'
-      });
+      })
 
       this.belongsTo(models.User, {
-        foreignKey: 'creator'
+        foreignKey: 'songId',
+        onDelete: 'CASCADE'
       })
     }
   };
-  Playlist.init({
-    name: DataTypes.STRING,
-    coverImg: DataTypes.TEXT,
-    genre: DataTypes.STRING,
-    likes: DataTypes.INTEGER,
-    isPublic: DataTypes.BOOLEAN,
-    creator: DataTypes.INTEGER
+  Interaction.init({
+    userId: DataTypes.INTEGER,
+    songId: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'Playlist',
+    modelName: 'Interaction',
     paranoid: true
   });
-  return Playlist;
+  return Interaction;
 };

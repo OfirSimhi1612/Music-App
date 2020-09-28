@@ -84,6 +84,21 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
+router.get('/byUser/:userId', async (req, res) => {
+    try {
+        const playlists = await Playlist.findAll({
+            where: {
+                creator: req.params.userId
+            }
+        })
+
+        res.json(playlists)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message)
+    }
+})
+
 router.get('/:playlistId', async (req, res) => {
     try {
         const playlist = await Playlist.findByPk(req.params.playlistId)

@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'songId',
         onDelete: 'CASCADE'
       });
+
+      this.hasMany(models.Interaction, {
+        foreignKey: 'songId',
+        onDelete: 'CASCADE'
+      })
     }
   };
   Song.init({

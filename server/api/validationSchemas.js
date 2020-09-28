@@ -1,4 +1,20 @@
 const Joi = require('joi');
+const { User } = require('../models')
+
+async function UserSchema() {
+
+    const takenEmails = await User.getTakenEmails()
+
+    return Joi.object({
+        firstName: Joi.string().min(2).max(25).required(),
+        lastName: Joi.string().min(2).max(25).required(),
+        email: Joi.string().email().invalid(...takenEmails).required(),
+        password: Joi.string().min(8).max(15).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/).required(),
+        repeatPassword: Joi.ref('password'),
+        birthDate: Joi.date().less('now')
+    })
+}
+
 
 const SongSchema = Joi.object({
     title: Joi.string().max(50).required(),
@@ -34,5 +50,6 @@ module.exports = {
     SongSchema,
     ArtistSchema,
     AlbumSchema,
-    PlaylistSchema
+    PlaylistSchema,
+    UserSchema
 }

@@ -4,8 +4,8 @@ const { Op } = require('Sequelize');
 const Joi = require('joi');
 const { AlbumSchema } = require('./validationSchemas')
 
-const router = Router();
 
+const router = Router();
 
 
 router.get('/', async (req, res) => {
@@ -35,15 +35,6 @@ router.get('/top', async (req, res) => {
         res.json(albums)
     } catch (error) {
         res.status(500).send(error.message)
-    }
-})
-
-router.get('/:albumId', async (req, res) => {
-    try {
-        const album = await Album.findByPk(req.params.albumId, { include: [{ model: Artist }] })
-        res.json(album);
-    } catch (error) {
-        res.status(400).send(error.message)
     }
 })
 
@@ -96,16 +87,10 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
-router.patch('/:albumId', async (req, res) => {
+router.get('/:albumId', async (req, res) => {
     try {
-        const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
-        const updated = await Album.update(validatedAlbum, {
-            where: {
-                id: req.params.albumId
-            }
-        })
-
-        res.send(Boolean(updated[0]))
+        const album = await Album.findByPk(req.params.albumId, { include: [{ model: Artist }] })
+        res.json(album);
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -125,6 +110,21 @@ router.patch('/like/:albumId', async (req, res) => {
         res.send(Boolean(updated))
     } catch (error) {
         res.status(500).send(error.message)
+    }
+})
+
+router.patch('/:albumId', async (req, res) => {
+    try {
+        const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
+        const updated = await Album.update(validatedAlbum, {
+            where: {
+                id: req.params.albumId
+            }
+        })
+
+        res.send(Boolean(updated[0]))
+    } catch (error) {
+        res.status(400).send(error.message)
     }
 })
 
@@ -150,7 +150,7 @@ router.delete('/:albumId', async (req, res) => {
             }
         })
 
-        res.json(album)
+        res.send(Boolean(album))
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -164,7 +164,7 @@ router.patch('/restore/:albumId', async (req, res) => {
             }
         })
 
-        res.json(album)
+        res.send(Boolean(album))
     } catch (error) {
         res.status(400).send(error.message)
     }

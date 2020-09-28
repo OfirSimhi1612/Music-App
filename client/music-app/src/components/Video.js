@@ -6,20 +6,20 @@ import axios from 'axios';
 import YouTube from 'react-youtube';
 import LikeButton from './LikesButton/LikesButton';
 import AddToPlaylistButton from './AddToPlaylistButton/AddToPlaylistButton';
+import { useUserDetails } from '../UserContext';
 
-function SongInQueue({ song, qParams }) {
+function SongInQueue({ song, qParams, CurrentSongId }) {
 
   return (
     <>
 
-      <div className='songInPlaylist' >
+      <div className='songInPlaylist'>
         <img className='displayedSongImage' src={song.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
         <div className='displayedSongDetails'>
           <Link to={`/song/${song.id}?${qParams}`}>
-            <div className='displayedSongName'>{song.title}</div>
+            <div className='displayedSongName' style={{ color: CurrentSongId === song.id && 'green' }}>{song.title}</div>
           </Link>
           <div>
-            {console.log(song.Artist)}
             <span className='displayedSongArtist'>{song.Artist.name}</span>
             {(song.Artist.name && song.Album.name) && <span> / </span>}
             <span className='displayedSongAlbum'>{song.Album.name}</span>
@@ -36,18 +36,61 @@ function Video() {
 
   const [CurrentSong, setCurrentSong] = useState();
   const [Queue, setQueue] = useState([]);
+  const [EntryTime, setEntryTime] = useState(0)
 
+  const userDetails = useUserDetails()
 
   const location = useLocation();
   const params = useParams();
   const history = useHistory()
   const qParams = new URLSearchParams(location.search);
 
+  const lengthToMilSec = React.useCallback(() => {
+
+    const length = CurrentSong.length.split(':');
+    let timeMilSec = 0
+
+    console.log(length)
+
+    length.map(x => console.log(parseInt(x)))
+
+    timeMilSec += parseInt(length[2]) * 1
+    timeMilSec += parseInt(length[1]) * 60
+    timeMilSec += parseInt(length[0]) * 360
+
+
+
+    return timeMilSec * 1000;
+  }, [CurrentSong])
+
+  const submitInteraction = React.useCallback(async () => {
+    try {
+      const leavingTime = Date.now()
+      const songInMilSec = lengthToMilSec()
+      if (songInMilSec - (leavingTime - EntryTime) < ((songInMilSec / 100) * 20)) {
+        await axios.post('/user/interaction', {
+          songId: CurrentSong.id,
+          userId: userDetails.id,
+        })
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [CurrentSong])
+
 
   useEffect(() => {
+    if (CurrentSong && userDetails.id) {
+      submitInteraction()
+    }
+  }, [params])
+
+  useEffect(() => {
+    setEntryTime(Date.now())
     async function fetch() {
       const { data } = await axios.get(`/song/${params.id}`);
       setCurrentSong(data);
+
     }
     fetch();
   }, [params])
@@ -155,6 +198,7 @@ function Video() {
               return <SongInQueue
                 song={song}
                 qParams={qParams}
+                CurrentSongId={CurrentSong.id}
               />
             })}
         </div>

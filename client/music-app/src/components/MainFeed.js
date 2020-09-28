@@ -11,17 +11,22 @@ import './MainFeed.css'
 
 function MainFeed(props) {
 
-    return (
-        <>
-            <div id='feed'>
-                <TopSongs></TopSongs>
-                <TopPlaylists></TopPlaylists>
-                <TopArtists></TopArtists>
-                <TopAlbums></TopAlbums>
+	return (
+		<>
+			<div id='feed'>
+				{/* <div style={{ color: 'white' }}>
+					{document.cookie.includes('test') ?
+						<span>auth</span>
+						: <span>no auth</span>}
+				</div> */}
+				<TopSongs></TopSongs>
+				<TopPlaylists></TopPlaylists>
+				<TopArtists></TopArtists>
+				<TopAlbums></TopAlbums>
 
-            </div>
-        </>
-    );
+			</div>
+		</>
+	);
 }
 
 export default MainFeed;

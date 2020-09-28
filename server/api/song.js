@@ -178,3 +178,23 @@ router.patch('/restore/:songId', async (req, res) => {
 })
 
 module.exports = router;
+
+
+
+
+
+// const albums = await Albums.findAll({
+//     include: [
+//         {
+//             model: Songs,
+//             attributes: [],
+//             include: [
+//                 {
+//                     models: Interactions,
+//                     attributes: [sequelize.fn('sum', models.sequelize.col('play_count')), 'total_plays']
+//                 }
+//             ]
+//         }
+//     ]
+
+// });
