@@ -18,7 +18,7 @@ function Header(props) {
     try {
       history.push('/')
       updateUser({})
-      const logedOut = await axios.get('user/Logout')
+      await axios.get('user/Logout')
     } catch (error) {
       console.log(error)
     }

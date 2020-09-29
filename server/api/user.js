@@ -138,7 +138,7 @@ router.post('/signUp', async (req, res) => {
         const newUser = await User.create(validatedUser);
 
         await Playlist.create({
-            name: `user ${newUser.id} playlist`,
+            name: `user ${newUser.id} playlist - systemPlaylist`,
             isPublic: false,
             genre: newUser.id,
             creator: newUser.id

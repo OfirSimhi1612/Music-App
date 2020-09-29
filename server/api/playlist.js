@@ -55,16 +55,49 @@ router.get('/songs/:playlistId', async (req, res) => {
 
                 }
             ],
-            where: {
-                id: req.params.playlistId
-            },
             attributes: [],
-            // raw: true
+
         })
 
         res.json(songs.Songs)
     } catch (error) {
         res.status(400).send(error.message)
+    }
+})
+
+router.get('/userSongs/:userId', async (req, res) => {
+    try {
+        const songs = await Playlist.findAll({
+            include: [
+                {
+                    model: Song,
+                    include: [
+                        {
+                            model: Artist,
+                            attributes: ['name']
+                        },
+                        {
+                            model: Album,
+                            attributes: ['name']
+                        }
+                    ]
+                }
+            ],
+            through: {
+                attributes: ['index']
+            },
+            attributes: ['id'],
+            where: {
+                creator: req.params.userId,
+                name: `user ${req.params.userId} playlist - systemPlaylist`,
+                genre: req.params.userId
+            }
+        })
+
+        res.send(songs[0])
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('internal server error')
     }
 })
 

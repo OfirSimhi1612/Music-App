@@ -15,7 +15,8 @@ import Video from './components/Video';
 import SearchPage from './components/Pages/SearchPage';
 import SignUp from './components/UserInteractions/SignUp';
 import LogIn from './components/UserInteractions/Login';
-import UserProvider from './UserContext';
+import UserSongs from './components/UserPages/UserSongs';
+import UserPlaylists from './components/UserPages/UserPlaylists';
 import { useUpdateUser } from './UserContext';
 import axios from 'axios';
 
@@ -64,6 +65,8 @@ function App() {
             <Route path={'/SearchPage'} exact component={SearchPage} />
             <Route path={'/SignUp'} exact component={SignUp} />
             <Route path={'/LogIn'} exact component={LogIn} />
+            <Route path={'/UserSongs'} exact component={UserSongs} />
+            <Route path={'/UserPlaylists'} exact component={UserPlaylists} />
             <Route path={'/song/:id'}>
               <Video />
             </Route>
