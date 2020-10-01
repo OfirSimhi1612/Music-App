@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import './Header.css';
@@ -8,11 +8,12 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom'
 
 
-function Header(props) {
+function Header() {
 
   const userDetails = useUserDetails()
   const updateUser = useUpdateUser()
   const history = useHistory()
+
 
   async function LogOut() {
     try {
@@ -28,22 +29,15 @@ function Header(props) {
     <>
       <div id='HeaderDiv'>
         <div className='userHeader'>
-          {userDetails.authorized ?
+          {userDetails.name ?
             <>
-              <Dropdown className='LibraryDropdwon'>
-                <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
-                  Library
-                        </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Link to={'/UserSongs'}><Dropdown.Item href='#action'>My Song</Dropdown.Item></Link>
-                  <Link to={'/UserPlaylists'}><Dropdown.Item href='#action'>My Playlist</Dropdown.Item></Link>
-                </Dropdown.Menu>
-              </Dropdown>
               <Button onClick={LogOut} className='LogoutButton' variant="outline-success">Log out</Button>
               <span className='userWelcome'>Hey {userDetails.name}!</span>
             </>
-            : <Link to={'/LogIn'}><Button variant="outline-success">Log In</Button></Link>
+            : <>
+              <Link to={'/SignUp'}><Button className='signUpHeadButton' variant="outline-success">Sign Up</Button></Link>
+              <Link to={'/LogIn'}><Button variant="outline-success">Log In</Button></Link>
+            </>
           }
         </div>
         <h1 className="pageTitle">Music App</h1>
@@ -61,6 +55,18 @@ function Header(props) {
                 <Link to={'/AddArtist'}><Dropdown.Item href='#action'>Artist</Dropdown.Item></Link>
                 <Link to={'/AddAlbum'}><Dropdown.Item href='#action'>Album</Dropdown.Item></Link>
                 <Link to={'/AddPlaylist'}><Dropdown.Item href='#action'>Playlist</Dropdown.Item></Link>
+              </Dropdown.Menu>
+            </Dropdown>
+          }
+          {userDetails.name &&
+            <Dropdown className='LibraryDropdwon'>
+              <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
+                Library
+                  </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Link to={'/UserSongs'}><Dropdown.Item href='#action'>My Song</Dropdown.Item></Link>
+                <Link to={'/UserPlaylists'}><Dropdown.Item href='#action'>My Playlist</Dropdown.Item></Link>
               </Dropdown.Menu>
             </Dropdown>
           }

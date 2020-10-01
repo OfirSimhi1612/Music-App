@@ -3,6 +3,8 @@ const { Song, Artist, Album } = require('../models')
 const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { SongSchema } = require('./validationSchemas')
+const { userAuth } = require('../authentication/auth')
+
 
 const router = Router();
 
@@ -102,7 +104,7 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
-router.patch('/:songId', async (req, res) => {
+router.patch('/:songId', userAuth, async (req, res) => {
     try {
         const validatedSong = await Joi.attempt(req.body, SongSchema)
         const updated = await Song.update(validatedSong, {
@@ -118,7 +120,7 @@ router.patch('/:songId', async (req, res) => {
     }
 })
 
-router.patch('/like/:songId', async (req, res) => {
+router.patch('/like/:songId', userAuth, async (req, res) => {
     try {
         let likes = await Song.findByPk(req.params.songId, {
             attributes: ['likes']
@@ -135,7 +137,7 @@ router.patch('/like/:songId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', userAuth, async (req, res) => {
     try {
         const validatedSong = await Joi.attempt(req.body, SongSchema)
         const song = await Song.create(validatedSong)
@@ -149,7 +151,7 @@ router.post('/', async (req, res) => {
 
 //delete and restore
 
-router.delete('/:songId', async (req, res) => {
+router.delete('/:songId', userAuth, async (req, res) => {
     try {
         const song = await Song.destroy({
             where: {
@@ -163,7 +165,7 @@ router.delete('/:songId', async (req, res) => {
     }
 })
 
-router.patch('/restore/:songId', async (req, res) => {
+router.patch('/restore/:songId', userAuth, async (req, res) => {
     try {
         const song = await Song.restore({
             where: {

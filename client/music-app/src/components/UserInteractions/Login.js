@@ -24,7 +24,7 @@ function LogIn() {
         e.preventDefault()
         try {
             const { data: user } = await axios.post(`/user/login`, LogInDetails);
-            if (user.authorized) {
+            if (user.name) {
                 updateUser(user)
             }
             history.push('/')

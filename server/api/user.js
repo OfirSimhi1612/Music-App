@@ -1,56 +1,42 @@
 const { Router } = require('express');
 const Joi = require('joi');
 const { User, Interaction, Playlist } = require('../models');
-const { UserSchema, PlaylistSchema } = require('./validationSchemas');
+const { UserSchema } = require('./validationSchemas');
 const bcrypt = require('bcrypt');
-const session = require('express-session')
+const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const { userAuth } = require('../authentication/auth')
 
 const router = Router();
 
 router.use(cookieParser());
 
-router.use(session({
-    key: 'music_sid',
-    secret: process.env.SESS_SECRET || 'test',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 24000 * 60 * 60,
-        // httpOnly: true,
-        // secure: true,
-        // sameSite: true
-    }
-}));
-
-router.use((req, res, next) => {
-    if (req.cookies.test && !req.session.user_id) {
-        res.clearCookie('music_sid')
-    }
-    next()
-});
-
-router.get('/auth', async (req, res) => {
-    try {
-        console.log(req.session)
-        if (req.session.user_id) {
-            const user = await User.findByPk(req.session.user_id)
-
-            res.json({
-                authorized: true,
-                name: user.firstName,
-                id: user.id
-            })
-        } else {
-            res.status(401).json({
-                authorized: false,
-            })
+const newToken = (name, id, lifeTime) => {
+    const token = jwt.sign({
+        userId: id,
+        userName: name
+        //role?
+    },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: lifeTime
         }
+    )
 
+    return `bearer ${token}`
+}
+
+router.get('/auth', userAuth, (req, res) => {
+    try {
+        console.log(req.decoded)
+        res.json({
+            name: req.decoded.userName,
+            id: req.decoded.userId
+        })
     } catch (error) {
         console.log(error)
-        re.status(500).send(error.message)
     }
+
 })
 
 router.post('/interaction', async (req, res) => {
@@ -82,29 +68,21 @@ router.post('/login', async (req, res) => {
         })
 
         if (user.length === 0) {
-            res.status(404).send({
-                authorized: false,
-                error: 'User Does Not Exist'
-            })
+            res.status(404).send('User Does Not Exist')
         } else {
             bcrypt.compare(password, user[0].password, (err, succ) => {
                 if (err) {
                     res.status(500).send(err.message)
-                }
-                if (succ) {
-                    req.session.user_id = user[0].id;
-                    console.log(req.session)
-                    res.status(200).send({
-                        authorized: true,
+                } else if (succ) {
+                    const token = newToken(user[0].firstName, user[0].id, '5d')
+
+                    res.cookie('music_jwt', token)
+                    res.send({
                         name: user[0].firstName,
-                        id: user[0].id,
-                        isAdmin: user[0].isAdmin
+                        id: user[0].id
                     })
                 } else {
-                    res.status(401).send({
-                        authorized: false,
-                        error: 'Incorrect Password'
-                    })
+                    res.status(401).send('Incorrect Password')
                 }
             })
 
@@ -113,14 +91,13 @@ router.post('/login', async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(404).send(error.message)
+        res.status(500).send('Internal Server error')
     }
 })
 
-router.get('/Logout', async (req, res) => {
+router.get('/Logout', userAuth, async (req, res) => {
     try {
-        req.session.user_id = null;
-        res.cookie("music_sid", "");
+        res.cookie("music_jwt", "");
         res.send(true)
     } catch (error) {
         console.log(error)
@@ -144,13 +121,12 @@ router.post('/signUp', async (req, res) => {
             creator: newUser.id
         })
 
-        req.session.user_id = newUser.id;
+        const token = newToken(newUser.firstName, newUser.id, '5d')
+
+        res.cookie('music_jwt', token)
 
         res.status(200).send({
-            authorized: true,
             name: newUser.firstName,
-            id: newUser.id,
-            isAdmin: newUser.isAdmin
         })
 
     } catch (error) {

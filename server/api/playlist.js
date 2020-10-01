@@ -3,6 +3,8 @@ const { Song, Artist, Album, Playlist, Songs_in_playlist } = require('../models'
 const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { PlaylistSchema } = require('./validationSchemas')
+const { userAuth } = require('../authentication/auth')
+
 
 
 const router = Router();
@@ -11,7 +13,11 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const playlists = await Playlist.findAll();
+        const playlists = await Playlist.findAll({
+            where: {
+                isPublic: true
+            },
+        });
 
         res.json(playlists)
     } catch (error) {
@@ -22,6 +28,9 @@ router.get('/', async (req, res) => {
 router.get('/top', async (req, res) => {
     try {
         const playlists = await Playlist.findAll({
+            where: {
+                isPublic: true
+            },
             order: [
                 ['likes', 'DESC']
             ],
@@ -65,7 +74,7 @@ router.get('/songs/:playlistId', async (req, res) => {
     }
 })
 
-router.get('/userSongs/:userId', async (req, res) => {
+router.get('/userSongs/:userId', userAuth, async (req, res) => {
     try {
         const songs = await Playlist.findAll({
             include: [
@@ -117,7 +126,7 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
-router.get('/byUser/:userId', async (req, res) => {
+router.get('/byUser/:userId', userAuth, async (req, res) => {
     try {
         const playlists = await Playlist.findAll({
             where: {
@@ -144,7 +153,7 @@ router.get('/:playlistId', async (req, res) => {
     }
 })
 
-router.patch('/:playlistId', async (req, res) => {
+router.patch('/:playlistId', userAuth, async (req, res) => {
     try {
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const updated = await Playlist.update(validatedPlaylist, {
@@ -159,7 +168,7 @@ router.patch('/:playlistId', async (req, res) => {
     }
 })
 
-router.patch('/like/:playlistId', async (req, res) => {
+router.patch('/like/:playlistId', userAuth, async (req, res) => {
     try {
         let likes = await Playlist.findByPk(req.params.playlistId, {
             attributes: ['likes']
@@ -176,7 +185,7 @@ router.patch('/like/:playlistId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', userAuth, async (req, res) => {
     try {
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const playlist = await Playlist.create(validatedPlaylist)
@@ -186,7 +195,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/addSong', async (req, res) => {
+router.post('/addSong', userAuth, async (req, res) => {
     try {
         const body = { ...req.body, index: await Songs_in_playlist.getIndex(req.body.playlistId) }
         const song = await Songs_in_playlist.create(body).catch(err => console.log(err))
@@ -197,7 +206,7 @@ router.post('/addSong', async (req, res) => {
     }
 })
 
-router.delete('/removeSong', async (req, res) => {
+router.delete('/removeSong', userAuth, async (req, res) => {
     try {
         const removed = await Songs_in_playlist.destroy({
             where: {
@@ -214,7 +223,7 @@ router.delete('/removeSong', async (req, res) => {
 
 //delete and restore
 
-router.delete('/:playlistId', async (req, res) => {
+router.delete('/:playlistId', userAuth, async (req, res) => {
     try {
         const playlist = await Playlist.destroy({
             where: {
@@ -228,7 +237,7 @@ router.delete('/:playlistId', async (req, res) => {
     }
 })
 
-router.patch('/restore/:playlistId', async (req, res) => {
+router.patch('/restore/:playlistId', userAuth, async (req, res) => {
     try {
         const playlist = await Playlist.restore({
             where: {

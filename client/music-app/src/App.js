@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,8 +17,10 @@ import SignUp from './components/UserInteractions/SignUp';
 import LogIn from './components/UserInteractions/Login';
 import UserSongs from './components/UserPages/UserSongs';
 import UserPlaylists from './components/UserPages/UserPlaylists';
-import { useUpdateUser } from './UserContext';
+import { useUserDetails, useUpdateUser } from './UserContext';
 import axios from 'axios';
+import cookie from 'react-cookies';
+import network from './components/Network/network'
 
 
 
@@ -30,19 +32,20 @@ function App() {
 
   const updateUser = useUpdateUser()
 
-
   useEffect(() => {
 
     async function getUser() {
-
-      const { data: userDetails } = await axios.get('/user/auth')
-
-      if (userDetails.authorized) {
+      try {
+        const userDetails = await network.get('/user/auth')
         updateUser(userDetails)
+      } catch (error) {
+        console.log(error)
       }
-    }
 
-    getUser()
+    }
+    if (cookie.load('music_jwt')) {
+      getUser()
+    }
 
   }, [])
 
@@ -53,7 +56,6 @@ function App() {
         <div id='body'>
           <Header></Header>
           <Switch>
-
             <Route path={'/'} exact component={MainFeed} />
             <Route path={'/addSong'} exact component={AddSong} />
             <Route path={'/addArtist'} exact component={AddArtist} />

@@ -14,11 +14,6 @@ function MainFeed(props) {
 	return (
 		<>
 			<div id='feed'>
-				{/* <div style={{ color: 'white' }}>
-					{document.cookie.includes('test') ?
-						<span>auth</span>
-						: <span>no auth</span>}
-				</div> */}
 				<TopSongs></TopSongs>
 				<TopPlaylists></TopPlaylists>
 				<TopArtists></TopArtists>
@@ -30,3 +25,17 @@ function MainFeed(props) {
 }
 
 export default MainFeed;
+
+try {
+	const result = await new Promise((resolve, reject) => {
+		this.connection.query('...', (error, results) => {
+			if (error) {
+				reject(error.message)
+			} else {
+				resolve(results)
+			}
+		})
+	})
+} catch (error) {
+	return error
+}

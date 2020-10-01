@@ -14,7 +14,6 @@ function UserPlaylists() {
             if (Object.keys(userDetails).length > 0) {
                 const { data: playlists } = await axios.get(`/playlist/byUser/${userDetails.id}`)
                 setPlaylists(playlists)
-                console.log(playlists)
             }
         }
 

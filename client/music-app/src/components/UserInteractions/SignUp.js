@@ -31,11 +31,11 @@ function SignUp(props) {
 				icon: "success",
 				button: "ok",
 			});
-			//add user info to global state
-			if (user.authorized) {
+
+			if (user.name) {
 				updateUser(user)
+				history.push('/')
 			}
-			history.push('/')
 		} catch (error) {
 			console.log(error.response)
 			swal({

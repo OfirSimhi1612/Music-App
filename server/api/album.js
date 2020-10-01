@@ -3,12 +3,14 @@ const { Album, Artist, Song } = require('../models');
 const { Op } = require('Sequelize');
 const Joi = require('joi');
 const { AlbumSchema } = require('./validationSchemas')
+const { userAuth } = require('../authentication/auth')
+
 
 
 const router = Router();
 
 
-router.get('/', async (req, res) => {
+router.get('/', userAuth, async (req, res) => {
     try {
         const albums = await Album.findAll({ include: [{ model: Artist, attributes: ['name'] }] })
         res.json(albums);
@@ -96,7 +98,7 @@ router.get('/:albumId', async (req, res) => {
     }
 })
 
-router.patch('/like/:albumId', async (req, res) => {
+router.patch('/like/:albumId', userAuth, async (req, res) => {
     try {
         let likes = await Album.findByPk(req.params.albumId, {
             attributes: ['likes']
@@ -113,7 +115,7 @@ router.patch('/like/:albumId', async (req, res) => {
     }
 })
 
-router.patch('/:albumId', async (req, res) => {
+router.patch('/:albumId', userAuth, async (req, res) => {
     try {
         const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
         const updated = await Album.update(validatedAlbum, {
@@ -128,7 +130,7 @@ router.patch('/:albumId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', userAuth, async (req, res) => {
     try {
         const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
         const album = await Album.create(validatedAlbum)
@@ -142,7 +144,7 @@ router.post('/', async (req, res) => {
 
 //delete and restore
 
-router.delete('/:albumId', async (req, res) => {
+router.delete('/:albumId', userAuth, async (req, res) => {
     try {
         const album = await Album.destroy({
             where: {
@@ -156,7 +158,7 @@ router.delete('/:albumId', async (req, res) => {
     }
 })
 
-router.patch('/restore/:albumId', async (req, res) => {
+router.patch('/restore/:albumId', userAuth, async (req, res) => {
     try {
         const album = await Album.restore({
             where: {

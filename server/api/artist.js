@@ -4,6 +4,8 @@ const { Op } = require('Sequelize')
 const Joi = require('joi');
 const router = Router();
 const { ArtistSchema } = require('./validationSchemas')
+const { userAuth } = require('../authentication/auth')
+
 
 
 
@@ -103,7 +105,7 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
-router.patch('/:artistId', async (req, res) => {
+router.patch('/:artistId', userAuth, async (req, res) => {
     try {
         const validatedArtist = await Joi.attempt(req.body, ArtistSchema)
         const updated = await Artist.update(validatedArtist, {
@@ -118,7 +120,7 @@ router.patch('/:artistId', async (req, res) => {
     }
 })
 
-router.patch('/like/:artistId', async (req, res) => {
+router.patch('/like/:artistId', userAuth, async (req, res) => {
     try {
         let likes = await Artist.findByPk(req.params.artistId, {
             attributes: ['likes']
@@ -135,7 +137,7 @@ router.patch('/like/:artistId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', userAuth, async (req, res) => {
     try {
         const validatedArtist = await Joi.attempt(req.body, ArtistSchema);
         const newArtist = await Artist.create(validatedArtist);
@@ -148,7 +150,7 @@ router.post('/', async (req, res) => {
 
 //delete and restore
 
-router.delete('/:artistId', async (req, res) => {
+router.delete('/:artistId', userAuth, async (req, res) => {
     try {
         const artist = await Artist.destroy({
             where: {
@@ -162,7 +164,7 @@ router.delete('/:artistId', async (req, res) => {
     }
 })
 
-router.patch('/restore/:artistId', async (req, res) => {
+router.patch('/restore/:artistId', userAuth, async (req, res) => {
     try {
         const artist = await Artist.restore({
             where: {

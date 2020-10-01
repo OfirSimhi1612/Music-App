@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { default: Song } = require('../../client/music-app/src/components/Pages/Song');
+
 module.exports = (sequelize, DataTypes) => {
   class Playlist extends Model {
     /**

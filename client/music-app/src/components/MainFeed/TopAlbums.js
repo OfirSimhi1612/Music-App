@@ -32,7 +32,6 @@ function TopAlbums(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/album/top`);
-            console.log(data)
             setAlbums(data);
         }
         fetch()

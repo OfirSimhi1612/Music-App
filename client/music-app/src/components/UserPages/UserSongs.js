@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useUserDetails } from '../../UserContext';
 import Song from '../Pages/Song'
+import './UserSongs.css'
 
 function UserSongs() {
 
@@ -24,22 +25,24 @@ function UserSongs() {
 
     return (
         <>
-            <h2 className='UserSongsHead'>Youre Songs</h2>
-            <div className='UserSongsList'>
-                {UserSongsPlaylist &&
-                    UserSongsPlaylist.Songs.map(song => {
-                        return <Song
-                            name={song.title}
-                            artist={song.Artist.name}
-                            album={song.Album.name}
-                            length={song.length}
-                            link={song.youtubeLink}
-                            cover_img={song.coverImg}
-                            id={song.id}
-                            orgin={`playlist=${UserSongsPlaylist.id}`}
-                        />
-                    })
-                }
+            <div className='UserSongsPage'>
+                <h2 className='UserSongsHead'>Youre Songs</h2>
+                <div className='UserSongsList'>
+                    {UserSongsPlaylist &&
+                        UserSongsPlaylist.Songs.map(song => {
+                            return <Song
+                                name={song.title}
+                                artist={song.Artist.name}
+                                album={song.Album.name}
+                                length={song.length}
+                                link={song.youtubeLink}
+                                cover_img={song.coverImg}
+                                id={song.id}
+                                orgin={`playlist=${UserSongsPlaylist.id}`}
+                            />
+                        })
+                    }
+                </div>
             </div>
         </>
     );

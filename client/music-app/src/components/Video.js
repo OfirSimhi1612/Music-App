@@ -78,7 +78,6 @@ function Video() {
     }
   }, [CurrentSong])
 
-
   useEffect(() => {
     if (CurrentSong && userDetails.id) {
       submitInteraction()
@@ -90,6 +89,7 @@ function Video() {
     async function fetch() {
       const { data } = await axios.get(`/song/${params.id}`);
       setCurrentSong(data);
+      console.log(data)
 
     }
     fetch();
@@ -168,6 +168,7 @@ function Video() {
         {CurrentSong &&
           <div className='Video'>
             <YouTube className='player' videoId={getVideosId()} opts={opts} onEnd={nextSong} />
+            {/* <iframe src={CurrentSong.youtubeLink}></iframe> */}
             <div className='playnigSongDetails'>
               <div>
                 <span className='songName'>{CurrentSong.title}</span>
