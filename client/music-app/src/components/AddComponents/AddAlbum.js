@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ArtistSelect from './selectOptions/ArtistSelect.js';
-import axios from 'axios';
+// import axios from 'axios';
 import './AddAlbum.css';
 import swal from 'sweetalert'
+import network from '../Network/network'
 
 
 function AddAlbum() {
@@ -22,14 +23,17 @@ function AddAlbum() {
         const form = e.target;
         async function send() {
             try {
-                await axios.post(`/album`, AlbumDetails)
-                swal({
-                    text: "Album Added!",
-                    icon: "success",
-                    button: "ok",
-                });
-                form.reset();
-                setReset(!reset)
+                const posted = await network.post(`/album`, AlbumDetails)
+                if (posted) {
+                    swal({
+                        text: "Album Added!",
+                        icon: "success",
+                        button: "ok",
+                    });
+                    form.reset();
+                    setReset(!reset)
+                }
+
             } catch (error) {
                 console.log(error.response)
                 swal({
@@ -37,7 +41,6 @@ function AddAlbum() {
                     icon: "error",
                     button: "ok",
                 })
-                setAlbumDetails({})
             }
         }
         send()

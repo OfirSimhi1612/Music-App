@@ -50,7 +50,7 @@ function SongsList() {
     return (
         <>
             <div id='topSongsList'>
-                <h3 class='topSongsHead'>Top Songs</h3>
+                <h2 class='topSongsHead'>Top Songs</h2>
                 <Slider {...settings}>
                     {SongsList.map(song => {
                         return <SongDisplay

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPlaylist.css';
 import swal from 'sweetalert';
+import network from '../Network/network'
 
 
 function AddPlaylist() {
@@ -19,13 +20,15 @@ function AddPlaylist() {
         const form = e.target;
         async function send() {
             try {
-                await axios.post(`/playlist`, PlaylistDetails)
-                swal({
-                    text: "Playlist Added!",
-                    icon: "success",
-                    button: "ok",
-                });
-                form.reset();
+                const posted = await network.post(`/playlist`, PlaylistDetails)
+                if (posted) {
+                    swal({
+                        text: "Playlist Added!",
+                        icon: "success",
+                        button: "ok",
+                    });
+                    form.reset();
+                }
             } catch (error) {
                 console.log(error.response)
                 swal({

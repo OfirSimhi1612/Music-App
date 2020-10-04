@@ -1,0 +1,23 @@
+#Optionsdropdown-basic{
+    color: grey;
+}
+
+.disabledLink{
+    pointer-events: none;
+}
+
+.OptionsDropdownMenu{
+    background-color: rgb(37, 37, 37);
+    padding: 0px;
+}
+
+.OptionsDropItem{
+    color: white;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+}
+
+.OptionsDropItem:hover{
+    background-color: rgb(73, 72, 72);
+}

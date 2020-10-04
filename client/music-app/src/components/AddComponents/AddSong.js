@@ -5,6 +5,7 @@ import axios from 'axios';
 import './AddSong.css';
 import swal from 'sweetalert';
 import DurationPicker from './DurationPicker';
+import network from '../Network/network'
 
 
 function AddSong() {
@@ -26,14 +27,16 @@ function AddSong() {
         const form = e.target
         async function send() {
             try {
-                await axios.post(`/song`, SongDetails)
-                swal({
-                    text: "Song Added!",
-                    icon: "success",
-                    button: "ok",
-                });
-                form.reset()
-                setreset(true)
+                const posted = await network.post(`/song`, SongDetails)
+                if (posted) {
+                    swal({
+                        text: "Song Added!",
+                        icon: "success",
+                        button: "ok",
+                    });
+                    form.reset()
+                    setreset(true)
+                }
             } catch (error) {
                 console.log(error.response)
                 swal({

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import './AddToPlaylistModal.css'
 import Slider from 'react-slick';

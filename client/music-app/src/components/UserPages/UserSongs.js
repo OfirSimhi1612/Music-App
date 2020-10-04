@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import { useUserDetails } from '../../UserContext';
 import Song from '../Pages/Song'
 import './UserSongs.css'
+import network from '../Network/network'
+import { useLocation } from 'react-router-dom'
 
 function UserSongs() {
 
     const [UserSongsPlaylist, setUserSongsPlaylist] = useState();
 
+    const location = useLocation();
+    const qParams = new URLSearchParams(location.search);
+
     const userDetails = useUserDetails();
 
     useEffect(() => {
+        console.log(qParams)
         async function fetch() {
-            if (Object.keys(userDetails).length > 0) {
-                const { data: songs } = await axios.get(`/playlist/userSongs/${userDetails.id}`)
-
-                setUserSongsPlaylist(songs)
+            const songs = await network.get(`/playlist/userSongs/${qParams.get('user')}`)
+            if (songs) {
+                setUserSongsPlaylist(songs.data)
             }
 
         }

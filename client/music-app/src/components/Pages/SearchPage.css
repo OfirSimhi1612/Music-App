@@ -37,6 +37,10 @@
     gap: 10px;
 }
 
+.resultRow:hover{
+    background-color: rgb(37, 37, 37);
+}
+
 .ResultsHead{
     margin-bottom: 15px;
     color: white;

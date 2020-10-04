@@ -5,7 +5,6 @@ import './Video.css';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import LikeButton from './LikesButton/LikesButton';
-import AddToPlaylistButton from './AddToPlaylistButton/AddToPlaylistButton';
 import { useUserDetails } from '../UserContext';
 
 function SongInQueue({ song, qParams, CurrentSongId }) {
@@ -180,9 +179,9 @@ function Video() {
               </div>
 
               <div className='likesDiv'>
-                <AddToPlaylistButton
+                {/* <AddToPlaylistButton
                   id={CurrentSong.id}
-                />
+                /> */}
                 <LikeButton
                   id={CurrentSong.id}
                   model={'song'}

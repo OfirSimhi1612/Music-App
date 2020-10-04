@@ -1,0 +1,29 @@
+#logInForm{
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    gap: 20px;
+    color: grey;
+}
+
+.LogInEmailRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.LogInPasswordRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.LogInSubmitButton{
+    margin-right: auto;
+    margin-left: auto;
+    width: 140px;
+    margin-top: 20px;
+}

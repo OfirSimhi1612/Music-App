@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useUserDetails } from '../../UserContext'
+import network from '../Network/network'
 
 function UserPlaylists() {
 
@@ -12,7 +13,7 @@ function UserPlaylists() {
 
         async function fetch() {
             if (Object.keys(userDetails).length > 0) {
-                const { data: playlists } = await axios.get(`/playlist/byUser/${userDetails.id}`)
+                const { data: playlists } = await network.get(`/playlist/byUser/${userDetails.id}`)
                 setPlaylists(playlists)
             }
         }

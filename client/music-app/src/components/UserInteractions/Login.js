@@ -3,6 +3,9 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { useHistory } from 'react-router-dom';
 import { useUpdateUser } from '../../UserContext';
+import './Login.css'
+import Button from 'react-bootstrap/Button';
+
 
 
 function LogIn() {
@@ -31,7 +34,7 @@ function LogIn() {
         } catch (error) {
             console.log(error.response)
             swal({
-                text: error.response,
+                text: error.response.data,
                 icon: "error",
                 button: "ok",
             });
@@ -40,7 +43,7 @@ function LogIn() {
 
     return (
         <>
-            <h2 className='LogInTitle'>Log In:</h2>
+            {/* <h2 className='LogInTitle'>Log In:</h2> */}
             <form id='logInForm' onSubmit={(e) => LogUserIn(e)}>
                 <div className='LogInEmailRow'>
                     <label className='LogInEmailLabel' htmlFor='LogInEmailInput'>Email:</label>
@@ -49,12 +52,9 @@ function LogIn() {
 
                 <div className='LogInPasswordRow'>
                     <label className='LogInPasswordLabel' htmlFor='LogInPasswordInput'>Password:</label>
-                    <input onChange={(e) => updateDetails('password', e.target.value)} type='text' className='LogInPasswordInput' required placeholder='Password'></input>
+                    <input onChange={(e) => updateDetails('password', e.target.value)} type='password' className='LogInPasswordInput' required placeholder='Password'></input>
                 </div>
-
-                <div>
-                    <button type='submit' className='LogInSubmitButton'>LogIn!</button>
-                </div>
+                <Button type='submit' variant="success" className='LogInSubmitButton'>Log In!</Button>
             </form>
         </>
     );

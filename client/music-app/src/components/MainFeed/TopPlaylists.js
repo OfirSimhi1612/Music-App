@@ -50,7 +50,7 @@ function TopPlaylists(props) {
     return (
         <>
             <div id='topPlaylists'>
-                <h3 className='topPlaylistsHead'>Top Playlists</h3>
+                <h2 className='topPlaylistsHead'>Top Playlists</h2>
                 <Slider {...settings}>
                     {Playlists.map(playlist => {
                         return <PlaylistDisplay

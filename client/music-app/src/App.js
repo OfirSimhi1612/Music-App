@@ -37,7 +37,7 @@ function App() {
     async function getUser() {
       try {
         const userDetails = await network.get('/user/auth')
-        updateUser(userDetails)
+        updateUser(userDetails.data)
       } catch (error) {
         console.log(error)
       }

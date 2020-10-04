@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './AddArtist.css';
 import swal from 'sweetalert';
+import network from '../Network/network'
+
 
 
 
@@ -20,13 +22,16 @@ function AddSong() {
         const form = e.target;
         async function sendArtist() {
             try {
-                await axios.post(`/artist`, ArtistDetails)
-                swal({
-                    text: "Artist Added!",
-                    icon: "success",
-                    button: "ok",
-                });
-                form.reset()
+                const posted = await network.post(`/artist`, ArtistDetails)
+                if (posted) {
+                    swal({
+                        text: "Artist Added!",
+                        icon: "success",
+                        button: "ok",
+                    });
+                    form.reset()
+                }
+
             } catch (error) {
                 console.log(error.response)
                 swal({
@@ -34,7 +39,6 @@ function AddSong() {
                     icon: "error",
                     button: "ok",
                 });
-                setArtistDetails({})
             }
         }
         sendArtist()

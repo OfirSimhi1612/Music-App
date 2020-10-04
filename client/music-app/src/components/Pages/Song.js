@@ -2,7 +2,7 @@ import React from 'react';
 import './AlbumPage.css';
 import './Song.css';
 import { Link } from 'react-router-dom';
-import AddToPlaylistButton from '../AddToPlaylistButton/AddToPlaylistButton'
+import OptionsButton from '../OptionsButton/OptionsButton'
 
 
 function Song(props) {
@@ -21,7 +21,7 @@ function Song(props) {
           </div>
         </div>
         {props.length && <span className='songLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>}
-        <AddToPlaylistButton
+        <OptionsButton
           id={props.id}
         />
       </div>

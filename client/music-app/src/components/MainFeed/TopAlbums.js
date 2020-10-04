@@ -49,7 +49,7 @@ function TopAlbums(props) {
     return (
         <>
             <div id='topAlbums'>
-                <h3 className='topAlbumsHead'>Top Albums</h3>
+                <h2 className='topAlbumsHead'>Top Albums</h2>
                 <Slider {...settings}>
                     {Albums.map(album => {
                         return <AlbumDisplay

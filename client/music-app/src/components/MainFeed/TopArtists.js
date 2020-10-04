@@ -30,7 +30,6 @@ function TopArtists(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/artist/top`);
-            console.log(data)
             setArtists(data);
         }
         fetch()
@@ -48,7 +47,7 @@ function TopArtists(props) {
     return (
         <>
             <div id='topArtists'>
-                <h3 className='topArtistsHead'>Top Artists</h3>
+                <h2 className='topArtistsHead'>Top Artists</h2>
                 <Slider {...settings}>
                     {Artists.map(artist => {
                         return <ArtistDisplay

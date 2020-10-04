@@ -44,7 +44,7 @@ function Header() {
         <div id='navBar'>
           <Link to={'/'}><Button variant="outline-success">Feed</Button></Link>
           <Link to={'/SearchPage'}><Button variant="outline-success">Search</Button></Link>
-          {userDetails.isAdmin &&
+          {userDetails.name &&
             <Dropdown className='dropdwon'>
               <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
                 Add
@@ -62,11 +62,11 @@ function Header() {
             <Dropdown className='LibraryDropdwon'>
               <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
                 Library
-                  </Dropdown.Toggle>
+              </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Link to={'/UserSongs'}><Dropdown.Item href='#action'>My Song</Dropdown.Item></Link>
-                <Link to={'/UserPlaylists'}><Dropdown.Item href='#action'>My Playlist</Dropdown.Item></Link>
+                <Link to={`/UserSongs?user=${userDetails.id}`}><Dropdown.Item href='#action'>My Song</Dropdown.Item></Link>
+                <Link to={`/UserPlaylists?user=${userDetails.id}`}><Dropdown.Item href='#action'>My Playlist</Dropdown.Item></Link>
               </Dropdown.Menu>
             </Dropdown>
           }

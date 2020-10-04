@@ -3,6 +3,9 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { useHistory } from 'react-router-dom'
 import { useUpdateUser } from '../../UserContext';
+import Button from 'react-bootstrap/Button'
+import './SignUp.css'
+
 
 
 function SignUp(props) {
@@ -64,19 +67,17 @@ function SignUp(props) {
 				</div>
 				<div className='SignPasswordRow'>
 					<label className='SignPasswordLabel' htmlFor='SignPasswordInput'>Password:</label>
-					<input onChange={(e) => updateDetails('password', e.target.value)} type='text' className='SignPasswordInput' required placeholder='Password'></input>
+					<input onChange={(e) => updateDetails('password', e.target.value)} type='password' className='SignPasswordInput' required placeholder='Password'></input>
 				</div>
 				<div className='SignRepeatPasswordRow'>
 					<label className='SignRepeatPasswordLabel' htmlFor='SignRepeatPasswordInput'>Repeat Password:</label>
-					<input onChange={(e) => updateDetails('repeatPassword', e.target.value)} type='text' className='SignRepeatPasswordInput' required placeholder='Repeat Password'></input>
+					<input onChange={(e) => updateDetails('repeatPassword', e.target.value)} type='password' className='SignRepeatPasswordInput' required placeholder='Repeat Password'></input>
 				</div>
 				<div className='SignBirthDateRow'>
 					<label className='SignBirthDateLabel' htmlFor='SignBirthDateInput'>Birth Date:</label>
 					<input onChange={(e) => updateDetails('birthDate', e.target.value)} type='date' className='SignBirthDateInput' required ></input>
 				</div>
-				<div>
-					<button type='submit' className='SignSubmitButton'>Sign Up!</button>
-				</div>
+				<Button type='submit' variant='success' className='SignSubmitButton'>Sign Up!</Button>
 			</form>
 		</>
 	);

@@ -116,7 +116,8 @@ router.get('/search/:searchInput', async (req, res) => {
             where: {
                 name: {
                     [Op.substring]: req.params.searchInput
-                }
+                },
+                isPublic: true
             }
         })
 
@@ -130,7 +131,10 @@ router.get('/byUser/:userId', userAuth, async (req, res) => {
     try {
         const playlists = await Playlist.findAll({
             where: {
-                creator: req.params.userId
+                creator: req.params.userId,
+                name: {
+                    [Op.ne]: `user ${req.params.userId} playlist - systemPlaylist`
+                }
             }
         })
 
