@@ -6,6 +6,7 @@ import axios from 'axios';
 import YouTube from 'react-youtube';
 import LikeButton from './LikesButton/LikesButton';
 import { useUserDetails } from '../UserContext';
+import { useBottomPlayer } from '../UserContext'
 
 function SongInQueue({ song, qParams, CurrentSongId }) {
 
@@ -37,6 +38,7 @@ function Video() {
   const [Queue, setQueue] = useState([]);
   const [EntryTime, setEntryTime] = useState(0)
 
+  const bottomPlayer = useBottomPlayer()
   const userDetails = useUserDetails()
 
   const location = useLocation();
@@ -151,7 +153,6 @@ function Video() {
     }
   }
 
-
   const opts = {
     height: '390',
     width: '640',
@@ -163,7 +164,7 @@ function Video() {
 
   return (
     <>
-      <div className='VideoPage'>
+      <div className={'VideoPage'}>
         {CurrentSong &&
           <div className='Video'>
             <YouTube className='player' videoId={getVideosId()} opts={opts} onEnd={nextSong} />
@@ -203,6 +204,7 @@ function Video() {
             })}
         </div>
       </div>
+
     </>
   );
 

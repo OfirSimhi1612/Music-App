@@ -19,6 +19,9 @@ function OptionsButton(props) {
         }
     }, [UserLoged])
 
+    async function addSongToLibrary() {
+
+    }
 
     return (
         <>

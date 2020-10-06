@@ -81,3 +81,9 @@
 .addPlaylistInModal:hover{
     transform: scale(1.02);
 }
+
+
+.addToPlaylistModalSlider{
+    min-height: 220px;
+
+}

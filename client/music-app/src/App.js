@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,8 +17,7 @@ import SignUp from './components/UserInteractions/SignUp';
 import LogIn from './components/UserInteractions/Login';
 import UserSongs from './components/UserPages/UserSongs';
 import UserPlaylists from './components/UserPages/UserPlaylists';
-import { useUserDetails, useUpdateUser } from './UserContext';
-import axios from 'axios';
+import { useUpdateUser } from './UserContext';
 import cookie from 'react-cookies';
 import network from './components/Network/network'
 

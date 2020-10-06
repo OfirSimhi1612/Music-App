@@ -27,17 +27,17 @@ function AddToPlaylistModal(props) {
 
     const userDetails = useUserDetails()
 
-    useEffect(() => {
-
-        async function fetch() {
-            try {
-                const { data } = await axios.get(`/playlist/byUser/${userDetails.id}`);
-                setPlaylists(data);
-            } catch (error) {
-                console.log(error);
-            }
+    const fetch = React.useCallback(async () => {
+        try {
+            const { data } = await axios.get(`/playlist/byUser/${userDetails.id}`);
+            setPlaylists(data);
+        } catch (error) {
+            console.log(error);
         }
+    }, [userDetails])
 
+
+    useEffect(() => {
         fetch()
     }, [])
 
@@ -56,6 +56,9 @@ function AddToPlaylistModal(props) {
 
     async function SearchPlaylist(e) {
         const searchValue = e.target.value;
+        if (searchValue === '') {
+            await fetch()
+        }
         async function search() {
             try {
                 const { data } = await axios.get(`/playlist/search/${searchValue}`)
@@ -104,7 +107,7 @@ function AddToPlaylistModal(props) {
             <Modal.Body>
 
                 <div className='playlistsInModal'>
-                    <Slider {...settings}>
+                    <Slider {...settings} className='addToPlaylistModalSlider'>
                         {Playlists.map(playlist => {
                             return (
                                 <PlaylistInModal
