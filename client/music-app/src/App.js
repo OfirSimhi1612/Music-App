@@ -20,6 +20,8 @@ import UserPlaylists from './components/UserPages/UserPlaylists';
 import { useUpdateUser } from './UserContext';
 import cookie from 'react-cookies';
 import network from './components/Network/network'
+import BottomPlayer from './components/BottomPlayer'
+import { useUpdateBottomPlayer } from './UserContext'
 
 
 
@@ -30,8 +32,17 @@ import network from './components/Network/network'
 function App() {
 
   const updateUser = useUpdateUser()
+  const updatePlayer = useUpdateBottomPlayer()
 
   useEffect(() => {
+
+    // updatePlayer({
+    //   Display: false,
+    //   FullScreen: true,
+    //   CurrentSong: {},
+    //   Queue: null,
+    //   LocationQuery: null
+    // })
 
     async function getUser() {
       try {
@@ -44,6 +55,8 @@ function App() {
     }
     if (cookie.load('music_jwt')) {
       getUser()
+
+
     }
 
   }, [])
@@ -54,6 +67,7 @@ function App() {
       <BrowserRouter>
         <div id='body'>
           <Header></Header>
+          <BottomPlayer></BottomPlayer>
           <Switch>
             <Route path={'/'} exact component={MainFeed} />
             <Route path={'/addSong'} exact component={AddSong} />

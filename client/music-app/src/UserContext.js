@@ -28,21 +28,31 @@ export function useUpdateUser() {
 function UserProvider({ children }) {
 
     const [UserDetails, setUserDetails] = useState({})
-    const [BottomPlayer, setBottomPlayer] = useState({})
+    const [BottomPlayer, setBottomPlayer] = useState({
+        CurrentSong: {},
+        Queue: [],
+        LocationQuery: '',
+        Display: false
+    })
+    const [FullScreen, setFullScreen] = useState(true)
 
     function updateUserDetails(newUser) {
         setUserDetails(newUser)
     }
 
-    function updateBottomPlayer() {
-        setBottomPlayer(!BottomPlayer)
+    function updateBottomPlayer(playerConfig) {
+        setBottomPlayer(playerConfig)
+    }
+
+    function updateFullScreen(value){
+        setFullScreen(value)
     }
 
     return (
         <UserDetailsContext.Provider value={UserDetails}>
             <UpdateUserContext.Provider value={updateUserDetails}>
-                <BottomPlayerContext.Provider value={BottomPlayer}>
-                    <UpdateBottomPlayerContext.Provider value={updateBottomPlayer}>
+                <BottomPlayerContext.Provider value={[BottomPlayer, FullScreen]}>
+                    <UpdateBottomPlayerContext.Provider value={[updateBottomPlayer, updateFullScreen]}>
                         {children}
                     </UpdateBottomPlayerContext.Provider>
                 </BottomPlayerContext.Provider>

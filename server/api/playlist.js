@@ -127,7 +127,7 @@ router.get('/search/:searchInput', async (req, res) => {
     }
 })
 
-router.get('/byUser/:userId', userAuth, async (req, res) => {
+router.get('/byUser/:userId', userAuth, async (req, res) => { 
     try {
         const playlists = await Playlist.findAll({
             where: {
