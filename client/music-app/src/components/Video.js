@@ -39,12 +39,14 @@ function Video() {
 
   const location = useLocation();
   const params = useParams();
+  const history = useHistory()
   const qParams = new URLSearchParams(location.search);
 
   
   useEffect(() => {
     updateFullScreen(true)
     async function fetch() {
+      console.log(history)
       let model = `${qParams.toString().slice(0, qParams.toString().indexOf('='))}`
       let req = '';
 
@@ -69,71 +71,6 @@ function Video() {
     }
   }, [location])
 
-  // useEffect(() => {
-  //   return () => {
-  //     // console.log(history)
-  //     if(history.location.pathname.slice(1,5) !== 'song'){
-  //       const updatedPlayer = getPlayerDetails()
-  //     updateBottomPlayer({
-  //       ...updatedPlayer,
-  //       FullScreen: false
-  //     })
-  //   }
-  // }
-  // }, [location])
-
-  const updateLikes = React.useCallback((liked) => {
-    if (liked) {
-      updateBottomPlayer({
-        ...bottomPlayer,
-        CurrentSong: {
-          ...bottomPlayer.CurrentSong,
-          likes: bottomPlayer.CurrentSong.likes + 1
-        }
-      })
-    } else {
-      updateBottomPlayer({
-        ...bottomPlayer,
-        CurrentSong: {
-          ...bottomPlayer.CurrentSong,
-          likes: bottomPlayer.CurrentSong.likes - 1
-        }
-      })
-    }
-  }, [bottomPlayer.CurrentSong]);
-
-  // const getVideosId = React.useCallback(() => {
-  //   const link = CurrentSong.youtubeLink
-  //   let id = link.slice(link.indexOf('/watch?v=') + 9);
-  //   if (id.indexOf('&') !== -1) {
-  //     id = id.slice(0, id.indexOf('&'));
-  //   }
-  //   return id;
-  // }, [CurrentSong]);
-
-  // function nextSong() {
-  //   let nextIndex = 0;
-  //   Queue.forEach((song, index) => {
-  //     if (song.id === CurrentSong.id && index < Queue.length - 1) {
-  //       nextIndex = index + 1;
-  //     }
-  //   })
-  //   if (nextIndex) {
-  //     const nextSong = Queue[nextIndex];
-  //     history.push(`/song/${nextSong.id}?${qParams}`)
-  //   } else {
-  //     return
-  //   }
-  // }
-
-  // const opts = {
-  //   height: '390',
-  //   width: '640',
-  //   playerVars: {
-  //     autoplay: 1,
-  //   },
-  // };
-
 
   return (
     <>
@@ -141,30 +78,6 @@ function Video() {
         {Object.keys(bottomPlayer.CurrentSong).length > 0 &&
           <div className='Video'>
             <div className='videosPlaceHolder'></div>
-            {/* <YouTube className='player' videoId={getVideosId()} opts={opts} onEnd={nextSong} /> */}
-            {/* <iframe src={CurrentSong.youtubeLink}></iframe> */}
-            <div className='playnigSongDetails'>
-              <div>
-                <span className='songName'>{bottomPlayer.CurrentSong.title}</span>
-                <span className='playedSongLength'>{bottomPlayer.CurrentSong.length}</span>
-              </div>
-              <div>
-                <span className='songArtist'>Artist: {bottomPlayer.CurrentSong.Artist.name}</span>
-                <span className='songAlbum'>Album: {bottomPlayer.CurrentSong.Album.name}</span>
-              </div>
-
-              <div className='likesDiv'>
-                {/* <AddToPlaylistButton
-                  id={CurrentSong.id}
-                /> */}
-                <LikeButton
-                  id={bottomPlayer.CurrentSong.id}
-                  model={'song'}
-                  updateLikes={updateLikes}
-                />
-                <span className='songLikes'>{bottomPlayer.CurrentSong.likes} Likes</span>
-              </div>
-            </div>
           </div>
         }
         <div className='queue'>
