@@ -27,7 +27,6 @@ function AddToPlaylistModal(props) {
 
     const fetch = React.useCallback(async () => {
         try {
-            console.log(userDetails.id)
             const { data } = await axios.get(`/playlist/byUser/${userDetails.id}`);
             setPlaylists(data);
         } catch (error) {
@@ -61,7 +60,6 @@ function AddToPlaylistModal(props) {
         async function search() {
             try {
                 const { data } = await axios.get(`/playlist/search/${searchValue}`)
-                console.log(data)
                 setPlaylists(data);
             } catch (error) {
                 console.log(error);

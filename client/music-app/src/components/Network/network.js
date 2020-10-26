@@ -13,7 +13,6 @@ network.interceptors.response.use(
     (error) => {
         if (error.response.status === 401 && window.location.pathname !== '/LogIn') {
             cookie.remove('music_jwt')
-            console.log('test')
             swal({
                 text: 'You must login first',
                 icon: "error",

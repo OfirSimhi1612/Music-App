@@ -28,7 +28,6 @@ const newToken = (name, id, lifeTime) => {
 
 router.get('/auth', userAuth, (req, res) => {
     try {
-        console.log(req.decoded)
         res.json({
             name: req.decoded.userName,
             id: req.decoded.userId

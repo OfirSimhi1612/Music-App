@@ -3,17 +3,13 @@ require('dotenv').config();
 const mysql = require('mysql');
 const express = require('express');
 const util = require('util');
+const morgan = require('morgan');
 
 const app = express();
 
 app.use(express.json());
 
-function logger(req, res, next) {
-  console.log(`request fired ${req.url} ${req.method}`);
-  next();
-}
-
-app.use(logger);
+app.use(morgan('tiny'))
 
 const mysqlCon = mysql.createConnection({
   host: process.env.SQL_HOST, //change

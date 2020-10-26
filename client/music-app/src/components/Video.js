@@ -46,7 +46,6 @@ function Video() {
   useEffect(() => {
     updateFullScreen(true)
     async function fetch() {
-      console.log(history)
       let model = `${qParams.toString().slice(0, qParams.toString().indexOf('='))}`
       let req = '';
 

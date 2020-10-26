@@ -4,11 +4,39 @@ const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { PlaylistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
+const cookie = require('cookie')
+const jwt = require('jsonwebtoken');
 
 
 
 const router = Router();
 
+
+const publicAuth = async (req, res, next) => {
+    let token = '';
+
+    if (req.headers.cookie) {
+        const cookies = cookie.parse(req.headers.cookie)
+        token = cookies.music_jwt
+    }
+
+    if (token) {
+        token = token.slice(7, token.length);
+        jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+            if (error) {
+                req.decoded = {id: null}
+                next()
+            } else {
+                req.decoded = decoded
+                next()
+            }
+        })
+    } else {
+        req.decoded = {id: null}
+        next()
+    }
+
+}
 
 
 router.get('/', async (req, res) => {
@@ -42,7 +70,7 @@ router.get('/top', async (req, res) => {
     }
 })
 
-router.get('/songs/:playlistId', async (req, res) => {
+router.get('/songs/:playlistId', publicAuth, async (req, res) => {
     try {
         const songs = await Playlist.findByPk(req.params.playlistId, {
             include: [
@@ -65,7 +93,7 @@ router.get('/songs/:playlistId', async (req, res) => {
                 }
             ],
             attributes: [],
-
+            where: res.decoded ? { [Op.or]: [{isPublic: true}, {creator: res.decoded.id}] } : { isPublic: true }
         })
 
         res.json(songs.Songs)
@@ -137,7 +165,6 @@ router.get('/byUser/:userId', userAuth, async (req, res) => {
                 }
             }
         })
-        console.log(playlists)
         res.json(playlists)
     } catch (error) {
         console.log(error);
@@ -145,14 +172,18 @@ router.get('/byUser/:userId', userAuth, async (req, res) => {
     }
 })
 
-router.get('/:playlistId', async (req, res) => {
+router.get('/:playlistId', publicAuth, async (req, res) => {
     try {
         const playlist = await Playlist.findByPk(req.params.playlistId)
         if (!playlist) {
             res.status(404).send('invalid Id')
+        } else if(!playlist.isPublic && playlist.creator !== req.decoded.id){
+            res.status(404).send('Private Playlist!')
+        } else {
+            res.json(playlist)
         }
-        res.json(playlist)
     } catch (error) {
+        console.log(error)
         res.status(400).send(error.message)
     }
 })
@@ -191,7 +222,6 @@ router.patch('/like/:playlistId', userAuth, async (req, res) => {
 
 router.post('/', userAuth, async (req, res) => {
     try {
-        console.log(req.body)
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const playlist = await Playlist.create(validatedPlaylist)
         res.status(201).json(playlist);

@@ -18,7 +18,6 @@ function AddSong() {
         details[column] = value;
         setSongDetails(details);
         setreset(false)
-        console.log(SongDetails)
     }, [SongDetails]);
 
 

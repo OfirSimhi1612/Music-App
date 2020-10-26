@@ -14,7 +14,6 @@ function AlbumPage(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/album/${props.match.params.id}`);
-            console.log(data)
             setDisplayedAlbum(data);
         }
         fetch()
@@ -23,7 +22,6 @@ function AlbumPage(props) {
     useEffect(() => {
         async function fetch() {
             const { data } = await axios.get(`/album/songs/${props.match.params.id}`);
-            console.log(data)
             setAlbumSongs(data);
         }
         fetch()

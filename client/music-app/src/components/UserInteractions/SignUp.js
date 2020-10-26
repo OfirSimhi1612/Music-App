@@ -20,7 +20,6 @@ function SignUp(props) {
 			...UserDetails,
 			[column]: value
 		}
-		console.log(newDetails)
 		setUserDetails(newDetails);
 	}, [UserDetails])
 

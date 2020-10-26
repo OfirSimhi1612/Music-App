@@ -3,6 +3,7 @@ import { useBottomPlayer, useUpdateBottomPlayer } from '../UserContext'
 import { useUserDetails } from '../UserContext';
 import { useHistory, useLocation } from 'react-router-dom'
 import ReactPlayer from 'react-player'
+import axios from 'axios';
 
 
 function BottomPlayer() {
@@ -25,46 +26,49 @@ function BottomPlayer() {
 
     const history = useHistory()
 
-    // const lengthToMilSec = React.useCallback(() => {
+    const lengthToMilSec = React.useCallback(() => {
 
-    //     const length = bottomPlayer.CurrentSong.length.split(':');
-    //     let timeMilSec = 0
+        const length = bottomPlayer.CurrentSong.length.split(':');
+        let timeSec = 0
 
-    //     console.log(length)
+        console.log(length)
 
-    //     length.map(x => console.log(parseInt(x)))
+        length.map(x => console.log(parseInt(x)))
 
-    //     timeMilSec += parseInt(length[2]) * 1
-    //     timeMilSec += parseInt(length[1]) * 60
-    //     timeMilSec += parseInt(length[0]) * 360
+        timeSec += parseInt(length[2]) * 1
+        timeSec += parseInt(length[1]) * 60
+        timeSec += parseInt(length[0]) * 360
 
-    //     return timeMilSec * 1000;
-    // }, [bottomPlayer.CurrentSong])
+        return timeSec * 1000;
+    }, [bottomPlayer.CurrentSong])
 
-    // const submitInteraction = React.useCallback(async () => {
-    //     try {
-    //         const leavingTime = Date.now()
-    //         const songInMilSec = lengthToMilSec()
-    //         if (songInMilSec - (leavingTime - EntryTime) < ((songInMilSec / 100) * 20)) {
-    //             await axios.post('/user/interaction', {
-    //                 songId: bottomPlayer.CurrentSong.id,
-    //                 userId: bottomPlayer.CurrentSong.id,
-    //             })
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }, [bottomPlayer.CurrentSong])
+    const submitInteraction = React.useCallback(async () => {
+        try {
+            const leavingTime = Date.now()
+            const songInMilSec = lengthToMilSec()
+            if (songInMilSec - (leavingTime - EntryTime) < ((songInMilSec / 100) * 20)) {
+                const success = await axios.post('/user/interaction', {
+                    songId: bottomPlayer.CurrentSong.id,
+                    userId: userDetails.id,
+                })
+                if(!success){
+                    console.log('error')
+                }
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }, [bottomPlayer.CurrentSong])
 
-    // useEffect(() => {
-    //     if (bottomPlayer.CurrentSong && userDetails.id) {
-    //         submitInteraction()
-    //     }
-    // }, [bottomPlayer.CurrentSong])
+    useEffect(() => {
+        if (bottomPlayer.CurrentSong && userDetails.id) {
+            submitInteraction()
+        }
+    }, [bottomPlayer.CurrentSong])
 
-    // useEffect(() => {
-    //     setEntryTime(Date.now())
-    // }, [bottomPlayer.CurrentSong])
+    useEffect(() => {
+        setEntryTime(Date.now())
+    }, [bottomPlayer.CurrentSong])
 
     // const updateLikes = React.useCallback((liked) => {
     //     if (liked) {
@@ -145,7 +149,9 @@ function BottomPlayer() {
 
     const closePlayer = React.useCallback(() => {
 
-        history.push('/')
+        if(history.location.pathname.slice(1,5) === 'song'){
+            history.push('/')
+        }
         updateBottomPlayer({
             Display: false,
             LocationQuery: {},

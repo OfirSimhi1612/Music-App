@@ -31,7 +31,8 @@ const PlaylistSchema = Joi.object({
     name: Joi.string().max(50).required(),
     coverImg: Joi.string(),
     genre: Joi.string().max(50),
-    creator: Joi.number().required()
+    creator: Joi.number().required(),
+    isPublic: Joi.boolean().required()
 })
 
 const ArtistSchema = Joi.object({

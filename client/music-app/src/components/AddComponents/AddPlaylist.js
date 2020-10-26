@@ -3,14 +3,18 @@ import axios from 'axios';
 import './AddPlaylist.css';
 import swal from 'sweetalert';
 import network from '../Network/network'
-import { useUserDetails } from '../../UserContext'
+import { useUserDetails } from '../../UserContext';
+import Button from 'react-bootstrap/Button'
 
 
 function AddPlaylist() {
 
-    const [PlaylistDetails, setPlaylistDetails] = useState({});
+    const [PlaylistDetails, setPlaylistDetails] = useState({
+        isPublic: false
+    });
 
     const userDetails = useUserDetails()
+
     console.log(userDetails)
 
     const updateDetails = React.useCallback((column, value) => {
@@ -43,7 +47,7 @@ function AddPlaylist() {
             }
         }
         send()
-    }, [PlaylistDetails]);
+    }, [PlaylistDetails, userDetails]);
 
 
     return (
@@ -70,13 +74,29 @@ function AddPlaylist() {
                 </div>
                 <div className='inputRow'>
                     <label htmlFor='PublicInput'>Do you want the playlist to be public?</label>
-                    <input className='inputField' type='radio' id='PublicInput' onChange={(e) => updateDetails('coverImg', e.target.value)}
-                    >
-                        
-                    </input>
+                    <div className='publicRadio'>
+                        <label className='radioLabel'>
+                            <input
+                                className='inputField' 
+                                type='radio' 
+                                name='isPublic' 
+                                onChange={() => updateDetails('isPublic', true)}>
+                            </input>
+                            Yes
+                        </label>
+                        <label className='radioLabel'>
+                            <input defaultChecked
+                                className='inputField' 
+                                type='radio' 
+                                name='isPublic' 
+                                onChange={() => updateDetails('isPublic', false)}>
+                            </input>
+                            No
+                        </label>
+                    </div>
                 </div>
                 <div>
-                    <button type='submit'>Add Playlist!</button>
+                    <Button variant='success' type='submit'>Add Playlist!</Button>
                 </div>
             </form>
         </>

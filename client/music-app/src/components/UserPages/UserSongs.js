@@ -15,7 +15,6 @@ function UserSongs() {
     const userDetails = useUserDetails();
 
     useEffect(() => {
-        console.log(qParams)
         async function fetch() {
             const songs = await network.get(`/playlist/userSongs/${qParams.get('user')}`)
             if (songs) {

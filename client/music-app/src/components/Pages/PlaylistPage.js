@@ -13,11 +13,11 @@ function PlaylistPage(props) {
 
     useEffect(() => {
         async function fetch() {
+            console.log(props.match.params.id)
             const songs = await axios.get(`/playlist/songs/${props.match.params.id}`);
             const playlist = await axios.get(`/playlist/${props.match.params.id}`);
             setDisplayedPlaylist(playlist.data);
             setPlaylistSongs(songs.data);
-            console.log(songs.data)
         }
         fetch()
     }, [])

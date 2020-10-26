@@ -1,7 +1,9 @@
 const { Router } = require('express');
+const morgan = require('morgan');
 
 const router = Router();
 
+router.use(morgan('dev'))
 
 router.use('/artist', require('./artist'));
 router.use('/album', require('./album'));

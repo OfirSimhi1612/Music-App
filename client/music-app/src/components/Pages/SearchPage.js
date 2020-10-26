@@ -61,7 +61,6 @@ function SearchPage(props) {
                     axios.get(`/artist/search/${value}`),
                     axios.get(`/playlist/search/${value}`)
                 ]).then(results => {
-                    console.log(results)
                     setSearchResults({
                         songs: results[0].data.slice(0, 6),
                         albums: results[1].data.slice(0, 6),

@@ -25,7 +25,6 @@ const userAuth = async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log('test', error)
         res.status(500).send(error.message)
     }
 

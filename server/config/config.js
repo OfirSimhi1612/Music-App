@@ -7,7 +7,8 @@ module.exports = {
     "database": process.env.DEV_DB_DATABASE,
     "host": process.env.DB_HOST,
     "dialect": "mysql",
-    define: { underscored: true }
+    define: { underscored: true },
+    logging: false
   },
   "test": {
     "username": process.env.DB_USERNAME,
