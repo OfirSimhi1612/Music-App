@@ -9,7 +9,6 @@ const { userAuth } = require('../authentication/auth')
 const router = Router();
 
 
-
 router.get('/', async (req, res) => {
     try {
         const song = await Song.findAll({

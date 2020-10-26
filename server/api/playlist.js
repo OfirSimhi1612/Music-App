@@ -137,7 +137,7 @@ router.get('/byUser/:userId', userAuth, async (req, res) => {
                 }
             }
         })
-
+        console.log(playlists)
         res.json(playlists)
     } catch (error) {
         console.log(error);
@@ -191,11 +191,12 @@ router.patch('/like/:playlistId', userAuth, async (req, res) => {
 
 router.post('/', userAuth, async (req, res) => {
     try {
+        console.log(req.body)
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const playlist = await Playlist.create(validatedPlaylist)
         res.status(201).json(playlist);
     } catch (error) {
-        res.status(400).send(message.error)
+        res.status(400).send(error.message)
     }
 })
 

@@ -3,11 +3,15 @@ import axios from 'axios';
 import './AddPlaylist.css';
 import swal from 'sweetalert';
 import network from '../Network/network'
+import { useUserDetails } from '../../UserContext'
 
 
 function AddPlaylist() {
 
     const [PlaylistDetails, setPlaylistDetails] = useState({});
+
+    const userDetails = useUserDetails()
+    console.log(userDetails)
 
     const updateDetails = React.useCallback((column, value) => {
         const details = Object.assign(PlaylistDetails)
@@ -20,7 +24,7 @@ function AddPlaylist() {
         const form = e.target;
         async function send() {
             try {
-                const posted = await network.post(`/playlist`, PlaylistDetails)
+                const posted = await network.post(`/playlist`, {...PlaylistDetails, creator: userDetails.id})
                 if (posted) {
                     swal({
                         text: "Playlist Added!",
@@ -63,6 +67,13 @@ function AddPlaylist() {
                     <input className='inputField' type='text' id='ImageInput' placeholder='Image Link'
                         onChange={(e) => updateDetails('coverImg', e.target.value)}
                     ></input>
+                </div>
+                <div className='inputRow'>
+                    <label htmlFor='PublicInput'>Do you want the playlist to be public?</label>
+                    <input className='inputField' type='radio' id='PublicInput' onChange={(e) => updateDetails('coverImg', e.target.value)}
+                    >
+                        
+                    </input>
                 </div>
                 <div>
                     <button type='submit'>Add Playlist!</button>

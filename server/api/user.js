@@ -5,7 +5,7 @@ const { UserSchema } = require('./validationSchemas');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const { userAuth } = require('../authentication/auth')
+const { userAuth }  = require('../authentication/auth')
 
 const router = Router();
 
@@ -17,10 +17,10 @@ const newToken = (name, id, lifeTime) => {
         userName: name
         //role?
     },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: lifeTime
-        }
+    process.env.JWT_SECRET,
+    {
+        expiresIn: lifeTime
+    }
     )
 
     return `bearer ${token}`
@@ -61,25 +61,25 @@ router.post('/login', async (req, res) => {
             throw 'missing details'
         }
 
-        const user = await User.findAll({
+        const user = await User.findOne({
             where: {
                 email: email,
             }
         })
 
-        if (user.length === 0) {
+        if (!user) {
             res.status(404).send('User Does Not Exist')
         } else {
-            bcrypt.compare(password, user[0].password, (err, succ) => {
+            bcrypt.compare(password, user.password, (err, succ) => {
                 if (err) {
-                    res.status(500).send(err.message)
+                    res.status(500).send('Wrong password!')
                 } else if (succ) {
-                    const token = newToken(user[0].firstName, user[0].id, '5d')
+                    const token = newToken(user.firstName, user.id, '5d')
 
                     res.cookie('music_jwt', token)
                     res.send({
-                        name: user[0].firstName,
-                        id: user[0].id
+                        name: user.firstName,
+                        id: user.id
                     })
                 } else {
                     res.status(401).send('Incorrect Password')

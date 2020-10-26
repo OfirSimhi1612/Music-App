@@ -3,8 +3,6 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import './AddToPlaylistModal.css'
 import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
 import { useUserDetails } from '../../UserContext';
 
@@ -29,6 +27,7 @@ function AddToPlaylistModal(props) {
 
     const fetch = React.useCallback(async () => {
         try {
+            console.log(userDetails.id)
             const { data } = await axios.get(`/playlist/byUser/${userDetails.id}`);
             setPlaylists(data);
         } catch (error) {

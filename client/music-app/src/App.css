@@ -74,8 +74,9 @@ a:hover{
 .bottomPlayerBar{
     display: flex;
     flex-direction: row-reverse;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    gap: 80px;
 }
 
 .playerOptionsButtons{
@@ -84,7 +85,6 @@ a:hover{
     margin-left: 10px;
     gap: 10px;
     align-items: center;
-
 }
 
 .bottomBarButton{
@@ -119,6 +119,21 @@ a:hover{
 
 .playerSongDetails{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     color: white;
+    gap: 10px;
+}
+
+.playerCoverImg{
+    width: 45px;
+    height: 45px;
+}
+
+.playerSongArtist{
+    font-size: 13px;
+    color: gray;
+}
+
+.playerSongName{
+    font-size: 25px;
 }

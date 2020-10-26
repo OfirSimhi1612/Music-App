@@ -30,7 +30,8 @@ const SongSchema = Joi.object({
 const PlaylistSchema = Joi.object({
     name: Joi.string().max(50).required(),
     coverImg: Joi.string(),
-    genre: Joi.string().max(50)
+    genre: Joi.string().max(50),
+    creator: Joi.number().required()
 })
 
 const ArtistSchema = Joi.object({

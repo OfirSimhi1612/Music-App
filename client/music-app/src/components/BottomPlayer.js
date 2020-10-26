@@ -60,17 +60,10 @@ function BottomPlayer() {
     //     if (bottomPlayer.CurrentSong && userDetails.id) {
     //         submitInteraction()
     //     }
-    // }, [params])
+    // }, [bottomPlayer.CurrentSong])
 
     // useEffect(() => {
     //     setEntryTime(Date.now())
-    //     async function fetch() {
-    //         const { data } = await axios.get(`/song/${params.id}`);
-    //         // setCurrentSong(data);
-    //         console.log(data)
-
-    //     }
-    //     fetch();
     // }, [bottomPlayer.CurrentSong])
 
     // const updateLikes = React.useCallback((liked) => {
@@ -213,10 +206,13 @@ function BottomPlayer() {
                     </div>
                     
                     <div className='bottomPlayerBar'>
-                        <div className='playerSongDetails'>
-                            <div>name</div>
-                            <div>details</div>
-                        </div>
+                            <input
+                                type='range' min={0} max={0.999999} step='any'
+                                value={YoutubeComponent.progress.played}
+                                onMouseDown={(e) => handleSeekMouseDown(e)}
+                                onChange={(e) => handleSeekChange(e)}
+                                onMouseUp={(e) => handleSeekMouseUp(e)}
+                            />
                         <div className='playerControlButtons' >
                             <span className='bottomBarButton'onClick={prevSong}>
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584155.svg'></img>
@@ -238,17 +234,19 @@ function BottomPlayer() {
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584206.svg'></img>
                             </span>
                         </div>
-                        <input
-                            type='range' min={0} max={0.999999} step='any'
-                            value={YoutubeComponent.progress.played}
-                            onMouseDown={(e) => handleSeekMouseDown(e)}
-                            onChange={(e) => handleSeekChange(e)}
-                            onMouseUp={(e) => handleSeekMouseUp(e)}
-                        />
+                        <div className='playerSongDetails'>
+                            <img className='playerCoverImg' src={bottomPlayer.CurrentSong.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                            <div>
+                                <div className='playerSongName'>{bottomPlayer.CurrentSong.title}</div>
+                                <div className='playerSongArtist'>
+                                    {bottomPlayer.CurrentSong.Artist.name} / {bottomPlayer.CurrentSong.Album.name}
+                                </div>
+                            </div>
+                        </div>
                         <div className='playerOptionsButtons'>
                             <button className='bottomBarButton' id='terminateSongButton' onClick={closePlayer}>x</button>
                             <button className='bottomBarButton' id='expandSongButton'
-                            onClick={fullScreen ? minScreen : expScreen}
+                                onClick={fullScreen ? minScreen : expScreen}
                             >
                                 <span>{fullScreen ? '▼' : '▲'}</span>
                                 </button>
