@@ -241,6 +241,27 @@ router.post('/addSong', userAuth, async (req, res) => {
     }
 })
 
+router.post('/addToLibrary',userAuth, async (req, res) => {
+    try {
+        const LibarayId = await Playlist.findOne({
+            where: {
+                name: `user ${req.decoded.userId} playlist - systemPlaylist`
+            }
+        })
+        const body = { 
+            ...req.body,
+            playlistId: LibarayId.id, 
+            index: await Songs_in_playlist.getIndex(LibarayId.id) 
+        }
+
+        const song = await Songs_in_playlist.create(body)
+        res.send(song);
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error.message)
+    }
+})
+
 router.delete('/removeSong', userAuth, async (req, res) => {
     try {
         const removed = await Songs_in_playlist.destroy({

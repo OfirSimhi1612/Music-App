@@ -5,6 +5,7 @@ import './AddToPlaylistModal.css'
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { useUserDetails } from '../../UserContext';
+import swal from "sweetalert";
 
 function PlaylistInModal(props) {
 
@@ -47,6 +48,11 @@ function AddToPlaylistModal(props) {
             }
             await axios.post('/playlist/addSong', body);
             props.onHide();
+            swal({
+                text: 'Song Added To Playlist!',
+                icon: "success",
+                button: "ok",
+            })
         } catch (error) {
             console.log(error);
         }

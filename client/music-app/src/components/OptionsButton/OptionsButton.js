@@ -4,6 +4,8 @@ import { useUserDetails } from '../../UserContext'
 import './OptionsButton.css'
 import AddToPlaylistModal from './AddToPlaylistModal';
 import './AddToPlaylistModal.css'
+import network from '../Network/network';
+import swal from 'sweetalert';
 
 
 function OptionsButton(props) {
@@ -20,7 +22,20 @@ function OptionsButton(props) {
     }, [UserLoged])
 
     async function addSongToLibrary() {
-
+        try{
+            const songDetails = await network.post('/playlist/addToLibrary', {
+                songId: props.id
+            })
+            if(songDetails){
+                swal({
+                    text: 'Song Added To Library!',
+                    icon: "success",
+                    button: "ok",
+                })
+            }
+        } catch (error){
+            console.log(error)
+        }
     }
 
     return (
@@ -31,7 +46,7 @@ function OptionsButton(props) {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className='OptionsDropdownMenu'>
-                    <Dropdown.Item className='OptionsDropItem' disabled={!UserLoged} href='#action'>Add To Library</Dropdown.Item>
+                    <Dropdown.Item className='OptionsDropItem' disabled={!UserLoged} href='#action' onClick={addSongToLibrary}>Add To Library</Dropdown.Item>
                     <Dropdown.Item className='OptionsDropItem' disabled={!UserLoged} href='#action' onClick={() => setIsModalOpen(true)}>Add To Playlist</Dropdown.Item>
                     <Dropdown.Item className='OptionsDropItem' disabled={!UserLoged} href='#action'>Share</Dropdown.Item>
                 </Dropdown.Menu>
