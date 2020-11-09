@@ -15,8 +15,8 @@ function MainFeed(props) {
 		<>
 			<div id='feed'>
 				<TopSongs></TopSongs>
-				<TopPlaylists></TopPlaylists>
 				<TopArtists></TopArtists>
+				<TopPlaylists></TopPlaylists>
 				<TopAlbums></TopAlbums>
 
 			</div>

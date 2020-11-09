@@ -30,11 +30,6 @@ function BottomPlayer() {
 
         const length = bottomPlayer.CurrentSong.length.split(':');
         let timeSec = 0
-
-        console.log(length)
-
-        length.map(x => console.log(parseInt(x)))
-
         timeSec += parseInt(length[2]) * 1
         timeSec += parseInt(length[1]) * 60
         timeSec += parseInt(length[0]) * 360
@@ -90,41 +85,25 @@ function BottomPlayer() {
     //     }
     //   }, [bottomPlayer.CurrentSong]);
 
-    const nextSong = React.useCallback(() => {
-        let nextIndex = 0;
-        bottomPlayer.Queue.forEach((song, index) => {
-            if (song.id === bottomPlayer.CurrentSong.id && index < bottomPlayer.Queue.length - 1) {
-                nextIndex = index + 1;
-            }
+    const updateCurrentSong = React.useCallback((index) => {
+        const prevSong = bottomPlayer.Queue[index];
+        updateBottomPlayer({
+            ...bottomPlayer,
+            CurrentSong: prevSong,
         })
-        if (nextIndex) {
-            const nextSong = bottomPlayer.Queue[nextIndex];
-            updateBottomPlayer({
-                ...bottomPlayer,
-                CurrentSong: nextSong,
-            })
-        } else {
-            return
-        }
+    }, [bottomPlayer])
+
+    const nextSong = React.useCallback(() => {
+        let nextIndex = bottomPlayer.Queue.findIndex((song, index) =>{
+            return song.id === bottomPlayer.CurrentSong.id && index < bottomPlayer.Queue.length - 1;
+        }) + 1
+        updateCurrentSong(nextIndex ? nextIndex : 0)
     }, [bottomPlayer.Queue, bottomPlayer.CurrentSong])
 
     const prevSong = React.useCallback(() => {
         if(YoutubeComponent.progress.playedSeconds < 3){
-            let prevIndex = 0;
-            bottomPlayer.Queue.forEach((song, index) => {
-                if (song.id === bottomPlayer.CurrentSong.id && index > -1) {
-                    prevIndex = index - 1;
-                }
-            })
-            if (prevIndex >= 0) {
-                const prevSong = bottomPlayer.Queue[prevIndex];
-                updateBottomPlayer({
-                    ...bottomPlayer,
-                    CurrentSong: prevSong,
-                })
-            } else {
-                return
-            }
+            let prevIndex = bottomPlayer.Queue.findIndex((song, index) => song.id === bottomPlayer.CurrentSong.id && index > -1) - 1;
+            updateCurrentSong(prevIndex >= 0 ? prevIndex : 0)
         } else {
             player.current.seekTo(0)
         }
@@ -212,13 +191,14 @@ function BottomPlayer() {
                     </div>
                     
                     <div className='bottomPlayerBar'>
-                            <input
-                                type='range' min={0} max={0.999999} step='any'
-                                value={YoutubeComponent.progress.played}
-                                onMouseDown={(e) => handleSeekMouseDown(e)}
-                                onChange={(e) => handleSeekChange(e)}
-                                onMouseUp={(e) => handleSeekMouseUp(e)}
-                            />
+                        <input
+                            id='bottomPlayerRangeControl'
+                            type='range' min={0} max={0.999999} step='any'
+                            value={YoutubeComponent.progress.played}
+                            onMouseDown={(e) => handleSeekMouseDown(e)}
+                            onChange={(e) => handleSeekChange(e)}
+                            onMouseUp={(e) => handleSeekMouseUp(e)}
+                        />
                         <div className='playerControlButtons' >
                             <span className='bottomBarButton'onClick={prevSong}>
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584155.svg'></img>
@@ -233,12 +213,12 @@ function BottomPlayer() {
                             <span className='bottomBarButton' onClick={nextSong}>
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584162.svg'></img>
                             </span>
-                            <span className='bottomBarButton' id='shuflleButton'>
+                            {/* <span className='bottomBarButton' id='shuflleButton'>
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584152.svg'></img>
-                            </span>
-                            <span className='bottomBarButton'>
+                            </span> */}
+                            {/* <span className='bottomBarButton'>
                                 <img className='playerControllButton' src='https://www.flaticon.com/premium-icon/icons/svg/2584/2584206.svg'></img>
-                            </span>
+                            </span> */}
                         </div>
                         <div className='playerSongDetails'>
                             <img className='playerCoverImg' src={bottomPlayer.CurrentSong.coverImg || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
