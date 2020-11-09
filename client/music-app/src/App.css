@@ -59,6 +59,7 @@ a:hover{
   align-items: center;
   gap: 20px;
   padding-right: 30px;
+  border-bottom: 1px solid black;
 }
 
 

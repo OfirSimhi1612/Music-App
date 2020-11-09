@@ -126,6 +126,7 @@ router.post('/signUp', async (req, res) => {
 
         res.status(200).send({
             name: newUser.firstName,
+            id: newUser.id
         })
 
     } catch (error) {

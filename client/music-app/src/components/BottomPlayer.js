@@ -65,26 +65,6 @@ function BottomPlayer() {
         setEntryTime(Date.now())
     }, [bottomPlayer.CurrentSong])
 
-    // const updateLikes = React.useCallback((liked) => {
-    //     if (liked) {
-    //       updateBottomPlayer({
-    //         ...bottomPlayer,
-    //         CurrentSong: {
-    //           ...bottomPlayer.CurrentSong,
-    //           likes: bottomPlayer.CurrentSong.likes + 1
-    //         }
-    //       })
-    //     } else {
-    //       updateBottomPlayer({
-    //         ...bottomPlayer,
-    //         CurrentSong: {
-    //           ...bottomPlayer.CurrentSong,
-    //           likes: bottomPlayer.CurrentSong.likes - 1
-    //         }
-    //       })
-    //     }
-    //   }, [bottomPlayer.CurrentSong]);
-
     const updateCurrentSong = React.useCallback((index) => {
         const prevSong = bottomPlayer.Queue[index];
         updateBottomPlayer({
