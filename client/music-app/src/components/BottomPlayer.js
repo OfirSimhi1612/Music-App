@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useBottomPlayer, useUpdateBottomPlayer } from '../UserContext'
 import { useUserDetails } from '../UserContext';
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 import axios from 'axios';
 

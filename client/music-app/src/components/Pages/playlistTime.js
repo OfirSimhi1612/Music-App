@@ -2,7 +2,7 @@
 
 const PlaylistTime = (list) => {
     let length = [0, 0, 0];
-    list.map((song) => {
+    list.forEach((song) => {
         const h = parseInt(song.length.slice(0, song.length.indexOf(':')));
         const m = parseInt(song.length.slice(3, 5));
         const s = parseInt(song.length.slice(6, 8));

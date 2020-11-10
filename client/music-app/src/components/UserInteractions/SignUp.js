@@ -47,7 +47,7 @@ function SignUp(props) {
 			});
 		}
 
-	}, [UserDetails])
+	}, [UserDetails, history, updateUser])
 
 	return (
 		<>
