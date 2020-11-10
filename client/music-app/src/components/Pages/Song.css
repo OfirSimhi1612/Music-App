@@ -32,3 +32,11 @@
     font-size: 12px;
     width: 70%;
 }
+
+.artistlabel:hover{
+    color: green;
+}
+
+.albumlabel:hover{
+    color: green;
+}

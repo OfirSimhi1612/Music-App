@@ -52,6 +52,8 @@ function UserSongs() {
                                 id={song.id}
                                 orgin={`playlist=${UserSongsPlaylist.id}`}
                                 removeFromList={removeFromList}
+                                albumId={song.albumId}
+                                artistId={song.artistId}
                             />
                         })
                     }

@@ -6,7 +6,7 @@ import OptionsButton from '../OptionsButton/OptionsButton'
 
 
 function Song(props) {
-
+console.log(props)
   return (
     <>
       <div className='songRow'>
@@ -14,9 +14,19 @@ function Song(props) {
         <div className='songDetails'>
           <Link style={{ textDecoration: 'none', color: 'white' }} to={`/song/${props.id}?${props.orgin}`}><div className='SongName'>{props.name}</div></Link>
           <div className='SongArtist'>
-            {props.artist && <span>{props.artist}</span>}
+            {props.artist && 
+              <Link to={`/artist/${props.artistId}`}>
+                <span className='artistlabel'>{props.artist}</span>
+              </Link>
+            }
             {(props.artist && props.artist) && <span> / </span>}
-            {props.album && <span>{props.album}</span>}
+            
+              {props.album &&
+                <Link to={`/album/${props.albumId}`}>
+                  <span className='albumlabel'>{props.album}</span>
+                </Link>
+              }
+            
           </div>
         </div>
         {props.length && <span className='songLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>}

@@ -68,6 +68,8 @@ function PlaylistPage(props) {
                         index={song.Songs_in_playlist.index}
                         id={song.id}
                         orgin={`playlist=${displayedPlaylist.id}`}
+                        artistId={song.artistId}
+                        albumId={song.albumId}
                     />
                 })}
             </div>

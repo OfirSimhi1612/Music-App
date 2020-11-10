@@ -19,9 +19,9 @@ function SongInQueue({ song, qParams, CurrentSongId }) {
             <div className='displayedSongName' style={{ color: CurrentSongId === song.id && 'green' }}>{song.title}</div>
           </Link>
           <div>
-            <span className='displayedSongArtist'>{song.Artist.name}</span>
+            <Link to={`/artist/${song.artistId}`}><span className='displayedSongArtist'>{song.Artist.name}</span></Link>
             {(song.Artist.name && song.Album.name) && <span> / </span>}
-            <span className='displayedSongAlbum'>{song.Album.name}</span>
+            <Link to={`/album/${song.albumId}`}><span className='displayedSongAlbum'>{song.Album.name}</span></Link>
           </div>
         </div>
         <span className='displayedSongLength'>{parseInt(song.length.slice(0, 2)) > 0 ? song.length : song.length.slice(3)}</span>

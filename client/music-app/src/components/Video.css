@@ -98,5 +98,9 @@
     font-size: 13px;
 }
 
+.displayedSongArtist:hover,.displayedSongAlbum:hover{
+    color:green
+}
+
 
 

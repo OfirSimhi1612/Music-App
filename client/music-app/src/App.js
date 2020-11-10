@@ -36,14 +36,6 @@ function App() {
 
   useEffect(() => {
 
-    // updatePlayer({
-    //   Display: false,
-    //   FullScreen: true,
-    //   CurrentSong: {},
-    //   Queue: null,
-    //   LocationQuery: null
-    // })
-
     async function getUser() {
       try {
         const userDetails = await network.get('/user/auth')
@@ -51,7 +43,6 @@ function App() {
       } catch (error) {
         console.log(error)
       }
-
     }
     if (cookie.load('music_jwt')) {
       getUser()
