@@ -46,9 +46,8 @@ function Album(props) {
     );
 }
 
-function SearchPage(props) {
+function SearchPage() {
 
-    // const [SearchInput, setSearchInput] = useState('');
     const [SearchResults, setSearchResults] = useState({ songs: [], artists: [], playlists: [], albums: [] });
 
     function Search(event) {
@@ -79,7 +78,7 @@ function SearchPage(props) {
         }
 
     }
-
+    
     return (
         <>
             <div id='searchPage'>

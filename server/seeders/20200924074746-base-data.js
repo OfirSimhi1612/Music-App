@@ -15,9 +15,6 @@ module.exports = {
     await queryInterface.bulkInsert('Playlists', playlist);
     await queryInterface.bulkInsert('Songs', song);
     return
-
-
-
   },
 
   down: async (queryInterface, Sequelize) => {

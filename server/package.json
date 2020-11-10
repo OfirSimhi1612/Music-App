@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/jest",
-    "dev": "nodemon index.js"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "mig:dev": "cross-env NODE_ENV=development npx sequelize db:migrate",
+    "mig:prod": "cross-env NODE_ENV=production npx sequelize db:migrate",
+    "seed:dev": "cross-env NODE_ENV=development npx sequelize db:seed:all",
+    "seed:prod": "cross-env NODE_ENV=production npx sequelize db:seed:all",
+    "all:dev": "npm run mig:dev && npm run seed:dev",
+    "all:prod": "npm run mig:prod && npm run seed:prod"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +21,7 @@
     "bcrypt": "^5.0.0",
     "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
