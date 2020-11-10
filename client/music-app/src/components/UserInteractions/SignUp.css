@@ -1,0 +1,51 @@
+#SignUpFrom{
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    gap: 10px;
+    color: grey;
+}
+
+.SignFirstNameRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.SignLastNameRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.SignEmailRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.SignPasswordRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.SignRepeatPasswordRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.SignBirthDateRow{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.SignSubmitButton{
+    margin-right: auto;
+    margin-left: auto;
+    width: 140px;
+    margin-top: 20px;
+}

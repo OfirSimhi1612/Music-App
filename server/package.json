@@ -4,21 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "test": "node_modules/.bin/jest",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "mig:dev": "cross-env NODE_ENV=development npx sequelize db:migrate",
+    "mig:prod": "cross-env NODE_ENV=production npx sequelize db:migrate",
+    "seed:dev": "cross-env NODE_ENV=development npx sequelize db:seed:all",
+    "seed:prod": "cross-env NODE_ENV=production npx sequelize db:seed:all",
+    "all:dev": "npm run mig:dev && npm run seed:dev",
+    "all:prod": "npm run mig:prod && npm run seed:prod"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie": "^0.4.1",
+    "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+    "express-session": "^1.17.1",
+    "joi": "^17.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
-    "eslint": "^7.8.1",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0"
+    "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }

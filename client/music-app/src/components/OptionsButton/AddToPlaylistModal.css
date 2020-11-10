@@ -1,0 +1,87 @@
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: rgba(26, 26, 26, 0.8);
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    outline: 0;
+    color: white;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#contained-modal-title-vcenter{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.close{
+    color: white
+}
+
+.playlistCardInModal{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 200px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.playlistCardInModal:hover{
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.playlistInModalImg{
+    width: 176.4px;
+    height: 176.4px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.playlistInModalName{
+    align-self: center;
+    font-size: 20px;
+}
+
+.ModalHeaderContainer{
+    margin-bottom: 10px;
+}
+
+.ModalHeader{
+    margin-bottom: 0px;
+}
+
+.searchInputInModal{
+    background-color: rgb(59, 59, 59);
+    border: solid 1px white;
+    align-self: flex-end;
+    height: 35px;
+    padding: 20px;
+}
+
+.addPlaylistInModal{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    padding-top: 7px;
+    width: 30%;
+    height: 50px;
+    border: solid 1px white;
+    text-align: center;
+    font-size: 20px;
+}
+
+.addPlaylistInModal:hover{
+    transform: scale(1.02);
+}
+
+
+.addToPlaylistModalSlider{
+    min-height: 220px;
+
+}

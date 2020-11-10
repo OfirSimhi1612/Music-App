@@ -1,53 +1,64 @@
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TopArtists.css'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-function ArtistDisplay(props){
-
-    function goToLink(){
-        //go to props.link
-    }
+function ArtistDisplay(props) {
 
     return (
         <>
-            <div className='artist' onClick={goToLink}>
-                <img className='artistImage' src={ 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
-                
-                    <div className='artistName'>{props.name}</div>
-                    <div className='artistLikes'>{props.likes} Likes</div>
-                
-            </div>
+            <Link to={`/artist/${props.id}`}>
+                <div className='artist'>
+                    <img className='topArtistImage' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
+                    <div className='topArtistDetails'>
+                        <div className='topArtistName'>{props.name}</div>
+                        <div className='topArtistLikes'>{props.likes} Likes</div>
+                    </div>
+                </div>
+            </Link>
         </>
     );
 }
 
-function TopArtists(props){
+function TopArtists(props) {
 
     const [Artists, setArtists] = useState([])
 
     useEffect(() => {
-        async function fetch(){
-            const { data } = await axios.get(`/top/artists`);
-            console.log(data)
+        async function fetch() {
+            const { data } = await axios.get(`/artist/top`);
             setArtists(data);
         }
         fetch()
     }, [])
 
+    const settings = {
+        className: "center",
+        centerMode: true,
+        infinite: Artists.length > 3,
+        centerPadding: "60px",
+        slidesToShow: 4,
+        speed: 500
+    };
+
     return (
         <>
             <div id='topArtists'>
-                <h3 className='topArtistsHead'>Top Artists</h3>
-                <div className='artists'>
-                {Artists.map(artist => {
-                    return <ArtistDisplay
+                <h2 className='topArtistsHead'>Top Artists</h2>
+                <Slider {...settings}>
+                    {Artists.map(artist => {
+                        return <ArtistDisplay
                             name={artist.name}
-                            cover_img={artist.cover_img}
-                            likes={artist.likes} 
-                            likes={artist.likes}/>
+                            cover_img={artist.coverImg}
+                            likes={artist.likes}
+                            id={artist.id}
+                        />
                     })
-                }
-                </div>
+                    }
+                </Slider>
             </div>
         </>
     );

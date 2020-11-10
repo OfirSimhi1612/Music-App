@@ -1,5 +1,143 @@
 #body{
     background-image: linear-gradient(0deg, #070707 0%, rgb(35, 36, 35) 100%);
-    padding:10px;
+    /* padding:10px; */
     min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+
+.swal-button {
+    padding: 7px 19px;
+    border-radius: 2px;
+    background-color: #aaaaaa;
+    font-size: 12px;
+    border: 1px solid #454546;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+
+:-webkit-any-link:hover{
+    text-decoration: none;
+    color: white;
+}
+
+:-webkit-any-link{
+    color: white
+}
+
+.Player{
+    z-index: 1;
+    position: fixed;
+    /* width: 100vw;
+    height: 87.5vh; */
+}
+
+.fullScreenVideo{
+    margin-left: 30px;
+    margin-top: 60px;
+}
+
+.smallScreenVideo{
+    position: fixed;
+    bottom: 65px;
+    right: 5px;
+}
+
+.bottomPlayerBar{
+  background-color: rgb(36, 36, 36);
+  box-shadow: 3px 3px 3px rgb(31, 31, 31);
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-right: 30px;
+  border-bottom: 1px solid black;
+}
+
+
+.bigYoutubeVideo{
+    width: 660px;
+    height: 350px;
+    transition: width 0.5s, height 0.5s;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.smallYoutubeVideo{
+    width: 256px;
+    height: 156px;
+    transition: width 0.3s, height 0.3s;
+
+}
+   
+.playerOptionsButtons{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    gap: 10px;
+    align-items: center;
+}
+
+.bottomBarButton{
+    height: 30px;
+    background-color: transparent;
+    border: 0px;
+    color: white;
+}
+
+#terminateSongButton{
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.playerControllButton{
+    width: 40px;
+    height: 40px;
+}
+
+.playerControlButtons{
+    display: flex;
+    gap: 5px;
+    padding-bottom: 10px;
+    margin-right: 40px;
+}
+
+#shuflleButton{
+    margin-left: 40px;
+}
+
+.playerSongDetails{
+    display: flex;
+    /* flex-direction: column; */
+    color: white;
+    gap: 10px;
+    align-items: center;
+}
+
+.playerCoverImg{
+    width: 50px;
+    height: 50px;
+}
+
+.playerSongArtist{
+    font-size: 13px;
+    color: gray;
+}
+
+.playerSongName{
+    font-size: 22px;
+}
+
+#bottomPlayerRangeControl{
+    width: 40%;
 }

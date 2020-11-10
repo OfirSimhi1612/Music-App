@@ -1,0 +1,70 @@
+.UserPlaylistsPage{
+    width: 90vw;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.userPlaylistsHeader{
+    color: white;
+}
+
+.userPlaylistsList{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    padding-top: 30px;
+}
+
+.userPlaylistContainer{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 49%;
+    height: 170px;
+    padding: 10px;
+    min-width: 400px;
+}
+
+.userPlaylistContainer:hover{
+    background-color: rgb(37, 37, 37);
+}
+
+.userPlaylistImg{
+    width: 150px;
+    height: 150px;
+}
+
+.userplaylistDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 150px;
+    color: white;
+    width: 80%;
+}
+
+.userPlaylistName{
+    font-size: 30px;
+    text-align: left;
+}
+
+.userplaylistMeta{
+    display: flex;
+    gap: 30px;
+    align-items: flex-end;
+}
+
+.playlistMetaGenre{
+    color: white;
+    font-size: 20px;
+}
+
+.playlistMetaCreatedAt{
+    text-align: right;
+}
