@@ -52,7 +52,7 @@ function OptionsButton(props) {
         try{
             const songDetails = await network.delete(`/library/removeSong?songId=${props.id}`)
             setInLibrary(false)
-            props.removeSongFromList(props.id)
+            props.removeFromList(props.id)
             if(songDetails){
                 swal({
                     text: 'Song Removed From Library!',

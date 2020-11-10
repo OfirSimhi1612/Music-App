@@ -7,7 +7,6 @@ import OptionsButton from '../OptionsButton/OptionsButton'
 
 function Song(props) {
 
-
   return (
     <>
       <div className='songRow'>
@@ -23,6 +22,7 @@ function Song(props) {
         {props.length && <span className='songLength'>{parseInt(props.length.slice(0, 2)) > 0 ? props.length : props.length.slice(3)}</span>}
         <OptionsButton
           id={props.id}
+          removeFromList={props.removeFromList}
         />
       </div>
     </>

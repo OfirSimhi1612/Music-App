@@ -22,9 +22,18 @@ function UserSongs() {
             }
 
         }
-
         fetch()
     }, [userDetails])
+
+    const removeFromList = React.useCallback((songId) => {
+        console.log(UserSongsPlaylist)
+        const filteredSongs  = UserSongsPlaylist.Songs.filter(song => song.id !== songId)
+
+        setUserSongsPlaylist({
+            ...UserSongsPlaylist,
+            Songs: filteredSongs
+        });
+    }, [UserSongsPlaylist])
 
     return (
         <>
@@ -42,6 +51,7 @@ function UserSongs() {
                                 cover_img={song.coverImg}
                                 id={song.id}
                                 orgin={`playlist=${UserSongsPlaylist.id}`}
+                                removeFromList={removeFromList}
                             />
                         })
                     }
