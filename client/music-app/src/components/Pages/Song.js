@@ -6,7 +6,6 @@ import OptionsButton from '../OptionsButton/OptionsButton'
 
 
 function Song(props) {
-console.log(props)
   return (
     <>
       <div className='songRow'>

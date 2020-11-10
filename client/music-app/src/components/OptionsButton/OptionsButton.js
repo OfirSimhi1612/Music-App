@@ -7,8 +7,6 @@ import './AddToPlaylistModal.css'
 import network from '../Network/network';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { useLocation, useHistory } from 'react-router-dom';
-
 
 function OptionsButton(props) {
 
@@ -17,18 +15,16 @@ function OptionsButton(props) {
     const [inLibrary, setInLibrary] = useState(false)
 
     const userDetails = useUserDetails()
-    const location  = useLocation()
-    const history = useHistory()
 
     useEffect(() => {
         if (Object.keys(userDetails).length > 0) {
             setUserLoged(true)
         }
-    }, [UserLoged])
+    }, [UserLoged, userDetails])
 
     useEffect(() => {
         existInLibrary()
-    }, [])
+    }, [props.id])
 
     async function addSongToLibrary() {
         try{
@@ -67,13 +63,15 @@ function OptionsButton(props) {
 
     const existInLibrary = React.useCallback(async () => {
         try {
+            console.log(props.id, 'button')
             const { data: exist } = await axios.get(`/library/isExist?songId=${props.id}`)
+            console.log(exist)
             setInLibrary(exist)
         } catch (error) {
             console.log(error)
             setInLibrary(false)
         }
-    }, [])
+    }, [props.id])
 
     return (
         <>

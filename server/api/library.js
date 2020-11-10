@@ -14,9 +14,12 @@ router.get('/isExist', userAuth, async (req, res) => {
     try{
         const Libaray = await Playlist.findOne({
             where: {
-                name: `user ${req.decoded.userId} playlist - systemPlaylist`
+                name: `user ${req.decoded.userId} playlist - systemPlaylist`,
+                creator: req.decoded.userId
             }
         })
+        console.log(Libaray.id)
+        console.log(req.query.songId)
         const isExist = await Songs_in_playlist.findAll({
             where: {
                 playlistId: Libaray.id,

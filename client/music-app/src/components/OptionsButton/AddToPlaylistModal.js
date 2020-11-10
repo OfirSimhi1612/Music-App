@@ -23,7 +23,6 @@ function PlaylistInModal(props) {
 function AddToPlaylistModal(props) {
 
     const [Playlists, setPlaylists] = useState([]);
-
     const userDetails = useUserDetails()
 
     const fetch = React.useCallback(async () => {

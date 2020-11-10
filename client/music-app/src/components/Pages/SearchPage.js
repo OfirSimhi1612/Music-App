@@ -50,6 +50,7 @@ function SearchPage() {
 
     const [SearchResults, setSearchResults] = useState({ songs: [], artists: [], playlists: [], albums: [] });
 
+
     function Search(event) {
         const value = event.target.value;
         async function getReasults() {
@@ -92,6 +93,7 @@ function SearchPage() {
                         <div className='songsResults'>
                             <h3 className='ResultsHead'>Songs </h3>
                             {SearchResults.songs.map((song, index) => {
+                                console.log(song.id, 'srearch')
                                 return (<><Song
                                     name={song.title}
                                     artist={song.Artist.name}

@@ -4,6 +4,7 @@ import Song from './Song';
 import './ArtistPage.css'
 import LikeButton from '../LikesButton/LikesButton';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 function AlbumInArtist(props) {
 
@@ -31,6 +32,8 @@ function ArtistPage(props) {
     const [ArtistSongs, setArtistSongs] = useState();
     const [ArtistAlbums, setArtistAlbums] = useState([]);
 
+    const history = useHistory()
+
     useEffect(() => {
         async function fetch() {
             try {
@@ -44,6 +47,7 @@ function ArtistPage(props) {
 
             } catch (error) {
                 console.log(error.message)
+                history.push('/')
             }
         }
 

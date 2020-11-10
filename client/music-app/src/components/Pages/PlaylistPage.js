@@ -4,6 +4,7 @@ import './PlaylistPage.css';
 import playlistTime from './playlistTime';
 import LikeButton from '../LikesButton/LikesButton';
 import Song from './Song';
+import { useHistory } from "react-router-dom";
 
 
 function PlaylistPage(props) {
@@ -11,13 +12,19 @@ function PlaylistPage(props) {
     const [displayedPlaylist, setDisplayedPlaylist] = useState({});
     const [playlistSongs, setPlaylistSongs] = useState([]);
 
+    const history = useHistory()
+
     useEffect(() => {
         async function fetch() {
-            console.log(props.match.params.id)
-            const songs = await axios.get(`/playlist/songs/${props.match.params.id}`);
-            const playlist = await axios.get(`/playlist/${props.match.params.id}`);
-            setDisplayedPlaylist(playlist.data);
-            setPlaylistSongs(songs.data);
+            try{
+                const songs = await axios.get(`/playlist/songs/${props.match.params.id}`);
+                const playlist = await axios.get(`/playlist/${props.match.params.id}`);
+                setDisplayedPlaylist(playlist.data);
+                setPlaylistSongs(songs.data);
+            } catch (error){
+                console.log(error)
+                history.push('/')
+            } 
         }
         fetch()
     }, [])
