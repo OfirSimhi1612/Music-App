@@ -6,10 +6,17 @@ In order to use it you must have MySql installed on youre machine, and relevant 
 ## How to use: 
 * Clone the repository
 * Run ```npm install``` both in client and server folders.
-* Creeate .env file in ```server``` folder and fill with youre details. See format bellow: 
+* Creeate ```.env``` file in ```server``` folder and fill with youre details. See format bellow: 
 
-![](./ReadME_IMG/envConfig.png)
-
+```javascript
+    DB_USERNAME=""
+    DB_PASSWORD=""
+    DEV_DB_DATABASE="" //development schema name
+    TEST_DB_DATABASE="" //tests schema name
+    PROD_DB_DATABASE="" //production schema name
+    DB_HOST="" //usually will be 'localhost'
+    JWT_SECRET="" // secret for JWT authentication
+```
 * usefull ```server``` scripts :
 ---
 | script        | Decreption                                   |
