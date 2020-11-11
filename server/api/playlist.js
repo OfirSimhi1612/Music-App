@@ -178,7 +178,7 @@ router.get('/:playlistId', publicAuth, async (req, res) => {
         const playlist = await Playlist.findByPk(req.params.playlistId)
         if (!playlist) {
             res.status(404).send('invalid Id')
-        } else if(!playlist.isPublic && playlist.creator !== req.decoded.id){
+        } else if(!playlist.isPublic && playlist.creator !== req.decoded.userId){
             res.status(404).send('Private Playlist!')
         } else {
             res.json(playlist)
@@ -232,7 +232,8 @@ router.post('/', userAuth, async (req, res) => {
             id: playlist.id,
             name: playlist.name,
             genre: playlist.genre,
-            creator: creator.firstName + ' ' + creator.lastName
+            creator: creator.firstName + ' ' + creator.lastName,
+            isPublic: playlist.isPublic
         })
         res.status(201).json(playlist);
     } catch (error) {

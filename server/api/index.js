@@ -11,5 +11,6 @@ router.use('/song', require('./song'));
 router.use('/playlist', require('./playlist'));
 router.use('/user', require('./user'));
 router.use('/library', require('./library'));
+router.use('/search', require('./search'));
 
 module.exports = router;

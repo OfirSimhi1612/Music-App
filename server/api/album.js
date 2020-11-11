@@ -147,14 +147,6 @@ router.post('/', userAuth, async (req, res) => {
             ]
         })
 
-        console.log({
-            id: album.id,
-            name: album.name,
-            coverImg: album.coverImg,
-            artist: albumArtist.Artist.name,
-            songs: []
-        })
-
         await postSearchDoc('album', {
             id: album.id,
             name: album.name,

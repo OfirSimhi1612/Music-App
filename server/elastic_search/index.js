@@ -29,13 +29,13 @@ async function deleteSearchDoc(index, id){
 
 async function searchSearchDoc(index, query){
     try{
-        await client.search({
-            index,
-            query
+        const results = await client.search({
+           index: index,
+           body: query
         })
-        return
+        return results.body.hits.hits
     } catch(error){
-        throw error.message
+        throw error
     }
 }
 
