@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const { Song, Artist, Album, Playlist, Songs_in_playlist } = require('../models');
+const { Song, Artist, Album, Playlist, Songs_in_playlist, User } = require('../models');
 const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { PlaylistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
 const cookie = require('cookie')
 const jwt = require('jsonwebtoken');
+const { postSearchDoc, deleteSearchDoc, searchSearchDoc } = require('../elastic_search')
 
 
 
@@ -224,6 +225,15 @@ router.post('/', userAuth, async (req, res) => {
     try {
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const playlist = await Playlist.create(validatedPlaylist)
+
+        const creator = await User.findByPk(playlist.creator)
+
+        await postSearchDoc('playlist', {
+            id: playlist.id,
+            name: playlist.name,
+            genre: playlist.genre,
+            creator: creator.firstName + ' ' + creator.lastName
+        })
         res.status(201).json(playlist);
     } catch (error) {
         res.status(400).send(error.message)

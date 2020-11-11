@@ -4,6 +4,7 @@ const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { SongSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
+const { postSearchDoc, deleteSearchDoc, searchSearchDoc } = require('../elastic_search')
 
 
 const router = Router();
@@ -140,6 +141,34 @@ router.post('/', userAuth, async (req, res) => {
     try {
         const validatedSong = await Joi.attempt(req.body, SongSchema)
         const song = await Song.create(validatedSong)
+
+        const songDetails = await Song.findOne({
+            where: {
+                artistId: song.artistId,
+                albumId: song.albumId
+            },
+            include: [
+                {
+                    model: Artist,
+                    attributes: ['name']
+                },
+                {
+                    model: Album,
+                    attributes: ['name']
+                }
+            ]
+        })
+
+        postSearchDoc('song', {
+            id:song.id,
+            name: song.title,
+            coverImg: song.coverImg,
+            artistId: song.artistId,
+            artist: songDetails.Artist.name,
+            albumId: song.albumId,
+            album: songDetails.Album.name 
+        })
+
         res.status(201).send(song)
     } catch (error) {
         console.log(error)

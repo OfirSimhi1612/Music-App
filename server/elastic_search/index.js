@@ -45,7 +45,7 @@ module.exports = {
     searchSearchDoc
 }
 
-// client.search({index: 'music_app'}, (err, res) => {
+// client.search({}, (err, res) => {
 //     if(err){
 //         console.log(err)
 //     } else {
@@ -54,11 +54,19 @@ module.exports = {
 // })
     
 // client.delete({
-//     index: elasticIndex,
-//     id: 'd1UXt3UBIJROWIjWajm2'
+//     index: 'album',
+//     id: 'jlU-t3UBIJROWIjW2zlC'
 // })
 // client.delete({
-//     index: elasticIndex,
-//     id: 'hlUlt3UBIJROWIjWlTl6'
+//     index: 'song',
+//     id: 'mVVDt3UBIJROWIjWdjl6'
+// })
+// client.delete({
+//     index: 'playlist',
+//     id: 'ylVKt3UBIJROWIjWNTlT'
+// })
+// client.delete({
+//     index: 'playlist',
+//     id: 'plVHt3UBIJROWIjWtznc'
 // })
 
