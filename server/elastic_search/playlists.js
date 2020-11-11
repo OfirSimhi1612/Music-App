@@ -5,15 +5,15 @@ const client = new Client({ node: 'http://localhost:9200' })
 async function search(query){
     try{
         const results = await client.search({
-           index: 'song',
+           index: 'playlist',
            body: {
-            "query": {
-                "multi_match" : {
-                    "query" : query,
-                    "fields": ["name","artist", "album"],
-                    "fuzziness": 2
+                "query": {
+                    "multi_match" : {
+                        "query" : query,
+                        "fields": ["name","creator", "songs"],
+                        "fuzziness": 2
+                    }
                 }
-            },
            }
         })
         return results.body

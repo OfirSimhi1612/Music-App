@@ -39,7 +39,6 @@ const publicAuth = async (req, res, next) => {
 
 }
 
-
 router.get('/', async (req, res) => {
     try {
         const playlists = await Playlist.findAll({
@@ -233,7 +232,8 @@ router.post('/', userAuth, async (req, res) => {
             name: playlist.name,
             genre: playlist.genre,
             creator: creator.firstName + ' ' + creator.lastName,
-            isPublic: playlist.isPublic
+            isPublic: playlist.isPublic,
+            coverImg: playlist.coverImg
         })
         res.status(201).json(playlist);
     } catch (error) {

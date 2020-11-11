@@ -5,12 +5,12 @@ const client = new Client({ node: 'http://localhost:9200' })
 async function search(query){
     try{
         const results = await client.search({
-           index: 'song',
+           index: 'artist',
            body: {
             "query": {
                 "multi_match" : {
                     "query" : query,
-                    "fields": ["name","artist", "album"],
+                    "fields": ["name", "albums", "songs"],
                     "fuzziness": 2
                 }
             },

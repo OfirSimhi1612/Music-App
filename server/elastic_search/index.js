@@ -45,13 +45,13 @@ module.exports = {
     searchSearchDoc
 }
 
-// client.search({}, (err, res) => {
-//     if(err){
-//         console.log(err)
-//     } else {
-//         console.log(res.body.hits.hits)
-//     }
-// })
+client.search({}, (err, res) => {
+    if(err){
+        console.log(err)
+    } else {
+        console.log(res.body.hits.hits)
+    }
+})
     
 // client.delete({
 //     index: 'album',
