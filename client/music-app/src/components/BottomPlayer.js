@@ -67,9 +67,15 @@ function BottomPlayer() {
 
     const updateCurrentSong = React.useCallback((index) => {
         const prevSong = bottomPlayer.Queue[index];
+        // console.log(bottomPlayer.LocationQuery)
+        console.log(prevSong)
         updateBottomPlayer({
             ...bottomPlayer,
             CurrentSong: prevSong,
+            LocationQuery: {
+                ...bottomPlayer.LocationQuery,
+                pathname: `/song/${prevSong.id}`
+            }
         })
     }, [bottomPlayer])
 
@@ -97,8 +103,6 @@ function BottomPlayer() {
     }, [])
 
     const expScreen = React.useCallback(() => {
-
-        console.log(bottomPlayer.LocationQuery)
         history.push({
             pathname: bottomPlayer.LocationQuery.pathname,
             search: bottomPlayer.LocationQuery.search

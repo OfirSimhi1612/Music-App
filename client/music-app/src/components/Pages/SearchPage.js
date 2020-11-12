@@ -91,7 +91,9 @@ function SearchPage() {
                                 return (<><Song
                                     name={song.name}
                                     artist={song.artist}
+                                    artistId={song.artistId}
                                     album={song.album}
+                                    albumId={song.albumId}
                                     id={song.id}
                                     cover_img={song.coverImg}
                                     className='songResult'
