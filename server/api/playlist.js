@@ -233,7 +233,8 @@ router.post('/', userAuth, async (req, res) => {
             genre: playlist.genre,
             creator: creator.firstName + ' ' + creator.lastName,
             isPublic: playlist.isPublic,
-            coverImg: playlist.coverImg
+            coverImg: playlist.coverImg,
+            songs: []
         })
         res.status(201).json(playlist);
     } catch (error) {

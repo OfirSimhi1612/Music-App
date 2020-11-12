@@ -151,6 +151,7 @@ router.post('/', userAuth, async (req, res) => {
             id: album.id,
             name: album.name,
             coverImg: album.coverImg,
+            artistId: album.artistId,
             artist: albumArtist.Artist.name,
             songs: []
         })
