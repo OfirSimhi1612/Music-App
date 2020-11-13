@@ -67,8 +67,6 @@ function BottomPlayer() {
 
     const updateCurrentSong = React.useCallback((index) => {
         const prevSong = bottomPlayer.Queue[index];
-        // console.log(bottomPlayer.LocationQuery)
-        console.log(prevSong)
         updateBottomPlayer({
             ...bottomPlayer,
             CurrentSong: prevSong,

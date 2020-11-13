@@ -1,8 +1,22 @@
 const { Client } = require('@elastic/elasticsearch')
 const { getAllEntities } = require('./helpers/mysql');
-const deepCompare = require('./helpers/compare');
+const indexCompare = require('./helpers/compare');
 
 const client = new Client({ node: 'http://localhost:9200' })
+
+async function indexMapping(index, map){
+    try{
+        await client.indices.putMapping({
+            index,
+            body: {
+                properties: map
+            }    
+        })
+    } catch (error){
+        console.log(error.body.error)
+    }
+    
+}
 
 async function postSearchDoc(index, body){
     try{
@@ -68,27 +82,27 @@ async function getDocIdBySQLId(index, id){
 
 const INDEX = ['song', 'album', 'artist', 'playlist'];
 
-async function updateAllFromDB(){
+async function updateSearchFromDB(){
 
     for(let i = 0; i < INDEX.length; i++){
         if(!(await client.indices.exists({index: INDEX[i]})).body){
             await client.indices.create({
                 index: INDEX[i],
             })
-            console.log((await client.indices.exists({index: INDEX[i]})).body)
+            console.log('added index: ' + INDEX[i])
         }
     }
 
-    const allDBEntities = await getAllEntities()
+    const allDBEntities = await getAllEntities() //TODO: function to get index length and replace with size value
     const allSearchEntities = [
         (await client.search({index: 'song', size: 10000})).body.hits.hits.map(song => song._source),
         (await client.search({index: 'album', size: 10000})).body.hits.hits.map(album => album._source),
         (await client.search({index: 'artist', size: 10000})).body.hits.hits.map(artist => artist._source),
         (await client.search({index: 'playlist', size: 10000})).body.hits.hits.map(playlist => playlist._source),
-    ]
+    ] 
 
     allDBEntities.forEach(async (table, i) => {
-        await deepCompare(INDEX[i], table, allSearchEntities[i])
+        await indexCompare(INDEX[i], table, allSearchEntities[i])
     })
 }
 
@@ -97,7 +111,8 @@ module.exports = {
     deleteSearchDoc,
     updateSearchDoc,
     getDocIdBySQLId,
-    updateAllFromDB
+    updateSearchFromDB,
+    indexMapping
 }
 
 

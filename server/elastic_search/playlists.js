@@ -10,7 +10,7 @@ async function search(query){
                 "query": {
                     "multi_match" : {
                         "query" : query,
-                        "fields": ["name","creator", "songs"],
+                        "fields": ["name^3","creator^1.5", "songs^1.5"],
                         "fuzziness": 2
                     }
                 }
@@ -21,6 +21,8 @@ async function search(query){
         throw error.meta.body.error
     }
 }
+
+
 
 module.exports = Songs = {
     search

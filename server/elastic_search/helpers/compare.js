@@ -50,13 +50,11 @@ async function getDocIdBySQLId(index, id){
     }
 }
 
-
-async function deepCompare(index ,baseList, compareList){
+async function indexCompare(index ,baseList, compareList){
     try{
         let new_counter = 0;
         let mod_counter = 0;
         let same_counter = 0;
-        console.log(baseList.length, compareList.length)
         for(let i = 0; i < baseList.length; i++){
             const matchingElement = compareList.find((match) =>{
                 return match.id === baseList[i].id
@@ -75,9 +73,11 @@ async function deepCompare(index ,baseList, compareList){
                 }
             }
         }
+        console.log('ELASTIC SEARCH UPDATE:')
         console.log('added ' + new_counter + ' ' + index + 's')
         console.log('modifyed ' + mod_counter + ' ' + index + 's')
-        console.log('skipped ' + same_counter + ' ' + index + 's')
+        console.log(same_counter + ' ' + index + 's up to date')
+        console.log('_____________________________________')
     } catch (error){
         console.log(error)
         throw error
@@ -86,4 +86,4 @@ async function deepCompare(index ,baseList, compareList){
 }
 
 
-module.exports = deepCompare
+module.exports = indexCompare

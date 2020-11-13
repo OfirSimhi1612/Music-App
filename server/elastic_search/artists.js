@@ -10,7 +10,7 @@ async function search(query){
             "query": {
                 "multi_match" : {
                     "query" : query,
-                    "fields": ["name", "albums", "songs"],
+                    "fields": ["name^3", "albums^1.5", "songs^1.5"],
                     "fuzziness": 2
                 }
             },
