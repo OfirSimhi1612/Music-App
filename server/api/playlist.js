@@ -6,7 +6,7 @@ const { PlaylistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
 const cookie = require('cookie')
 const jwt = require('jsonwebtoken');
-const { postSearchDoc, deleteSearchDoc, searchSearchDoc } = require('../elastic_search')
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
 
 
 
@@ -277,6 +277,9 @@ router.delete('/:playlistId', userAuth, async (req, res) => {
                 id: req.params.playlistId
             }
         })
+
+        const DocId = await getDocIdBySQLId('playlist', req.params.playlistId);
+        await deleteSearchDoc('playlist', DocId);
 
         res.json(playlist)
     } catch (error) {

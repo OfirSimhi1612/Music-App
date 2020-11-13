@@ -4,7 +4,7 @@ const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { SongSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
-const { postSearchDoc, deleteSearchDoc, searchSearchDoc } = require('../elastic_search')
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
 
 
 const router = Router();
@@ -186,6 +186,9 @@ router.delete('/:songId', userAuth, async (req, res) => {
                 id: req.params.songId
             }
         })
+
+        const DocId = await getDocIdBySQLId('song', req.params.songId);
+        await deleteSearchDoc('song', DocId);
 
         res.json(song)
     } catch (error) {

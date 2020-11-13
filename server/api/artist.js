@@ -5,7 +5,7 @@ const Joi = require('joi');
 const router = Router();
 const { ArtistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
-const { postSearchDoc, deleteSearchDoc, searchSearchDoc } = require('../elastic_search')
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
 
 
 router.get('/', async (req, res) => {
@@ -164,6 +164,9 @@ router.delete('/:artistId', userAuth, async (req, res) => {
                 id: req.params.artistId
             }
         })
+
+        const DocId = await getDocIdBySQLId('artist', req.params.artistId);
+        await deleteSearchDoc('artist', DocId);
 
         res.json(artist)
     } catch (error) {
