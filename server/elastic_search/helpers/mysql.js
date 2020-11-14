@@ -112,9 +112,8 @@ async function getAllPlaylistsData(){
                 attributes: ['title']
             }
         ],
-        attributes: ['name', 'id', 'coverImg']
+        attributes: ['name', 'id', 'coverImg', 'isPublic']
     })
-    
     const elasticData = allPlaylists.map(playlist => {
         return {
             id: playlist.id,

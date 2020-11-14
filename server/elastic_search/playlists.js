@@ -8,11 +8,22 @@ async function search(query){
            index: 'playlist',
            body: {
                 "query": {
-                    "multi_match" : {
-                        "query" : query,
-                        "fields": ["name^3","creator^1.5", "songs^1.5"],
-                        "fuzziness": 2
-                    }
+                    "bool": {
+                        "must":{
+                            "term" : { "isPublic" : true }
+                        } ,
+                        "should": [
+                            {
+                                "multi_match" : {
+                                    "query" : query,
+                                    "fields": ["name^3","creator^1.5", "songs^1.5"],
+                                    "fuzziness": 2
+                                }
+                            }
+                        ]     
+
+                    },
+                    
                 }
            }
         })

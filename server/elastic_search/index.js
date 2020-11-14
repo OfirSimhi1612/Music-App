@@ -83,27 +83,38 @@ async function getDocIdBySQLId(index, id){
 const INDEX = ['song', 'album', 'artist', 'playlist'];
 
 async function updateSearchFromDB(){
-
-    for(let i = 0; i < INDEX.length; i++){
-        if(!(await client.indices.exists({index: INDEX[i]})).body){
-            await client.indices.create({
-                index: INDEX[i],
-            })
-            console.log('added index: ' + INDEX[i])
+    try{
+        const docsCount = INDEX.map(async (index) => {
+            const { body: {count : indexCount }  }  = await client.count({ index })
+            return indexCount
+        })
+    
+        for(let i = 0; i < INDEX.length; i++){
+            if(!(await client.indices.exists({index: INDEX[i]})).body){
+                await client.indices.create({
+                    index: INDEX[i],
+                })
+                console.log('added index: ' + INDEX[i])
+            }
         }
+    
+        const allDBEntities = await getAllEntities() 
+        const allSearchEntities = [
+            (await client.search({index: INDEX[0], size: await docsCount[0]})).body.hits.hits.map(song => song._source),
+            (await client.search({index: INDEX[1], size: await docsCount[1]})).body.hits.hits.map(album => album._source),
+            (await client.search({index: INDEX[2], size: await docsCount[2]})).body.hits.hits.map(artist => artist._source),
+            (await client.search({index: INDEX[3], size: await docsCount[3]})).body.hits.hits.map(playlist => playlist._source),
+        ] 
+    
+        allDBEntities.forEach(async (table, i) => {
+            await indexCompare(INDEX[i], table, allSearchEntities[i])
+        })
+    } catch (error){
+        console.log(error.body.error);
+        throw error
     }
 
-    const allDBEntities = await getAllEntities() //TODO: function to get index length and replace with size value
-    const allSearchEntities = [
-        (await client.search({index: 'song', size: 10000})).body.hits.hits.map(song => song._source),
-        (await client.search({index: 'album', size: 10000})).body.hits.hits.map(album => album._source),
-        (await client.search({index: 'artist', size: 10000})).body.hits.hits.map(artist => artist._source),
-        (await client.search({index: 'playlist', size: 10000})).body.hits.hits.map(playlist => playlist._source),
-    ] 
-
-    allDBEntities.forEach(async (table, i) => {
-        await indexCompare(INDEX[i], table, allSearchEntities[i])
-    })
+    
 }
 
 module.exports = {
