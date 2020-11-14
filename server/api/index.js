@@ -14,6 +14,6 @@ router.use('/user', require('./user'));
 router.use('/library', require('./library'));
 router.use('/search', require('./search'));
 
-setInterval(updateSearchFromDB, 6000)
+setInterval(updateSearchFromDB, 60000)
 
 module.exports = router;

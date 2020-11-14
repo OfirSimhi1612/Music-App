@@ -118,11 +118,10 @@ async function getAllPlaylistsData(){
         return {
             id: playlist.id,
             name: playlist.name,
-            genre: playlist.genre,
             creator: playlist.User.firstName + ' ' + playlist.User.lastName,
-            isPublic: playlist.isPublic,
             coverImg: playlist.coverImg,
-            songs: playlist.Songs.map(song => song.title)
+            songs: playlist.Songs.map(song => song.title),
+            isPublic: playlist.isPublic
         }
     })
     

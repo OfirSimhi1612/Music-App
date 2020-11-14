@@ -110,7 +110,7 @@ async function updateSearchFromDB(){
             await indexCompare(INDEX[i], table, allSearchEntities[i])
         })
     } catch (error){
-        console.log(error.body.error);
+        console.log(error);
         throw error
     }
 

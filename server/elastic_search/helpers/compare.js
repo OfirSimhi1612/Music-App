@@ -63,6 +63,40 @@ async function removeSearchDoc(index, id){
     
 }
 
+function arrayCompare(arr1, arr2){
+    if(arr1.length === arr2.length){
+        for(let i in arr1){
+            if(arr1[i] !== arr2[i]){
+                return false
+            }
+        }
+        return true
+    } else {
+        return false
+    }
+}
+
+function deepCompare(obj1, obj2){
+    for(let key of Object.keys(obj1)){
+        if(obj2.hasOwnProperty(key)){
+            if(obj1[key] === obj2[key]){
+                continue
+            } else {
+                if(obj1[key]._proto_ === obj2[key]._proto_){
+                    return Array.isArray(obj1[key]) 
+                    ? arrayCompare(obj1[key], obj2[key]) 
+                    : deepCompare(obj1[key], obj2[key])
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+    }
+    return true
+}
+
 async function indexCompare(index ,baseList, compareList){
     try{
         let new_counter = 0;
@@ -77,7 +111,8 @@ async function indexCompare(index ,baseList, compareList){
                 new_counter ++;
                 await postSearchDoc(index, baseList[i])
             } else {
-                const matching = JSON.stringify(matchingElement) === JSON.stringify(baseList[i])
+                // const matching = JSON.stringify(matchingElement) === JSON.stringify(baseList[i]) //TODO: deepCompare function
+                const matching = deepCompare(matchingElement, baseList[i])
                 if(!matching) {
                     mod_counter ++
                     const DocId = await getDocIdBySQLId(index, matchingElement.id)
