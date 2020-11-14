@@ -55,21 +55,15 @@ function SearchPage() {
         const value = event.target.value;
         async function getReasults() {
             try {
-                Promise.all([
-                    axios.get(`/song/search/${value}`),
-                    axios.get(`/album/search/${value}`),
-                    axios.get(`/artist/search/${value}`),
-                    axios.get(`/playlist/search/${value}`)
-                ]).then(results => {
-                    setSearchResults({
-                        songs: results[0].data.slice(0, 6),
-                        albums: results[1].data.slice(0, 6),
-                        artists: results[2].data.slice(0, 6),
-                        playlists: results[3].data.slice(0, 6)
-                    });
-                })
-                // setSearchInput(value);
-
+                
+                const { data: results } = await axios.get(`/search?search=${value}`)
+                console.log(results)
+                setSearchResults({
+                    songs: results[0].slice(0, 6),
+                    albums: results[1].slice(0, 6),
+                    artists: results[2].slice(0, 6),
+                    playlists: results[3].slice(0, 6)
+                });
             } catch (error) {
                 console.log(error.message);
             }
@@ -95,9 +89,11 @@ function SearchPage() {
                             {SearchResults.songs.map((song, index) => {
                                 console.log(song.id, 'srearch')
                                 return (<><Song
-                                    name={song.title}
-                                    artist={song.Artist.name}
-                                    album={song.Album.name}
+                                    name={song.name}
+                                    artist={song.artist}
+                                    artistId={song.artistId}
+                                    album={song.album}
+                                    albumId={song.albumId}
                                     id={song.id}
                                     cover_img={song.coverImg}
                                     className='songResult'

@@ -12,7 +12,7 @@ function PlaylistInModal(props) {
     return (
         <>
             <div className='playlistCardInModal'>
-                <img onClick={() => props.add(props.id)} className='playlistInModalImg' src={props.cover_img}></img>
+                <img onClick={() => props.add(props.id)} className='playlistInModalImg' src={props.cover_img || 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQUR92Pj9suTlAgIpvCrf9z36F9HDlmSj6aRw&usqp=CAU'}></img>
                 <span onClick={() => props.add(props.id)} className='playlistInModalName'>{props.name}</span>
             </div>
         </>

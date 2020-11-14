@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const { Song, Artist, Album, Playlist, Songs_in_playlist } = require('../models');
+const { Song, Artist, Album, Playlist, Songs_in_playlist, User } = require('../models');
 const { Op } = require('Sequelize')
 const Joi = require('joi');
 const { PlaylistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
 const cookie = require('cookie')
 const jwt = require('jsonwebtoken');
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
 
 
 
@@ -37,7 +38,6 @@ const publicAuth = async (req, res, next) => {
     }
 
 }
-
 
 router.get('/', async (req, res) => {
     try {
@@ -177,7 +177,7 @@ router.get('/:playlistId', publicAuth, async (req, res) => {
         const playlist = await Playlist.findByPk(req.params.playlistId)
         if (!playlist) {
             res.status(404).send('invalid Id')
-        } else if(!playlist.isPublic && playlist.creator !== req.decoded.id){
+        } else if(!playlist.isPublic && playlist.creator !== req.decoded.userId){
             res.status(404).send('Private Playlist!')
         } else {
             res.json(playlist)
@@ -224,6 +224,18 @@ router.post('/', userAuth, async (req, res) => {
     try {
         const validatedPlaylist = await Joi.attempt(req.body, PlaylistSchema)
         const playlist = await Playlist.create(validatedPlaylist)
+
+        const creator = await User.findByPk(playlist.creator)
+
+        await postSearchDoc('playlist', {
+            id: playlist.id,
+            name: playlist.name,
+            genre: playlist.genre,
+            creator: creator.firstName + ' ' + creator.lastName,
+            isPublic: playlist.isPublic,
+            coverImg: playlist.coverImg,
+            songs: []
+        })
         res.status(201).json(playlist);
     } catch (error) {
         res.status(400).send(error.message)
@@ -265,6 +277,9 @@ router.delete('/:playlistId', userAuth, async (req, res) => {
                 id: req.params.playlistId
             }
         })
+
+        const DocId = await getDocIdBySQLId('playlist', req.params.playlistId);
+        await deleteSearchDoc('playlist', DocId);
 
         res.json(playlist)
     } catch (error) {

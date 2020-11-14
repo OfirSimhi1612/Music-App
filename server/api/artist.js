@@ -5,8 +5,7 @@ const Joi = require('joi');
 const router = Router();
 const { ArtistSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
-
-
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
 
 
 router.get('/', async (req, res) => {
@@ -141,6 +140,14 @@ router.post('/', userAuth, async (req, res) => {
     try {
         const validatedArtist = await Joi.attempt(req.body, ArtistSchema);
         const newArtist = await Artist.create(validatedArtist);
+
+        await postSearchDoc('artist', {
+            id: newArtist.id,
+            name: newArtist.name,
+            coverImg: newArtist.coverImg,
+            albums: [],
+            songs: []
+        })
         res.status(201).send(newArtist);
     } catch (error) {
         res.status(400).send(error.message);
@@ -157,6 +164,9 @@ router.delete('/:artistId', userAuth, async (req, res) => {
                 id: req.params.artistId
             }
         })
+
+        const DocId = await getDocIdBySQLId('artist', req.params.artistId);
+        await deleteSearchDoc('artist', DocId);
 
         res.json(artist)
     } catch (error) {

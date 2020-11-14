@@ -14,7 +14,7 @@ In order to use it you must have MySql installed on youre machine, and relevant 
     DEV_DB_DATABASE="" //development schema name
     TEST_DB_DATABASE="" //tests schema name
     PROD_DB_DATABASE="" //production schema name
-    DB_HOST="" //usually will be 'localhost'
+    DB_HOST=""
     JWT_SECRET="" // secret for JWT authentication
 ```
 * usefull ```server``` scripts :
