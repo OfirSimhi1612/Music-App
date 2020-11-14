@@ -44,7 +44,6 @@ function ArtistPage(props) {
                 setDisplayedArtist(ArtistData.data);
                 setArtistSongs(SongsData.data);
                 setArtistAlbums(AlbumsData.data);
-
             } catch (error) {
                 console.log(error.message)
                 history.push('/')

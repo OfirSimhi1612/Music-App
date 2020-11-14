@@ -4,25 +4,38 @@ import './AlbumPage.css';
 import Song from './Song';
 import playlistTime from './playlistTime';
 import LikeButton from '../LikesButton/LikesButton'
+import { useHisory, useHistory } from 'react-router-dom';
 
 
 function AlbumPage(props) {
 
     const [displayedAlbum, setDisplayedAlbum] = useState({});
     const [AlbumSongs, setAlbumSongs] = useState([]);
+    const history = useHistory()
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/album/${props.match.params.id}`);
-            setDisplayedAlbum(data);
+            try{
+                const { data } = await axios.get(`/album/${props.match.params.id}`);
+                setDisplayedAlbum(data);
+            }catch (error){
+                console.log(error)
+                history.push('/')
+            }
         }
+        
         fetch()
     }, [])
 
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get(`/album/songs/${props.match.params.id}`);
-            setAlbumSongs(data);
+            try{
+                const { data } = await axios.get(`/album/songs/${props.match.params.id}`);
+                setAlbumSongs(data);
+            } catch (error){
+                console.log(error)
+            }
+            
         }
         fetch()
     }, [])
