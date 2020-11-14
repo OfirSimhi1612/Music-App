@@ -40,7 +40,7 @@ function TopArtists(props) {
         centerMode: true,
         infinite: Artists.length > 3,
         centerPadding: "60px",
-        slidesToShow: 4,
+        slidesToShow: 5,
         speed: 500
     };
 

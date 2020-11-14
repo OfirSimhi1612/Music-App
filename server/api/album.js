@@ -4,8 +4,8 @@ const { Op } = require('Sequelize');
 const Joi = require('joi');
 const { AlbumSchema } = require('./validationSchemas')
 const { userAuth } = require('../authentication/auth')
-
-
+const { postSearchDoc, deleteSearchDoc, getDocIdBySQLId } = require('../elastic_search')
+ 
 
 const router = Router();
 
@@ -134,6 +134,28 @@ router.post('/', userAuth, async (req, res) => {
     try {
         const validatedAlbum = await Joi.attempt(req.body, AlbumSchema)
         const album = await Album.create(validatedAlbum)
+
+        const albumArtist = await Album.findOne({
+            where: {
+                artistId: album.artistId
+            },
+            include: [
+                {
+                    model: Artist,
+                    attributes: ['name']
+                }
+            ]
+        })
+
+        await postSearchDoc('album', {
+            id: album.id,
+            name: album.name,
+            coverImg: album.coverImg,
+            artistId: album.artistId,
+            artist: albumArtist.Artist.name,
+            songs: []
+        })
+
         res.status(201).json(album);
     } catch (error) {
         console.log(error)
@@ -151,6 +173,9 @@ router.delete('/:albumId', userAuth, async (req, res) => {
                 id: req.params.albumId
             }
         })
+
+        const DocId = await getDocIdBySQLId('album', req.params.albumId);
+        await deleteSearchDoc('album', DocId);
 
         res.send(Boolean(album))
     } catch (error) {
