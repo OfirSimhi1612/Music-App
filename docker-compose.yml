@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: O16s12@96
+    ports:
+      - "3307:3306"
+    expose:
+      - 3307
+    volumes: 
+      - db-data:/var/lib/mysql
+    networks: 
+      - music_app_network
+  api:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    environment: 
+      DB_USERNAME: root
+      DB_PASSWORD: O16s12@96
+      DEV_DB_DATABASE: music_app_dev
+      TEST_DB_DATABASE: music_app_test
+      PROD_DB_DATABASE: music_app_prod
+      DB_HOST: localhost
+      JWT_SECRET: JWT_SECRET
+      PORT: 8080
+    ports: 
+      - "8080:8080"  
+    networks: 
+      - music_app_network
+  client: 
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"  
+    networks: 
+      - music_app_network
+networks:
+  music_app_network:
+volumes:
+  db-data: 
+      external: true
+
+
