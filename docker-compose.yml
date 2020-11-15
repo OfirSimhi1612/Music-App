@@ -4,6 +4,7 @@ services:
   mysql:
     image: mysql
     environment:
+      MYSQL_DATABASE: root
       MYSQL_ROOT_PASSWORD: O16s12@96
     ports:
       - "3307:3306"
@@ -11,23 +12,6 @@ services:
       - db-data:/var/lib/mysql
     networks: 
       - music_app_network
-      - elastic
-  elastic_search:
-    container_name: music_elastic_search
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - discovery.type=single-node
-    logging: 
-        driver: none
-    volumes:
-      - data01:/usr/share/elasticsearch/data
-    ports:
-      - 9300:9300
-      - 9200:9200
-    networks:
-      - elastic
   api:
     build: 
       context: ./server
@@ -36,32 +20,48 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: O16s12@96
       DEV_DB_DATABASE: music_app_dev
-      TEST_DB_DATABASE: music_app_test
-      PROD_DB_DATABASE: music_app_prod
       DB_HOST: localhost
       JWT_SECRET: JWT_SECRET
       ELS_URL: http://elasticsearch:9200
       PORT: 8080
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "npm", "run", "all:dev"]
     ports: 
       - "8080:8080"  
     networks: 
       - music_app_network
-  client: 
-    build: 
-      context: ./client
-      dockerfile: Dockerfile
-    ports: 
-      - "3000:3000"  
-    networks: 
-      - music_app_network
+      # - elastic
+  # elastic_search:
+  #   container_name: music_elastic_search
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+  #   environment:
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - discovery.type=single-node
+  #   logging: 
+  #       driver: none
+  #   volumes:
+  #     - search:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9300:9300
+  #     - 9200:9200
+  #   networks:
+  #     - elastic
+  
+  # client: 
+  #   build: 
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   ports: 
+  #     - "3000:3000"  
+  #   networks: 
+  #     - music_app_network
 networks:
   music_app_network:
   elastic:
     driver: bridge
 volumes:
   db-data: 
-      external: true
-  data01:
+  search:
     driver: local
   
 
