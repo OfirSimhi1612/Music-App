@@ -7,12 +7,27 @@ services:
       MYSQL_ROOT_PASSWORD: O16s12@96
     ports:
       - "3307:3306"
-    expose:
-      - 3307
     volumes: 
       - db-data:/var/lib/mysql
     networks: 
       - music_app_network
+      - elastic
+  elastic_search:
+    container_name: music_elastic_search
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    logging: 
+        driver: none
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9300:9300
+      - 9200:9200
+    networks:
+      - elastic
   api:
     build: 
       context: ./server
@@ -25,6 +40,7 @@ services:
       PROD_DB_DATABASE: music_app_prod
       DB_HOST: localhost
       JWT_SECRET: JWT_SECRET
+      ELS_URL: http://elasticsearch:9200
       PORT: 8080
     ports: 
       - "8080:8080"  
@@ -40,8 +56,13 @@ services:
       - music_app_network
 networks:
   music_app_network:
+  elastic:
+    driver: bridge
 volumes:
   db-data: 
       external: true
+  data01:
+    driver: local
+  
 
 

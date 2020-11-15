@@ -2,7 +2,7 @@ const { Client } = require('@elastic/elasticsearch')
 const { getAllEntities } = require('./helpers/mysql');
 const indexCompare = require('./helpers/compare');
 
-const client = new Client({ node: 'http://localhost:9200' })
+const client = new Client({ node: process.env.ELS_URL || 'http://localhost:9200' })
 
 async function indexMapping(index, map){
     try{
