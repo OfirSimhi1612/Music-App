@@ -84,10 +84,6 @@ const INDEX = ['song', 'album', 'artist', 'playlist'];
 
 async function updateSearchFromDB(){
     try{
-        const docsCount = INDEX.map(async (index) => {
-            const { body: {count : indexCount }  }  = await client.count({ index })
-            return indexCount
-        })
     
         for(let i = 0; i < INDEX.length; i++){
             if(!(await client.indices.exists({index: INDEX[i]})).body){
@@ -97,8 +93,15 @@ async function updateSearchFromDB(){
                 console.log('added index: ' + INDEX[i])
             }
         }
-    
+
+        
         const allDBEntities = await getAllEntities() 
+
+        const docsCount = INDEX.map(async (index) => {
+            const { body: {count : indexCount }  }  = await client.count({ index })
+            return indexCount
+        })
+    
         const allSearchEntities = [
             (await client.search({index: INDEX[0], size: await docsCount[0]})).body.hits.hits.map(song => song._source),
             (await client.search({index: INDEX[1], size: await docsCount[1]})).body.hits.hits.map(album => album._source),
