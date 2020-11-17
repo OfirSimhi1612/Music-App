@@ -1,5 +1,6 @@
-[{"name":"Playlist 1", "cover_img":"https://image.shutterstock.com/image-vector/musical-poster-your-design-music-600w-1148675771.jpg", "genre":"All", "likes":0, "is_public":1},
- {"name":"Playlist 2", "cover_img":"https://image.shutterstock.com/image-vector/poster-sound-wave-vector-illustration-600w-664228747.jpg", "genre":"Rock", "likes":0, "is_public":1},
- {"name":"Playlist 3", "cover_img":"https://image.shutterstock.com/image-vector/cartoon-vector-doodles-music-illustration-600w-750046990.jpg", "genre":"Blues", "likes":0, "is_public":1},
- {"name":"Playlist 4", "cover_img":"https://image.shutterstock.com/image-vector/vintage-background-microphone-vector-illustration-600w-157344998.jpg", "genre":"Jazz", "likes":0, "is_public":1},
- {"name":"Playlist 5", "cover_img":"https://image.shutterstock.com/image-photo/grunge-musical-background-author-notes-600w-101040352.jpg", "genre":"Classic", "likes":0, "is_public":1}]
+[{"name":"Playlist 1", "cover_img":"https://image.shutterstock.com/image-vector/musical-poster-your-design-music-600w-1148675771.jpg", "genre":"All", "likes":0, "is_public":1, "creator": 1},
+ {"name":"Playlist 2", "cover_img":"https://image.shutterstock.com/image-vector/poster-sound-wave-vector-illustration-600w-664228747.jpg", "genre":"Rock", "likes":0, "is_public":1, "creator": 1},
+ {"name":"Playlist 3", "cover_img":"https://image.shutterstock.com/image-vector/cartoon-vector-doodles-music-illustration-600w-750046990.jpg", "genre":"Blues", "likes":0, "is_public":1, "creator": 1},
+ {"name":"Playlist 4", "cover_img":"https://image.shutterstock.com/image-vector/vintage-background-microphone-vector-illustration-600w-157344998.jpg", "genre":"Jazz", "likes":0, "is_public":1, "creator": 1},
+ {"name":"Playlist 5", "cover_img":"https://image.shutterstock.com/image-photo/grunge-musical-background-author-notes-600w-101040352.jpg", "genre":"Classic", "likes":0, "is_public":1, "creator": 1},
+ {"name":"user 1 playlist - systemPlaylist", "cover_img":"", "genre":"1", "likes":0, "is_public":0, "creator": 1}]

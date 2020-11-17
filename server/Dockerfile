@@ -1,16 +1,12 @@
 FROM node:12
 
-WORKDIR /server
+WORKDIR /usr/app/server
 
-COPY package*.json ./
+COPY . .
 
 RUN npm install
-RUN npm rebuild bcrypt --build-from-source
-
-COPY . ./
 
 EXPOSE 8080
-EXPOSE 9200
 
 CMD [ "npm", "run", "dev" ]
 
