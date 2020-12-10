@@ -38,4 +38,4 @@ In order to use it you must have MySql installed on youre machine, and relevant 
 
 if you want to run the application with docker, just run ```docker-compose up``` in root folder.
 
-when the the container is ready just access it on http://localhost:3000
+when the the container is ready yo can access it on http://localhost:3000
