@@ -33,3 +33,9 @@ In order to use it you must have MySql installed on youre machine, and relevant 
 ---
 * After running migrations and seeds you can strat react server by running ```npm strat``` in client folder.
 
+
+# Docker :
+
+if you want to run the application with docker, just run ```docker-compose up``` in root folder.
+
+when the the container is ready just access it on http://localhost:3000

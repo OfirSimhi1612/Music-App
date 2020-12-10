@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { Artist, Song, Album } = require('../models');
-const { Op } = require('Sequelize')
+const { Op } = require('sequelize')
 const Joi = require('joi');
 const router = Router();
 const { ArtistSchema } = require('./validationSchemas')

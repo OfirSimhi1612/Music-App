@@ -1,0 +1,65 @@
+version: '3.1'
+
+services:
+  
+  db-music:
+    image: mysql:5.7
+    restart: always
+    volumes: 
+      - /var/lib/mysql
+    environment:
+      MYSQL_DATABASE: music_app_dev
+      MYSQL_USER: "root"
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_PASSWORD: "password"
+    ports:
+      - "3307:3306"
+    expose:
+      - "3307"
+    
+  search-music:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    logging: 
+        driver: none
+    ports:
+      - 9300:9300
+      - 9200:9200
+  
+  api-music:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    stdin_open: true
+    depends_on: 
+      - db-music
+      - search-music
+    environment: 
+      DB_USERNAME: "root"
+      DB_PASSWORD: "password"
+      DEV_DB_DATABASE: music_app_dev
+      DB_HOST: "db-music"
+      JWT_SECRET: JWT_SECRET
+      ELS_URL: http://music-app_search-music_1:9200
+      PORT: 8080
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "npm", "run", "all:dev"]
+    ports: 
+      - "8080:8080"  
+     
+  client-music: 
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"  
+    stdin_open: true
+    depends_on: 
+      - api-music
+    
+  
+volumes:
+  db-music: 
+    driver: local

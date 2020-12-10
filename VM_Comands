@@ -1,0 +1,45 @@
+- load new machine-
+
+gcloud compute instances create music-app \
+    --image-family=debian-9 \
+    --image-project=debian-cloud \
+    --machine-type=g1-small \
+    --scopes userinfo-email,cloud-platform \
+    --metadata app-location=us-central1-f \
+    --metadata-from-file startup-script=./startup-script.sh \
+    --zone europe-west4-b \
+    --tags http-server
+
+
+
+-load new firewall (8080)-
+
+gcloud compute firewall-rules create default-allow-http-8080 \
+    --allow tcp:8080 \
+    --source-ranges 0.0.0.0/0 \
+    --target-tags http-server \
+    --description "Allow port 8080 access to http-server"
+
+
+
+-load new firewall (3000)-
+
+gcloud compute firewall-rules create default-allow-http-3000 \
+    --allow tcp:3000 \
+    --source-ranges 0.0.0.0/0 \
+    --target-tags http-server \
+    --description "Allow port 3000 access to http-server"
+
+
+
+- write loggs in colnole-
+
+gcloud compute instances get-serial-port-output music-app --zone europe-west4-b
+
+
+
+- cleanup - 
+
+gcloud compute instances delete music-app --zone=europe-west4-b --delete-disks=all
+gcloud compute firewall-rules delete default-allow-http-8080
+gcloud compute firewall-rules delete default-allow-http-3000

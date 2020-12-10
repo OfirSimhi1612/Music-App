@@ -1,0 +1,10 @@
+[
+    {
+        "first_name": "admin",
+        "last_name": "admin",
+        "email": "admin123@gmail.com",
+        "birth_date": "1970-01-01",
+        "is_admin": 1,
+        "password": "$2b$10$Q9QYSIE9Zgsgz6ua.mFXuuQmJ543UAb7cRZ2hrZxC4zA5qxu2sf7G"
+    }
+]
